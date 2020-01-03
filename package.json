@@ -1,0 +1,26 @@
+{
+  "name": "lindsvg",
+  "version": "1.0.0",
+  "description": "Lindenmayer System Scalable Vector Graphics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amphiluke/lindsvg.git"
+  },
+  "keywords": [
+    "l-system",
+    "svg"
+  ],
+  "author": "Amphiluke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Amphiluke/lindsvg/issues"
+  },
+  "homepage": "https://github.com/Amphiluke/lindsvg#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  }
+}
