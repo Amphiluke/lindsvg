@@ -2,8 +2,15 @@
   "name": "lindsvg",
   "version": "1.0.0",
   "description": "Lindenmayer System [Scalable] Vector Graphics",
-  "main": "index.js",
+  "main": "dist/lindsvg.js",
+  "module": "dist/lindsvg.esm.js",
+  "unpkg": "dist/lindsvg.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
+    "lint": "eslint src/**/*.mjs",
     "build": "rollup -c"
   },
   "repository": {
