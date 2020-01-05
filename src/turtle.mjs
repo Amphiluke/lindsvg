@@ -31,7 +31,7 @@ export function createTurtle({x, y, step, alpha, theta}) {
     turtle.x = turtle.minX = turtle.maxX = x;
     turtle.y = turtle.minY = turtle.maxY = y;
     turtle.step = step;
-    turtle.alpha = alpha;
+    turtle.alpha = -alpha; // negate since Y axis is inverted
     turtle.theta = theta;
     return turtle;
 }

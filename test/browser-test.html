@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>lindsvg</title>
+    <style>
+        svg {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<script type="module">
+    import {getSVGCode} from "../dist/lindsvg.esm.js";
+    // import {getSVGCode} from "../src/lindsvg.mjs";
+    import {lsParams, svgParams} from "./params.mjs";
+    document.body.insertAdjacentHTML("beforeend", getSVGCode(lsParams, svgParams));
+</script>
+</body>
+</html>

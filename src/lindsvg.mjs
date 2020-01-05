@@ -24,4 +24,4 @@
  */
 
 
-export {getSVGCode, getSVGData} from "./svg.mjs";
+export {getSVGData, getSVGCode} from "./svg.mjs";

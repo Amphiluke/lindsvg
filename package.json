@@ -1,10 +1,10 @@
 {
   "name": "lindsvg",
   "version": "1.0.0",
-  "description": "Lindenmayer System Scalable Vector Graphics",
+  "description": "Lindenmayer System [Scalable] Vector Graphics",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/Amphiluke/lindsvg#readme",
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "rollup": "^1.28.0",
+    "rollup-plugin-terser": "^5.1.3"
   }
 }
