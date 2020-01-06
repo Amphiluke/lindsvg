@@ -47,21 +47,22 @@ let {getSVGCode, getSVGData} = require("lindsvg");
 
 // L-system parameters
 let lsParams = {
-    axiom: "X", // The initial codeword (axiom)
-    rules: {    // L-system production rules
+    axiom: "X",         // The initial codeword (axiom)
+    rules: {            // L-system production rules
         F: "FF",
         X: "F[+X]F[-X]+X"
     },
-    alpha: 90 * Math.PI / 180, // Initial angle in radians
-    theta: 20 * Math.PI / 180, // Angle increment in radians
-    step: 2,                   // The length of a “turtle” step
-    iterations: 7              // Total number of iterations used to generate the resulting L-system
+    alpha: Math.PI / 2, // Initial angle in radians
+    theta: Math.PI / 9, // Angle increment in radians
+    step: 2,            // The length of a “turtle” step
+    iterations: 7       // Total number of iterations used to generate the resulting L-system
 };
 
-// Output SVG parameters (all are optional)
+// Output SVG parameters (all of them are optional)
 let svgParams = {
     width: 600,     // Desired SVG element width
     height: 600,    // Desired SVG element height
+    padding: 5,     // Additional space to extend the viewBox
     fill: "none",   // Value of the “fill” attribute on the “path” element
     stroke: "green" // Value of the “stroke” attribute on the “path” element
 };

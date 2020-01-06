@@ -253,11 +253,13 @@ https://github.com/Amphiluke/lindsvg#readme
         svgParams = {
             width,
             height,
+            padding: 0,
             fill: "none",
             stroke: "#000",
             ...svgParams
         };
-        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${minX} ${minY} ${width} ${height}" height="${svgParams.height}" width="${svgParams.width}">
+        let {padding} = svgParams;
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${minX - padding} ${minY - padding} ${width + 2 * padding} ${height + 2 * padding}" height="${svgParams.height}" width="${svgParams.width}">
   <path d="${pathData}" fill="${svgParams.fill}" stroke="${svgParams.stroke}"></path>
 </svg>`;
     }
