@@ -1,6 +1,6 @@
 /*!
 lindsvg v1.0.0
-https://github.com/Amphiluke/lindsvg#readme
+https://amphiluke.github.io/l-systems/
 (c) 2020 Amphiluke
 */
 let messages = {
