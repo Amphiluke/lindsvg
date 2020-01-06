@@ -1,6 +1,6 @@
 # lindsvg
 
-**lindsvg** (pronounced /ˈlɪnds ˈviː-ˈdʒiː/), Lindenmayer System \[Scalable\] Vector Graphics
+**lindsvg** (pronounced /ˈlɪnds ˈviː ˈdʒiː/), Lindenmayer System \[Scalable\] Vector Graphics
 
 Simple dependency-free module used to generate SVG images of deterministic L-systems.
 
@@ -14,7 +14,7 @@ Installing the module is as simple as:
 npm install lindsvg
 ```
 
-Now you may get it in your scripts as usual: `require("lindsvg")`, or `import * as lindsvg from "lindsvg"` if you use such bundlers as webpack.
+Now you may get it in your scripts as usual: `require("lindsvg")`, or `import * as lindsvg from "lindsvg"` if you use such bundlers as webpack or rollup.
 
 ### In a browser
 
@@ -47,15 +47,17 @@ let {getSVGCode, getSVGData} = require("lindsvg");
 
 // L-system parameters
 let lsParams = {
-    axiom: "X",         // The initial codeword (axiom)
-    rules: {            // L-system production rules
-        F: "FF",
-        X: "F[+X]F[-X]+X"
+    axiom: "A---A",      // The initial codeword (axiom)
+    rules: {             // L-system production rules
+        F: "F",          // Move forward a step with drawing a line
+        B: "B",          // Move forward a step without drawing a line
+        A: "B-F+Z+F-BA", // Auxiliary rules...
+        Z: "F-FF-F--[--Z]F-FF-F--F-FF-F--"
     },
-    alpha: Math.PI / 2, // Initial angle in radians
-    theta: Math.PI / 9, // Angle increment in radians
-    step: 2,            // The length of a “turtle” step
-    iterations: 7       // Total number of iterations used to generate the resulting L-system
+    alpha: 0,            // Initial angle in radians
+    theta: Math.PI / 3,  // Angle increment in radians
+    step: 15,            // The length of a “turtle” step
+    iterations: 7        // Total number of iterations
 };
 
 // Output SVG parameters (all of them are optional)
