@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>lindsvg</title>
+    <style>
+        svg {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<script src="../dist/lindsvg.min.js"></script>
+<script type="module">
+    import {lsParams, svgParams} from "./params.mjs";
+    document.body.insertAdjacentHTML("beforeend", window.lindsvg.getSVGCode(lsParams, svgParams));
+</script>
+</body>
+</html>
