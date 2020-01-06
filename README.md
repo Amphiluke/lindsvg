@@ -18,7 +18,7 @@ Now you may get it in your scripts as usual: `require("lindsvg")`, or `import * 
 
 ### In a browser
 
-lindsvg is available in UMD format which allows you using it either with AMD/CJS compatible module loaders or in global namespace (`window.lindsvg`):
+lindsvg is available in UMD format which allows you using it either with AMD/CJS compatible module loaders or in global namespace (`window.lindsvg`). You may get the module sources from such CDNs as jsDelivr or unpkg:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/lindsvg/dist/lindsvg.min.js"></script>
