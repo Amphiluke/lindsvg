@@ -193,7 +193,13 @@ function getPathData(codeword, turtle) {
                 break;
             case "B":
                 turtle.translate();
-                accumulator += (prevCommand === "M" ? " " : "M") + formatCoordinates(turtle.x, turtle.y);
+                if (prevCommand === "M") {
+                    // As the spec states, “If a moveto is followed by multiple pairs of coordinates,
+                    // the subsequent pairs are treated as implicit lineto commands”.
+                    // This is not what we want, so delete the preceding moveto command
+                    accumulator = accumulator.slice(0, accumulator.lastIndexOf("M"));
+                }
+                accumulator += "M" + formatCoordinates(turtle.x, turtle.y);
                 prevCommand = "M";
                 break;
             case "+":
