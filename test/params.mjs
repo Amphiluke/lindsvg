@@ -31,6 +31,7 @@ export let lsParams = {
 export let svgParams = {
     width: 600,
     height: 600,
+    padding: 10,
     // fill: "skyblue",
     stroke: "green"
 };
