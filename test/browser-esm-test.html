@@ -15,11 +15,25 @@
     </style>
 </head>
 <body>
+<script src="../node_modules/js-yaml/dist/js-yaml.min.js"></script>
 <script type="module">
     import {getSVGCode} from "../dist/lindsvg.esm.js";
     // import {getSVGCode} from "../src/lindsvg.mjs";
-    import {lsParams, svgParams} from "./params.mjs";
+    import {lsParams, lsInvalidParams, svgParams} from "./params.mjs";
     document.body.insertAdjacentHTML("beforeend", getSVGCode(lsParams, svgParams));
+
+    try {
+        console.log("Below, an exception is expected");
+        console.log(getSVGCode(lsInvalidParams, svgParams));
+    } catch (error) {
+        // Log the original message
+        console.error(error);
+        if (error.name === "LSError") {
+            // Get a JSON representation of the error list and format it as YAML
+            let errorJSON = error.toJSON();
+            console.log(window.jsyaml.dump(errorJSON, {indent: 4}));
+        }
+    }
 </script>
 </body>
 </html>

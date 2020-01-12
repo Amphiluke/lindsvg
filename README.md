@@ -78,6 +78,25 @@ let {pathData, minX, minY, width, height} = getSVGData(lsParams);
 
 An object returned by `getSVGData` contains [path data](https://www.w3.org/TR/SVG11/paths.html#PathData) needed to draw the L-system, and also the drawing boundaries that are essential for the `viewBox` attribute.
 
+In case of invalid input L-system parameters, the methods throw a custom exception. You may use it to get a detailed explanation of which parameter(s) failed to pass validation, and format the message as you wish.
+
+```javascript
+let {getSVGCode} = require("lindsvg");
+let yaml = require("js-yaml");
+
+try {
+    console.log(getSVGCode(lsParams, svgParams));
+} catch (error) {
+    // Log the original message
+    console.error(error);
+    if (error.name === "LSError") {
+        // Get a JSON representation of the error list and format it as YAML
+        let errorJSON = error.toJSON();
+        console.log(yaml.dump(errorJSON, {indent: 4}));
+    }
+}
+```
+
 ### Compatibility note
 
 lindsvg utilizes the ECMAScript 2018 syntax. If you want to use the module in environments that do not support ES 2018, please transpile the sources with babel or whatever for your needs.

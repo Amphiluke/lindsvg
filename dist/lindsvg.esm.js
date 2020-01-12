@@ -1,5 +1,5 @@
 /*!
-lindsvg v1.0.0
+lindsvg v1.1.0
 https://amphiluke.github.io/l-systems/
 (c) 2020 Amphiluke
 */
@@ -25,17 +25,17 @@ function checkRule(rule, msg = messages.RULE) {
 }
 
 function checkRules(rules, letterMsg, ruleMsg) {
-    let errors = new Map();
+    let errors = Object.create(null);
     Object.entries(rules).forEach(([letter, rule]) => {
         let result = checkLetter(letter, letterMsg);
         if (result === true) {
             result = checkRule(rule, ruleMsg);
         }
         if (result !== true) {
-            errors.set(letter, result);
+            errors[letter] = result;
         }
     });
-    return errors.size ? errors : true;
+    return Object.keys(errors).length ? errors : true;
 }
 
 function checkStep(step, msg = messages.STEP) {
@@ -51,7 +51,7 @@ function checkAngle(angle, msg = messages.NUMBER) {
 }
 
 function validate(lsParams) {
-    let errors = new Map();
+    let errors = Object.create(null);
     Object.entries(lsParams).forEach(([param, value]) => {
         let result = true;
         switch (param) {
@@ -73,20 +73,41 @@ function validate(lsParams) {
                 break;
         }
         if (result !== true) {
-            errors.set(param, result);
+            errors[param] = result;
         }
     });
-    return errors.size ? errors : true;
+    return Object.keys(errors).length ? errors : true;
 }
 
-function formatErrors(errors) {
-    return [...errors].reduce((accumulator, [param, error]) => {
-        if (error instanceof Map) {
-            return `${accumulator}\n${param}:${formatErrors(error).replace(/\n/g, "\n  ")}`;
-        }
-        return `${accumulator}\n${param}: ${error}`;
-    }, "");
+class LSError extends Error {
+    /**
+     * LSError constructor
+     * @param {Object} errors - Error map “parameter->message(s)”
+     * @constructor
+     */
+    constructor(errors) {
+        let message = JSON.stringify(errors, null, 2);
+        super(message);
+        // Using JSON.parse for deep cloning
+        Object.defineProperty(this, "lsErrors", {value: JSON.parse(message)});
+    }
+
+    /**
+     * Get raw object representation of the errors
+     * @return {Object}
+     */
+    toJSON() {
+        return JSON.parse(JSON.stringify(this.lsErrors));
+    }
 }
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/toString
+Object.defineProperty(LSError.prototype, "name", {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value: "LSError"
+});
 
 /** @type {Rules} */
 let ctrlRules = {
@@ -114,7 +135,7 @@ let defaults = {
 function generate(lsParams) {
     let validity = validate(lsParams);
     if (validity !== true) {
-        throw new Error(formatErrors(validity));
+        throw new LSError(validity);
     }
     let {axiom: code, iterations} = {...defaults, ...lsParams};
     let rules = {...ctrlRules, ...lsParams.rules};

@@ -1,4 +1,5 @@
-import {validate, formatErrors} from "./validator.mjs";
+import {validate} from "./validator.mjs";
+import {LSError} from "./ls-error.mjs";
 
 /** @type {Rules} */
 let ctrlRules = {
@@ -26,7 +27,7 @@ let defaults = {
 export function generate(lsParams) {
     let validity = validate(lsParams);
     if (validity !== true) {
-        throw new Error(formatErrors(validity));
+        throw new LSError(validity);
     }
     let {axiom: code, iterations} = {...defaults, ...lsParams};
     let rules = {...ctrlRules, ...lsParams.rules};
