@@ -28,6 +28,18 @@ export let lsParams = {
     step: 2
 };
 
+export let lsInvalidParams = {
+    axiom: "X F",
+    rules: {
+        F: "FF1",
+        X: "F[+X]F[-X]+X?"
+    },
+    alpha: (90 * Math.PI / 180).toString(),
+    theta: Infinity,
+    iterations: 7.1,
+    step: -2
+};
+
 export let svgParams = {
     width: 600,
     height: 600,

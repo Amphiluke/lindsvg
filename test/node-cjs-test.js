@@ -1,22 +1,19 @@
 let {getSVGCode} = require("../dist/lindsvg.js");
+let yaml = require("js-yaml");
 
-let lsParams = {
-    axiom: "F",
-    rules: {
-        F: "F[+FF][-FF]F[-F][+F]F"
-    },
-    alpha: 90 * Math.PI / 180,
-    theta: 35 * Math.PI / 180,
-    iterations: 4,
-    step: 6
-};
+import("./params.mjs").then(({lsParams, lsInvalidParams, svgParams}) => {
+    console.log(getSVGCode(lsParams, svgParams));
 
-let svgParams = {
-    width: 600,
-    height: 600,
-    padding: 10,
-    fill: "skyblue",
-    stroke: "green"
-};
-
-console.log(getSVGCode(lsParams, svgParams));
+    try {
+        console.log("Below, an exception is expected");
+        console.log(getSVGCode(lsInvalidParams, svgParams));
+    } catch (error) {
+        // Log the original message
+        console.error(error);
+        if (error.name === "LSError") {
+            // Get a JSON representation of the error list and format it as YAML
+            let errorJSON = error.toJSON();
+            console.log(yaml.dump(errorJSON, {indent: 4}));
+        }
+    }
+});

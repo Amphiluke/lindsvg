@@ -20,17 +20,17 @@ export function checkRule(rule, msg = messages.RULE) {
 }
 
 export function checkRules(rules, letterMsg, ruleMsg) {
-    let errors = new Map();
+    let errors = Object.create(null);
     Object.entries(rules).forEach(([letter, rule]) => {
         let result = checkLetter(letter, letterMsg);
         if (result === true) {
             result = checkRule(rule, ruleMsg);
         }
         if (result !== true) {
-            errors.set(letter, result);
+            errors[letter] = result;
         }
     });
-    return errors.size ? errors : true;
+    return Object.keys(errors).length ? errors : true;
 }
 
 export function checkStep(step, msg = messages.STEP) {
@@ -46,7 +46,7 @@ export function checkAngle(angle, msg = messages.NUMBER) {
 }
 
 export function validate(lsParams) {
-    let errors = new Map();
+    let errors = Object.create(null);
     Object.entries(lsParams).forEach(([param, value]) => {
         let result = true;
         switch (param) {
@@ -68,17 +68,8 @@ export function validate(lsParams) {
                 break;
         }
         if (result !== true) {
-            errors.set(param, result);
+            errors[param] = result;
         }
     });
-    return errors.size ? errors : true;
-}
-
-export function formatErrors(errors) {
-    return [...errors].reduce((accumulator, [param, error]) => {
-        if (error instanceof Map) {
-            return `${accumulator}\n${param}:${formatErrors(error).replace(/\n/g, "\n  ")}`;
-        }
-        return `${accumulator}\n${param}: ${error}`;
-    }, "");
+    return Object.keys(errors).length ? errors : true;
 }
