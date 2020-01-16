@@ -44,6 +44,9 @@ export let svgParams = {
     width: 600,
     height: 600,
     padding: 10,
-    // fill: "skyblue",
-    stroke: "green"
+    pathAttributes: {
+        // fill: "skyblue",
+        stroke: "green",
+        "stroke-width": "2px"
+    }
 };

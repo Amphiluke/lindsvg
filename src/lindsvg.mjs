@@ -19,8 +19,8 @@
  * @typedef {Object} SVGParams
  * @property {Number} [width] - Desired SVG width
  * @property {Number} [height] - Desired SVG height
- * @property {String} [fill="none"] - Value of the “fill” attribute on the “path” element
- * @property {String} [stroke="#000"] - Value of the “stroke” attribute on the “path” element
+ * @property {Number} [padding=0] - Additional space to extend the viewBox
+ * @property {Object} [pathAttributes={fill:"none",stroke:"#000"}] - Name to value map for the “path” element attributes
  */
 
 

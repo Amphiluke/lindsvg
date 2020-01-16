@@ -83,16 +83,23 @@ export function getSVGData(lsParams) {
  */
 export function getSVGCode(lsParams, svgParams) {
     let {pathData, minX, minY, width, height} = getSVGData(lsParams);
-    svgParams = {
-        width,
-        height,
-        padding: 0,
-        fill: "none",
-        stroke: "#000",
-        ...svgParams
+    let svgConfig = {
+        width: svgParams.width || width,
+        height: svgParams.height || height,
+        padding: svgParams.padding || 0,
+        pathAttributes: {
+            // for backward compatibility with v1.1.0, also check fill and stroke as direct props of svgParams
+            fill: svgParams.fill || "none",
+            stroke: svgParams.stroke || "#000",
+            ...svgParams.pathAttributes
+        }
     };
-    let {padding} = svgParams;
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${minX - padding} ${minY - padding} ${width + 2 * padding} ${height + 2 * padding}" height="${svgParams.height}" width="${svgParams.width}">
-  <path d="${pathData}" fill="${svgParams.fill}" stroke="${svgParams.stroke}"></path>
+    let {padding} = svgConfig;
+    let pathAttrStr = Object.entries(svgConfig.pathAttributes).reduce((accumulator, [name, value]) => {
+        value = value.replace(/"/g, "&quot;");
+        return `${accumulator} ${name}="${value}"`;
+    }, "");
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${minX - padding} ${minY - padding} ${width + 2 * padding} ${height + 2 * padding}" height="${svgConfig.height}" width="${svgConfig.width}">
+  <path d="${pathData}"${pathAttrStr}></path>
 </svg>`;
 }
