@@ -62,11 +62,13 @@ let lsParams = {
 
 // Output SVG parameters (all of them are optional)
 let svgParams = {
-    width: 600,     // Desired SVG element width
-    height: 600,    // Desired SVG element height
-    padding: 5,     // Additional space to extend the viewBox
-    fill: "none",   // Value of the “fill” attribute on the “path” element
-    stroke: "green" // Value of the “stroke” attribute on the “path” element
+    width: 600,       // Desired SVG element width
+    height: 600,      // Desired SVG element height
+    padding: 5,       // Additional space to extend the viewBox
+    pathAttributes: { // Name to value map for the “path” element attributes
+        stroke: "green",
+        "stroke-width": "2px"
+    }
 };
 
 // Get ready-to-render L-system’s SVG code as a string
