@@ -1,7 +1,7 @@
 let proto = {
-    translate() {
-        this.x += this.step * Math.cos(this.alpha);
-        this.y += this.step * Math.sin(this.alpha);
+    translate(stepCount = 1) {
+        this.x += stepCount * this.step * Math.cos(this.alpha);
+        this.y += stepCount * this.step * Math.sin(this.alpha);
         this.minX = Math.min(this.minX, this.x);
         this.maxX = Math.max(this.maxX, this.x);
         this.minY = Math.min(this.minY, this.y);
@@ -10,11 +10,15 @@ let proto = {
     rotate(factor) {
         this.alpha += factor * this.theta;
     },
-    pushStack() {
-        this.stack.push({x: this.x, y: this.y, alpha: this.alpha});
+    pushStack(repeatCount = 1) {
+        for (; repeatCount > 0; repeatCount--) {
+            this.stack.push({x: this.x, y: this.y, alpha: this.alpha});
+        }
     },
-    popStack() {
-        ({x: this.x, y: this.y, alpha: this.alpha} = this.stack.pop());
+    popStack(repeatCount) {
+        for (; repeatCount > 0; repeatCount--) {
+            ({x: this.x, y: this.y, alpha: this.alpha} = this.stack.pop());
+        }
     },
     getDrawingRect() {
         let minX = Math.floor(this.minX);

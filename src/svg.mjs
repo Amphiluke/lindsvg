@@ -3,11 +3,12 @@ import {createTurtle} from "./turtle.mjs";
 
 /**
  * Remove all letters which don’t affect the drawing process from the codeword
+ * and split it into “tokens” for the further processing
  * @param {String} codeword - L-system code
- * @return {String}
+ * @return {Array<String>}
  */
-function cleanCodeword(codeword) {
-    return codeword.replace(/[^FB[\]+-]/g, "");
+function tokenizeCodeword(codeword) {
+    return codeword.match(/([FB[\]+-])\1*/g);
 }
 
 function formatCoordinates(x, y) {
@@ -17,21 +18,22 @@ function formatCoordinates(x, y) {
 
 /**
  * Get the value of the d attribute
- * @param {String} codeword - Clean code
+ * @param {Array<String>} tokens - Tokenized codeword
  * @param {Object} turtle - Turtle object to work with
  * @return {String}
  */
-function getPathData(codeword, turtle) {
+function getPathData(tokens, turtle) {
     let prevCommand; // used to avoid unnecessary repeating of the commands L and M
-    return [...codeword].reduce((accumulator, symbol) => {
-        switch (symbol) {
+    return tokens.reduce((accumulator, token) => {
+        let tokenLength = token.length;
+        switch (token[0]) {
             case "F":
-                turtle.translate();
+                turtle.translate(tokenLength);
                 accumulator += (prevCommand === "L" ? " " : "L") + formatCoordinates(turtle.x, turtle.y);
                 prevCommand = "L";
                 break;
             case "B":
-                turtle.translate();
+                turtle.translate(tokenLength);
                 if (prevCommand === "M") {
                     // As the spec states, “If a moveto is followed by multiple pairs of coordinates,
                     // the subsequent pairs are treated as implicit lineto commands”.
@@ -42,16 +44,16 @@ function getPathData(codeword, turtle) {
                 prevCommand = "M";
                 break;
             case "+":
-                turtle.rotate(1);
+                turtle.rotate(tokenLength);
                 break;
             case "-":
-                turtle.rotate(-1);
+                turtle.rotate(-tokenLength);
                 break;
             case "[":
-                turtle.pushStack();
+                turtle.pushStack(tokenLength);
                 break;
             case "]":
-                turtle.popStack();
+                turtle.popStack(tokenLength);
                 accumulator += `M${formatCoordinates(turtle.x, turtle.y)}`;
                 prevCommand = "M";
                 break;
@@ -68,7 +70,7 @@ function getPathData(codeword, turtle) {
 export function getSVGData(lsParams) {
     let codeword = generate(lsParams);
     let turtle = createTurtle({x: 0, y: 0, ...lsParams});
-    let pathData = getPathData(cleanCodeword(codeword), turtle);
+    let pathData = getPathData(tokenizeCodeword(codeword), turtle);
     return {
         pathData,
         ...turtle.getDrawingRect()
