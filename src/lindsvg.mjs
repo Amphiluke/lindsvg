@@ -20,8 +20,8 @@
  * @property {Number} [width] - Desired SVG width
  * @property {Number} [height] - Desired SVG height
  * @property {Number} [padding=0] - Additional space to extend the viewBox
- * @property {Object} [pathAttributes={fill:"none",stroke:"#000"}] - Name to value map for the “path” element attributes
+ * @property {Object.<String, String|String[]>} [pathAttributes={fill:"none",stroke:"#000"}] - Name to value map for the <path> element attributes
  */
 
 
-export {getSVGData, getSVGCode} from "./svg.mjs";
+export * from "./svg.mjs";

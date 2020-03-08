@@ -1,6 +1,6 @@
 {
   "name": "lindsvg",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Lindenmayer System [Scalable] Vector Graphics",
   "main": "dist/lindsvg.js",
   "module": "dist/lindsvg.esm.js",

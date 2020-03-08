@@ -9,8 +9,11 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 100vw;
+            width: 50vw;
             height: 100vh;
+        }
+        svg + svg {
+            left: 50vw;
         }
     </style>
 </head>
@@ -18,12 +21,14 @@
 <script src="../dist/lindsvg.min.js"></script>
 <script src="../node_modules/js-yaml/dist/js-yaml.min.js"></script>
 <script type="module">
-    import {lsParams, lsInvalidParams, svgParams} from "./params.mjs";
-    document.body.insertAdjacentHTML("beforeend", window.lindsvg.getSVGCode(lsParams, svgParams));
+    let {getSVGCode, getMultiPathSVGCode} = window.lindsvg;
+    import {singlePathLSParams, multiPathLSParams, lsInvalidParams, singlePathSVGParams, multiPathSVGParams} from "./params.mjs";
+    document.body.insertAdjacentHTML("beforeend", getSVGCode(singlePathLSParams, singlePathSVGParams));
+    document.body.insertAdjacentHTML("beforeend", getMultiPathSVGCode(multiPathLSParams, multiPathSVGParams));
 
     try {
         console.log("Below, an exception is expected");
-        console.log(window.lindsvg.getSVGCode(lsInvalidParams, svgParams));
+        console.log(getMultiPathSVGCode(lsInvalidParams, multiPathSVGParams));
     } catch (error) {
         // Log the original message
         console.error(error);
