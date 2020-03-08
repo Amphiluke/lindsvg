@@ -106,7 +106,7 @@ function getMultiPathData(tokens, turtle) {
             case "]":
                 branchLevel -= tokenLength;
                 turtle.popStack(tokenLength);
-                pathData = `${accumulator[branchLevel]}M${formatCoordinates(turtle.x, turtle.y)}`;
+                pathData = `${accumulator[branchLevel] || ""}M${formatCoordinates(turtle.x, turtle.y)}`;
                 prevCommand = "M";
                 break;
         }

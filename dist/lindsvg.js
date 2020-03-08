@@ -298,7 +298,7 @@ https://amphiluke.github.io/l-systems/
                 case "]":
                     branchLevel -= tokenLength;
                     turtle.popStack(tokenLength);
-                    pathData = `${accumulator[branchLevel]}M${formatCoordinates(turtle.x, turtle.y)}`;
+                    pathData = `${accumulator[branchLevel] || ""}M${formatCoordinates(turtle.x, turtle.y)}`;
                     prevCommand = "M";
                     break;
             }
