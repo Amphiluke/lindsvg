@@ -200,7 +200,7 @@ https://amphiluke.github.io/l-systems/
      * @return {String[]}
      */
     function tokenizeCodeword(codeword) {
-        return codeword.match(/([FB[\]+-])\1*/g);
+        return codeword.replace(/[^FB[\]+-]/g, "").match(/([FB[\]+-])\1*/g);
     }
 
     function formatCoordinates(x, y) {
@@ -263,7 +263,7 @@ https://amphiluke.github.io/l-systems/
     function getMultiPathData(tokens, turtle) {
         let prevCommand; // used to avoid unnecessary repeating of the commands L and M
         let branchLevel = 0;
-        return tokens.reduce((accumulator, token) => {
+        let multiPathData = tokens.reduce((accumulator, token) => {
             let pathData = accumulator[branchLevel] || "";
             let tokenLength = token.length;
             switch (token[0]) {
@@ -305,6 +305,10 @@ https://amphiluke.github.io/l-systems/
             accumulator[branchLevel] = pathData;
             return accumulator;
         }, ["M" + formatCoordinates(turtle.x, turtle.y)]);
+        // Some L-systems can produce branching levels which contain no real draw commands (only moves and rotations).
+        // Such L-systems usually don’t have F commands in their axiom nor they have a production for F (example is
+        // the Penrose tiling). Having <path> elements with only M commands is meaningless, so filtering them out
+        return multiPathData.filter(pathData => pathData.includes("L"));
     }
 
     /**
