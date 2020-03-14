@@ -1,22 +1,4 @@
-export let lsParams = {
-    // axiom: "F++F++F",
-    // rules: {
-    //     F: "F-F++F-F"
-    // },
-    // alpha: 0,
-    // theta: 60 * Math.PI / 180,
-    // iterations: 5,
-    // step: 5
-
-    // axiom: "F",
-    // rules: {
-    //     F: "F[+FF][-FF]F[-F][+F]F"
-    // },
-    // alpha: 90 * Math.PI / 180,
-    // theta: 35 * Math.PI / 180,
-    // iterations: 4,
-    // step: 6
-
+export let singlePathLSParams = {
     axiom: "X",
     rules: {
         F: "FF",
@@ -26,6 +8,19 @@ export let lsParams = {
     theta: 20 * Math.PI / 180,
     iterations: 7,
     step: 2
+};
+
+export let multiPathLSParams = {
+    axiom: "FFF+FFFF-FF+FF-[-Y][+Y][Z][+Z]",
+    rules: {
+        F: "F",
+        Y: "FF+F-F-F[FFFZ][+Z]-F-FZ",
+        Z: "FF-F+F+F[FY][-Y]+F+F++Y"
+    },
+    alpha: 90 * Math.PI / 180,
+    theta: 10 * Math.PI / 180,
+    iterations: 7,
+    step: 5
 };
 
 export let lsInvalidParams = {
@@ -40,13 +35,25 @@ export let lsInvalidParams = {
     step: -2
 };
 
-export let svgParams = {
-    width: 600,
-    height: 600,
+export let singlePathSVGParams = {
+    width: 360,
+    height: 535,
     padding: 10,
     pathAttributes: {
         // fill: "skyblue",
-        stroke: "green",
-        "stroke-width": "2px"
+        stroke: "#69983a"
+    }
+};
+
+export let multiPathSVGParams = {
+    width: 420,
+    height: 325,
+    padding: 10,
+    pathAttributes: {
+        stroke: ["#514d3a", "#514d3a", "#514d2a", "#55771c", "#55771c", "#44621c",
+            "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
+        "stroke-width": ["11", "5", "3", "1"],
+        "stroke-linecap": ["square", "square", "round"],
+        transform: ["skewY(-35)", ""]
     }
 };

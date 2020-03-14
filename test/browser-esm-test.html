@@ -9,22 +9,26 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 100vw;
+            width: 50vw;
             height: 100vh;
+        }
+        svg + svg {
+            left: 50vw;
         }
     </style>
 </head>
 <body>
 <script src="../node_modules/js-yaml/dist/js-yaml.min.js"></script>
 <script type="module">
-    import {getSVGCode} from "../dist/lindsvg.esm.js";
-    // import {getSVGCode} from "../src/lindsvg.mjs";
-    import {lsParams, lsInvalidParams, svgParams} from "./params.mjs";
-    document.body.insertAdjacentHTML("beforeend", getSVGCode(lsParams, svgParams));
+    import {getSVGCode, getMultiPathSVGCode} from "../dist/lindsvg.esm.js";
+    // import {getSVGCode, getMultiPathSVGCode} from "../src/lindsvg.mjs";
+    import {singlePathLSParams, multiPathLSParams, lsInvalidParams, singlePathSVGParams, multiPathSVGParams} from "./params.mjs";
+    document.body.insertAdjacentHTML("beforeend", getSVGCode(singlePathLSParams, singlePathSVGParams));
+    document.body.insertAdjacentHTML("beforeend", getMultiPathSVGCode(multiPathLSParams, multiPathSVGParams));
 
     try {
         console.log("Below, an exception is expected");
-        console.log(getSVGCode(lsInvalidParams, svgParams));
+        console.log(getMultiPathSVGCode(lsInvalidParams, multiPathSVGParams));
     } catch (error) {
         // Log the original message
         console.error(error);
