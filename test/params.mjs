@@ -11,14 +11,16 @@ export let singlePathLSParams = {
 };
 
 export let multiPathLSParams = {
-    axiom: "F",
+    axiom: "FFF+FFFF-FF+FF-[-Y][+Y][Z][+Z]",
     rules: {
-        F: "FF+[+F-F-F]-[-F+F+F]"
+        F: "F",
+        Y: "FF+F-F-F[FFFZ][+Z]-F-FZ",
+        Z: "FF-F+F+F[FY][-Y]+F+F++Y"
     },
     alpha: 90 * Math.PI / 180,
-    theta: 22.5 * Math.PI / 180,
-    iterations: 5,
-    step: 8
+    theta: 10 * Math.PI / 180,
+    iterations: 7,
+    step: 5
 };
 
 export let lsInvalidParams = {
@@ -34,8 +36,8 @@ export let lsInvalidParams = {
 };
 
 export let singlePathSVGParams = {
-    width: 600,
-    height: 600,
+    width: 360,
+    height: 535,
     padding: 10,
     pathAttributes: {
         // fill: "skyblue",
@@ -44,11 +46,14 @@ export let singlePathSVGParams = {
 };
 
 export let multiPathSVGParams = {
-    width: 600,
-    height: 600,
+    width: 420,
+    height: 325,
     padding: 10,
     pathAttributes: {
-        stroke: ["#41441a", "#55621c", "#557938", "#69983a", "#838834", "#d3bc5f"],
-        "stroke-width": ["6", "3", "2", "1"]
+        stroke: ["#514d3a", "#514d3a", "#514d2a", "#55771c", "#55771c", "#44621c",
+            "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
+        "stroke-width": ["11", "5", "3", "1"],
+        "stroke-linecap": ["square", "square", "round"],
+        transform: ["skewY(-35)", ""]
     }
 };

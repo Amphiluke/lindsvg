@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "lint": "eslint src/**/*.mjs",
+    "test": "node test/node-esm-test.mjs && echo \"Check *.svg files located in the test/svg directory\"",
     "build": "rollup -c"
   },
   "repository": {

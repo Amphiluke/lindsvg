@@ -4,6 +4,8 @@
 
 Simple dependency-free module used to generate SVG images of deterministic L-systems.
 
+![Generated SVG tree](https://amphiluke.github.io/l-systems/img/tree.svg)
+
 ## Installation
 
 ### In an npm project
@@ -73,16 +75,16 @@ let svgParams = {
     width: 600,       // Desired SVG element width
     height: 600,      // Desired SVG element height
     padding: 5,       // Additional space to extend the viewBox
-    pathAttributes: { // Name to value map for the “path” element attributes
+    pathAttributes: { // Name to value map for the <path> element attributes
         stroke: "green",
         "stroke-width": "2"
     }
 };
 
-// Get ready-to-render L-system’s SVG code as a string
+// Get ready-to-render L-system’s SVG code as a string...
 let svgCode = getSVGCode(lsParams, svgParams);
 
-// Get raw data required for SVG rendering
+// ...or get raw data required for manual SVG assemblage
 let {pathData, minX, minY, width, height} = getSVGData(lsParams);
 ```
 
@@ -92,42 +94,49 @@ An object returned by `getSVGData` contains [path data](https://www.w3.org/TR/SV
 
 Using “multi-path” methods (`getMultiPathSVGCode` and `getMultiPathSVGData`) allows you to specify different path attributes for every `<path>` element separately, which may make branched L-systems (like plants) look “more naturally”.
 
+For example, the image of a tree [demonstrated above](#lindsvg) was generated using the following options:
+
 ```javascript
 let {getMultiPathSVGCode, getMultiPathSVGData} = require("lindsvg");
 
 // L-system parameters
 let lsParams = {
-    axiom: "F",
+    axiom: "FFF+FFFF-FF+FF-[-Y][+Y][Z][+Z]",
     rules: {
-        F: "FF+[+F-F-F]-[-F+F+F]"
+        F: "F",
+        Y: "FF+F-F-F[FFFZ][+Z]-F-FZ",
+        Z: "FF-F+F+F[FY][-Y]+F+F++Y"
     },
     alpha: 90 * Math.PI / 180,
-    theta: 22.5 * Math.PI / 180,
-    step: 4.5,
-    iterations: 5
+    theta: 10 * Math.PI / 180,
+    iterations: 7,
+    step: 5
 };
 
-// Output SVG parameters (all of them are optional)
+// Output SVG parameters
 let svgParams = {
-    width: 360,
-    height: 535,
+    width: 420,
+    height: 325,
     padding: 10,
     pathAttributes: {
-        stroke: ["#41441a", "#55621c", "#557938", "#69983a", "#838834", "#d3bc5f"],
-        "stroke-width": ["6", "3", "1"] // the rest items are equal to the last one
+        stroke: ["#514d3a", "#514d3a", "#514d2a", "#55771c", "#55771c", "#44621c",
+            "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
+        "stroke-width": ["11", "5", "3", "1"], // the rest items are equal to the last one
+        "stroke-linecap": ["square", "square", "round"],
+        transform: ["skewY(-35)", ""]
     }
 };
 
-// Get ready-to-render L-system’s SVG code as a string
+// Get ready-to-render L-system’s SVG code as a string...
 let svgCode = getMultiPathSVGCode(lsParams, svgParams);
 
-// Get raw data required for SVG rendering
+// ...or get raw data required for manual SVG assemblage
 let {multiPathData, minX, minY, width, height} = getMultiPathSVGData(lsParams);
 ```
 
-If an attribute array contains less elements than the maximum branching depth (see `stroke-width` in the example above), the missing items are considered equal to the last one. So you don’t need to repeat the same value in the end of the list.
+If an attribute array contains less elements than the maximum branching depth (e.g. see `stroke-width` in the example above), the missing items are considered equal to the last one. So you don’t need to repeat the same value in the end of the list.
 
-The property `multiPathData` in the object returned by `getMultiPathSVGData` is a _list_ of path data for every path element. The list is sorted in the order of increasing branch level (the deeper the branch the higher the index in the array).
+The property `multiPathData` in the object returned by `getMultiPathSVGData` is a _list_ of path data for every `<path>` element. The list is sorted in the order of increasing branch level (the deeper the branch the higher the index in the array).
 
 ### Error handling
 
