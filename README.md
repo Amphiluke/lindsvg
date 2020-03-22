@@ -162,3 +162,7 @@ try {
 ## Compatibility note
 
 lindsvg utilizes the ECMAScript 2018 syntax. If you want to use the module in environments that do not support ES 2018, please transpile the sources with babel or whatever for your needs.
+
+## Demos
+
+Please, check out [this collection](https://codepen.io/collection/DVzqWb) on CodePen to get a few live examples of using lindsvg.
