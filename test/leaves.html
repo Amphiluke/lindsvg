@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tree</title>
+    <style>
+        body {
+            margin:0;
+        }
+        .seasons {
+            background:linear-gradient(90deg, lightsteelblue 7%, greenyellow 30%, greenyellow 45%, limegreen 55%, limegreen 70%, gold 80%);
+            display:flex;
+            justify-content:space-between;
+            font-weight:bold;
+            padding:0 10px;
+            position:fixed;
+            left:0;
+            bottom:0;
+            right:0;
+        }
+        #range {
+            box-sizing:border-box;
+            position:absolute;
+            top:5px;
+            left:5px;
+            margin:0;
+            padding:0;
+            width:calc(100% - 10px);
+        }
+        .seasons > label {
+            padding:40px 0 10px;
+            text-align:center;
+        }
+        svg {
+            position:fixed;
+            top:calc(50% - 30px);
+            left:50%;
+            transform:translate(-50%, -50%);
+            max-width:100vw;
+            max-height:calc(100vh - 60px);
+        }
+    </style>
+</head>
+<body>
+
+<form action="#" autocomplete="off" class="seasons">
+    <input type="range" min="0" max="100" step="2" id="range" value="34">
+    <label for="range" class="winter">Winter</label>
+    <label for="range" class="spring">Spring</label>
+    <label for="range" class="summer">Summer</label>
+    <label for="range" class="autumn">Autumn</label>
+</form>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1">
+    <symbol id="leaf" viewBox="-2 -2 20 12" height="12" width="20">
+        <path d="M0 4c5 -5 9 -5 15 0 -5 5 -9 5 -15 0z" stroke="#005900"/>
+    </symbol>
+</svg>
+
+<script type="module">
+    import {getMultiPathSVGCode} from "../src/lindsvg.mjs";
+    // import {getSVGCode, getMultiPathSVGCode} from "../src/lindsvg.mjs";
+    document.body.insertAdjacentHTML("beforeend", getMultiPathSVGCode({
+        axiom: "F-FFF-F+F+X",
+        rules: {
+            F: "F",
+            X: "FFF-[-F+F[Y]-[X]]+[+F+F[X]-[X]]",
+            Y: "FF-[-F+F]+[+F+FY]"
+        },
+        alpha: 90 * Math.PI / 180,
+        theta: 14 * Math.PI / 180,
+        iterations: 6,
+        step: 12
+    }, {
+        width: 565,
+        height: 445,
+        padding: 10,
+        pathAttributes: {
+            stroke: "#514d3a",
+            "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "1"],
+            "stroke-linecap": ["square", "round"]
+        }
+    }));
+
+    function addLeaves() {
+        let svg = document.body.getElementsByTagName("svg")[1];
+        svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+        let leaf = document.getElementById("leaf");
+        let leafHalfWidth = leaf.getAttribute("width") / 2;
+        let leafHalfHeight = leaf.getAttribute("height") / 2;
+        let leavesCode = [...svg.getElementsByTagName("path")].slice(6).reduce((accumulator, path) => {
+            let pathData = path.getAttribute("d");
+            let tips = (pathData.match(/-?\d+(?:\.\d+)? -?\d+(?:\.\d+)?(?=M)/g) || []).map(pair => pair.split(" "));
+            return accumulator + tips.reduce((subAccumulator, [x, y]) => {
+                let angle = Math.round(Math.random() * 180 - 90);
+                return `${subAccumulator}<use xlink:href="#leaf" x="${x - leafHalfWidth}" y="${y - leafHalfHeight}" transform="rotate(${angle}, ${x}, ${y})"/>`;
+            }, "");
+        }, "");
+        svg.insertAdjacentHTML("beforeend", leavesCode);
+        return Array.from(svg.getElementsByTagName("use"));
+    }
+
+    function updateLeaves() {
+        let rangeVal = document.getElementById("range").value;
+        let leafColors = ["#bdd986", "#b2d649", "#83bd1a", "#e7c12e", "#e75d2f", "#c0b25f"];
+        let colorIncrement = rangeVal > 90 ? 3 : rangeVal > 85 ? 2 : rangeVal > 80 ? 1 : 0;
+        let density = Math.sin(rangeVal * Math.PI / 2 / 62.5) ** 3; // rather empirical
+        leaves.forEach(leaf => {
+            let onTree = Math.random() > 1 - density;
+            leaf.setAttribute("visibility", onTree ? "visible" : "hidden");
+            leaf.setAttribute("fill", leafColors[Math.floor(Math.random() * 3) + colorIncrement]);
+        });
+    }
+
+    let leaves = addLeaves();
+    updateLeaves();
+    document.getElementById("range").addEventListener("change", updateLeaves);
+</script>
+
+</body>
+</html>

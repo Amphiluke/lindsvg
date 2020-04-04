@@ -4,7 +4,8 @@
 
 Simple dependency-free module used to generate SVG images of deterministic L-systems.
 
-![Generated SVG tree](https://amphiluke.github.io/l-systems/img/tree.svg)
+<a id="lindsvg-demo-svg"></a>
+![Generated SVG tree](https://amphiluke.github.io/l-systems/img/autumn-tree.svg)
 
 ## Installation
 
@@ -94,36 +95,34 @@ An object returned by `getSVGData` contains [path data](https://www.w3.org/TR/SV
 
 Using “multi-path” methods (`getMultiPathSVGCode` and `getMultiPathSVGData`) allows you to specify different path attributes for every `<path>` element separately, which may make branched L-systems (like plants) look “more naturally”.
 
-For example, the image of a tree [demonstrated above](#lindsvg) was generated using the following options:
+For example, to generate the tree [demonstrated above](#lindsvg-demo-svg) (all but foliage) the following options were used:
 
 ```javascript
 let {getMultiPathSVGCode, getMultiPathSVGData} = require("lindsvg");
 
 // L-system parameters
 let lsParams = {
-    axiom: "FFF+FFFF-FF+FF-[-Y][+Y][Z][+Z]",
+    axiom: "F-FFF-F+F+X",
     rules: {
         F: "F",
-        Y: "FF+F-F-F[FFFZ][+Z]-F-FZ",
-        Z: "FF-F+F+F[FY][-Y]+F+F++Y"
+        X: "FFF-[-F+F[Y]-[X]]+[+F+F[X]-[X]]",
+        Y: "FF-[-F+F]+[+F+FY]"
     },
     alpha: 90 * Math.PI / 180,
-    theta: 10 * Math.PI / 180,
-    iterations: 7,
-    step: 5
+    theta: 14 * Math.PI / 180,
+    iterations: 6,
+    step: 12
 };
 
 // Output SVG parameters
 let svgParams = {
-    width: 420,
-    height: 325,
+    width: 565,
+    height: 445,
     padding: 10,
     pathAttributes: {
-        stroke: ["#514d3a", "#514d3a", "#514d2a", "#55771c", "#55771c", "#44621c",
-            "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
-        "stroke-width": ["11", "5", "3", "1"], // the rest items are equal to the last one
-        "stroke-linecap": ["square", "square", "round"],
-        transform: ["skewY(-35)", ""]
+        stroke: "#514d3a",
+        "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "1"],
+        "stroke-linecap": ["square", "round"] // the rest items are equal to the last one
     }
 };
 
@@ -134,7 +133,7 @@ let svgCode = getMultiPathSVGCode(lsParams, svgParams);
 let {multiPathData, minX, minY, width, height} = getMultiPathSVGData(lsParams);
 ```
 
-If an attribute array contains less elements than the maximum branching depth (e.g. see `stroke-width` in the example above), the missing items are considered equal to the last one. So you don’t need to repeat the same value in the end of the list.
+If an attribute array contains less elements than the maximum branching depth (e.g. see `stroke-linecap` in the example above), the missing items are considered equal to the last one. So you don’t need to repeat the same value in the end of the list.
 
 The property `multiPathData` in the object returned by `getMultiPathSVGData` is a _list_ of path data for every `<path>` element. The list is sorted in the order of increasing branch level (the deeper the branch the higher the index in the array).
 

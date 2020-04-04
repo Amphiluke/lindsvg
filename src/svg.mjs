@@ -1,19 +1,18 @@
-import {generate} from "./generator.mjs";
+import {generateCodeword, tokenizeCodeword} from "./generator.mjs";
 import {createTurtle} from "./turtle.mjs";
-
-/**
- * Remove all letters which don’t affect the drawing process from the codeword
- * and split it into “tokens” for the further processing
- * @param {String} codeword - L-system code
- * @return {String[]}
- */
-function tokenizeCodeword(codeword) {
-    return codeword.replace(/[^FB[\]+-]/g, "").match(/([FB[\]+-])\1*/g);
-}
 
 function formatCoordinates(x, y) {
     // Unary plus is used to remove insignificant trailing zeros
     return `${+x.toFixed(4)} ${+y.toFixed(4)}`;
+}
+
+/**
+ * Delete useless M commands which are followed by other M commands, and those in the end of path data
+ * @param {String} pathData - SVG path data
+ * @return {String}
+ */
+function dropUselessMoves(pathData) {
+    return pathData.replace(/(?:M-?\d+(?:\.\d+)? -?\d+(?:\.\d+)?)+(?=M|$)/g, "");
 }
 
 /**
@@ -24,7 +23,7 @@ function formatCoordinates(x, y) {
  */
 function getPathData(tokens, turtle) {
     let prevCommand; // used to avoid unnecessary repeating of the commands L and M
-    return tokens.reduce((accumulator, token) => {
+    let pathData = tokens.reduce((accumulator, token) => {
         let tokenLength = token.length;
         switch (token[0]) {
             case "F":
@@ -60,6 +59,7 @@ function getPathData(tokens, turtle) {
         }
         return accumulator;
     }, "M" + formatCoordinates(turtle.x, turtle.y));
+    return dropUselessMoves(pathData);
 }
 
 /**
@@ -116,7 +116,10 @@ function getMultiPathData(tokens, turtle) {
     // Some L-systems can produce branching levels which contain no real draw commands (only moves and rotations).
     // Such L-systems usually don’t have F commands in their axiom nor they have a production for F (example is
     // the Penrose tiling). Having <path> elements with only M commands is meaningless, so filtering them out
-    return multiPathData.filter(pathData => pathData.includes("L"));
+    return multiPathData
+        .filter(pathData => pathData.includes("L"))
+        // also delete useless M commands (including those in the end of path data)
+        .map(dropUselessMoves);
 }
 
 /**
@@ -125,7 +128,7 @@ function getMultiPathData(tokens, turtle) {
  * @return {{pathData: String, minX: Number, minY: Number, width: Number, height: Number}}
  */
 export function getSVGData(lsParams) {
-    let codeword = generate(lsParams);
+    let codeword = generateCodeword(lsParams);
     let turtle = createTurtle({x: 0, y: 0, ...lsParams});
     let pathData = getPathData(tokenizeCodeword(codeword), turtle);
     return {
@@ -140,7 +143,7 @@ export function getSVGData(lsParams) {
  * @return {{multiPathData: String[], minX: Number, minY: Number, width: Number, height: Number}}
  */
 export function getMultiPathSVGData(lsParams) {
-    let codeword = generate(lsParams);
+    let codeword = generateCodeword(lsParams);
     let turtle = createTurtle({x: 0, y: 0, ...lsParams});
     let multiPathData = getMultiPathData(tokenizeCodeword(codeword), turtle);
     return {
