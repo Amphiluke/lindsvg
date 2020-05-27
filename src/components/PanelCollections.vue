@@ -48,10 +48,12 @@ export default {
   methods: {
     plot(cid, lid) {
       this.$store.commit("setupLSystem", {cid, lid});
+      this.$root.$emit("plotLSystem");
     },
 
     explore(cid, lid) {
       this.$store.commit("setupLSystem", {cid, lid});
+      this.$root.$emit("plotLSystem");
       this.$store.commit("openPanel", {panelId: "settings"});
     }
   }
@@ -79,15 +81,15 @@ export default {
   .collection-items li {
     align-items: center;
     display: flex;
-    padding: 3px 0 3px 10px;
     &:hover,
     &.active {
       background: var(--color-gray-light);
     }
   }
   .collection-item-name {
+    cursor: default;
     flex-grow: 1;
-    padding-right: 10px;
+    padding: 5px 10px;
   }
   .explore-button {
     flex-shrink: 0;

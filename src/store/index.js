@@ -10,7 +10,8 @@ let defaults = {
   theta: 0,
   step: 10,
   iterations: 3,
-  rules: {}
+  rules: {},
+  attributes: {stroke: "#008000"}
 };
 
 export default new Vuex.Store({

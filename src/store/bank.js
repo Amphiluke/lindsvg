@@ -551,7 +551,7 @@ export default [
         iterations: 9,
         step: 4.5,
         attributes: {
-          stroke: "url(#gradient)",
+          stroke: "#d50", // "url(#gradient)",
           "stroke-width": "1.5"
         }
       },

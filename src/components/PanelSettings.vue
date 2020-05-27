@@ -7,6 +7,7 @@
       action="#"
       autocomplete="off"
       class="parameters thin-scroll"
+      @submit.prevent="plot"
     >
       <label
         class="labeled-field"
@@ -143,6 +144,13 @@
           @click="setParameter('iterations', '')"
         />
       </label>
+
+      <button
+        type="submit"
+        class="plot-button"
+      >
+        Plot
+      </button>
     </form>
   </section>
 </template>
@@ -187,6 +195,10 @@ export default {
         rule: this.newRuleValue.toUpperCase()
       });
       this.newRuleLetter = this.newRuleValue = "";
+    },
+
+    plot() {
+      this.$root.$emit("plotLSystem");
     }
   }
 };
@@ -243,5 +255,10 @@ export default {
   }
   .new-rule-value::placeholder {
     text-transform: none;
+  }
+  .plot-button {
+    box-sizing: border-box;
+    margin-top: 15px;
+    width: 100%;
   }
 </style>
