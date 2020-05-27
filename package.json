@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint \"src/**/*.{js,vue}\"",
-    "build": "rollup -c"
+    "build-dev": "rollup -c --environment BUNDLE_TYPE:development",
+    "build-prod": "rollup -c"
   },
   "repository": {
     "type": "git",

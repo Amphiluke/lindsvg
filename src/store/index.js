@@ -1,6 +1,70 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import bank from "./bank.js";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({});
+let defaults = {
+  axiom: "",
+  alpha: 0,
+  theta: 0,
+  step: 10,
+  iterations: 3,
+  rules: {}
+};
+
+export default new Vuex.Store({
+  strict: true,
+  state: {
+    // Actual L-system parameters
+    ...defaults,
+
+    // Selected collection and L-system identifiers
+    cid: "",
+    lid: "",
+
+    // Currently opened panel
+    openedPanel: "collections"
+  },
+
+  mutations: {
+    setAxiom: (state, {axiom}) => state.axiom = axiom,
+
+    setAlpha: (state, {alpha}) => state.alpha = alpha,
+
+    setTheta: (state, {theta}) => state.theta = theta,
+
+    setStep: (state, {step}) => state.step = step,
+
+    setIterations: (state, {iterations}) => state.iterations = iterations,
+
+    setRule: (state, {letter, rule}) => state.rules = {...state.rules, [letter]: rule},
+
+    unsetRule: (state, {letter}) => {
+      let newEntries = Object.entries(state.rules).filter(([key]) => key !== letter);
+      state.rules = Object.fromEntries(newEntries);
+    },
+
+    setupLSystem: (state, {cid, lid}) => {
+      let collection = bank.find(({cid: aCid}) => aCid === cid);
+      let lSystem = collection.items.find(({lid: aLid}) => aLid === lid);
+      Object.assign(state, defaults, lSystem, {cid});
+    },
+
+    openPanel: (state, {panelId, toggle = true}) => {
+      if (state.openedPanel !== panelId) {
+        state.openedPanel = panelId;
+      } else if (toggle) {
+        state.openedPanel = "";
+      }
+    }
+  },
+
+  getters: {
+    vacantLetters: state => {
+      let allLetters = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+      let usedLetters = Object.keys(state.rules);
+      return allLetters.filter(letter => !usedLetters.includes(letter));
+    }
+  }
+});

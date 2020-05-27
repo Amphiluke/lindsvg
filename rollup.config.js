@@ -19,7 +19,7 @@ export default {
       }
     }),
     replace({
-      "process.env.NODE_ENV": "\"production\""
+      "process.env.NODE_ENV": `"${process.env.BUNDLE_TYPE || "production"}"`
     }),
     resolve(),
     terser()
