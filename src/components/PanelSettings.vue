@@ -9,51 +9,61 @@
       class="parameters thin-scroll"
       @submit.prevent="plot"
     >
-      <label
-        class="labeled-field"
-        data-label="Axiom"
-      >
-        <input
-          type="text"
-          :value="axiom"
-          @input="setParameter('axiom', $event.target.value)"
+      <div class="parameter-row">
+        <label
+          class="labeled-field"
+          data-label="Axiom"
         >
+          <input
+            type="text"
+            class="uppercase"
+            :value="axiom"
+            @change="setParameter('axiom', $event.target.value.toUpperCase())"
+          >
+        </label>
         <button
           type="button"
           class="erase-button icon-button icon-button-erase"
           title="Erase"
           @click="setParameter('axiom', '')"
         />
-      </label>
+      </div>
 
-      <label
+      <div
         v-for="(rule, letter) in $store.state.rules"
         :key="letter"
-        class="labeled-field"
-        :data-label="letter"
+        class="parameter-row"
       >
-        <input
-          type="text"
-          :value="rule"
-          @input="setRule(letter, $event.target.value)"
+        <label
+          class="labeled-field"
+          :data-label="letter"
         >
+          <input
+            type="text"
+            class="uppercase"
+            :value="rule"
+            @change="setRule(letter, $event.target.value.toUpperCase())"
+          >
+        </label>
         <button
           type="button"
           class="unset-rule-button icon-button icon-button-delete"
           title="Delete this rule"
           @click="unsetRule(letter)"
         />
-      </label>
+      </div>
 
-      <span
+      <div
         v-show="$store.getters.vacantLetters.length > 0"
-        class="labeled-field add-rule-row"
+        class="parameter-row add-rule-row"
       >
         <select
           v-model="newRuleLetter"
           class="letter-picker"
         >
-          <option value="">&#x22EF;</option>
+          <option value="">
+            &#x22EF;
+          </option>
           <option
             v-for="vacantLetter in $store.getters.vacantLetters"
             :key="vacantLetter"
@@ -62,95 +72,114 @@
             {{ vacantLetter }}
           </option>
         </select>
-        <input
-          v-model="newRuleValue"
-          type="text"
-          class="new-rule-value"
-          placeholder="Add new rule…"
-        >
+        <label class="labeled-field">
+          <input
+            v-model="newRuleValue"
+            type="text"
+            class="new-rule-value uppercase"
+            placeholder="Add a new rule…"
+          >
+        </label>
         <button
           type="button"
           class="add-rule-button icon-button icon-button-add"
-          title="Add new rule"
+          title="Add a new rule"
           :disabled="!newRuleLetter || !newRuleValue"
           @click="addNewRule"
         />
-      </span>
+      </div>
 
-      <label
-        class="labeled-field"
-        data-label="Alpha"
-      >
-        <input
-          type="text"
-          :value="alpha"
-          @input="setParameter('alpha', Number($event.target.value))"
+      <div class="parameter-row">
+        <label
+          class="labeled-field"
+          data-label="Alpha"
         >
+          <input
+            type="text"
+            :value="alpha"
+            @change="setParameter('alpha', Number($event.target.value))"
+          >
+        </label>
         <button
           type="button"
           class="erase-button icon-button icon-button-erase"
           title="Erase"
           @click="setParameter('alpha', '')"
         />
-      </label>
+      </div>
 
-      <label
-        class="labeled-field"
-        data-label="Theta"
-      >
-        <input
-          type="text"
-          :value="theta"
-          @input="setParameter('theta', Number($event.target.value))"
+      <div class="parameter-row">
+        <label
+          class="labeled-field"
+          data-label="Theta"
         >
+          <input
+            type="text"
+            :value="theta"
+            @change="setParameter('theta', Number($event.target.value))"
+          >
+        </label>
         <button
           type="button"
           class="erase-button icon-button icon-button-erase"
           title="Erase"
           @click="setParameter('theta', '')"
         />
-      </label>
+      </div>
 
-      <label
-        class="labeled-field"
-        data-label="Step"
-      >
-        <input
-          type="text"
-          :value="step"
-          @input="setParameter('step', Number($event.target.value))"
+      <div class="parameter-row">
+        <label
+          class="labeled-field"
+          data-label="Step"
         >
+          <input
+            type="text"
+            :value="step"
+            @change="setParameter('step', Number($event.target.value))"
+          >
+        </label>
         <button
           type="button"
           class="erase-button icon-button icon-button-erase"
           title="Erase"
           @click="setParameter('step', '')"
         />
-      </label>
+      </div>
 
-      <label
-        class="labeled-field"
-        data-label="Iterations"
-      >
-        <input
-          type="text"
-          :value="iterations"
-          @input="setParameter('iterations', Number($event.target.value))"
+      <div class="parameter-row">
+        <label
+          class="labeled-field"
+          data-label="Iterations"
         >
+          <input
+            type="text"
+            :value="iterations"
+            @change="setParameter('iterations', Number($event.target.value))"
+          >
+        </label>
         <button
           type="button"
           class="erase-button icon-button icon-button-erase"
           title="Erase"
           @click="setParameter('iterations', '')"
         />
-      </label>
+      </div>
 
-      <button
-        type="submit"
-        class="plot-button"
-      >
-        Plot
-      </button>
+      <div class="form-buttons">
+        <button
+          type="button"
+          class="style-button"
+          @click="goStyling"
+        >
+          Style…
+        </button>
+        <button
+          type="submit"
+          class="plot-button"
+        >
+          Plot
+        </button>
+      </div>
     </form>
   </section>
 </template>
@@ -199,6 +228,10 @@ export default {
 
     plot() {
       this.$root.$emit("plotLSystem");
+    },
+
+    goStyling() {
+      this.$store.commit("openPanel", {panelId: "attributes"});
     }
   }
 };
@@ -210,19 +243,23 @@ export default {
     overflow: auto;
     padding-right: 4px; // increase the distance from a scrollbar
   }
+  .parameter-row {
+    border-bottom: 1px solid var(--color-gray-light);
+    display: flex;
+  }
+  .labeled-field {
+    flex-grow: 1;
+    min-width: 50px;
+  }
   .unset-rule-button,
   .erase-button,
   .add-rule-button {
     flex-shrink: 0;
     opacity: 0.5;
-  }
-  .labeled-field:focus-within .unset-rule-button,
-  .labeled-field:focus-within .erase-button,
-  .labeled-field:focus-within .add-rule-button:not(:disabled),
-  .unset-rule-button:hover,
-  .erase-button:hover,
-  .add-rule-button:not(:disabled):hover {
-    opacity: 1;
+    .parameter-row:focus-within &:not(:disabled),
+    &:not(:disabled):hover {
+      opacity: 1;
+    }
   }
   .add-rule-row {
     position: relative;
@@ -256,9 +293,17 @@ export default {
   .new-rule-value::placeholder {
     text-transform: none;
   }
-  .plot-button {
-    box-sizing: border-box;
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
     margin-top: 15px;
-    width: 100%;
+  }
+  .plot-button,
+  .style-button {
+    box-sizing: border-box;
+    width: calc(50% - 5px);
+  }
+  .uppercase {
+    text-transform: uppercase;
   }
 </style>

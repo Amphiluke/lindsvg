@@ -22,10 +22,10 @@
         </button>
         <button
           class="panel-button"
-          :class="{ active: openedPanel === 'appearance' }"
-          @click="openedPanel = 'appearance'"
+          :class="{ active: openedPanel === 'attributes' }"
+          @click="openedPanel = 'attributes'"
         >
-          Appearance
+          Attributes
         </button>
         <button
           class="panel-button"
@@ -37,7 +37,7 @@
       </div>
       <PanelCollections v-show="openedPanel === 'collections'" />
       <PanelSettings v-show="openedPanel === 'settings'" />
-      <PanelAppearance v-show="openedPanel === 'appearance'" />
+      <PanelAttributes v-show="openedPanel === 'attributes'" />
       <PanelExporting v-show="openedPanel === 'exporting'" />
     </div>
   </main>
@@ -47,14 +47,14 @@
 import PlotArea from "./PlotArea.vue";
 import PanelCollections from "./PanelCollections.vue";
 import PanelSettings from "./PanelSettings.vue";
-import PanelAppearance from "./PanelAppearance.vue";
+import PanelAttributes from "./PanelAttributes.vue";
 import PanelExporting from "./PanelExporting.vue";
 export default {
   components: {
     PlotArea,
     PanelCollections,
     PanelSettings,
-    PanelAppearance,
+    PanelAttributes,
     PanelExporting
   },
 

@@ -46,6 +46,13 @@ export default new Vuex.Store({
       state.rules = Object.fromEntries(newEntries);
     },
 
+    setAttribute: (state, {name, value}) => state.attributes = {...state.attributes, [name]: value},
+
+    unsetAttribute: (state, {name}) => {
+      let newEntries = Object.entries(state.attributes).filter(([key]) => key !== name);
+      state.attributes = Object.fromEntries(newEntries);
+    },
+
     setupLSystem: (state, {cid, lid}) => {
       let collection = bank.find(({cid: aCid}) => aCid === cid);
       let lSystem = collection.items.find(({lid: aLid}) => aLid === lid);
