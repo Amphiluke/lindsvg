@@ -1,6 +1,6 @@
 <template>
   <div class="plot-area">
-    <div v-html="svgCode" />
+    <div v-html="$store.state.svgCode" /><!-- eslint-disable-line vue/no-v-html -->
   </div>
 </template>
 
@@ -9,17 +9,13 @@ import {getSVGCode, getMultiPathSVGCode} from "lindsvg";
 export default {
   name: "PlotArea",
 
-  data: () => ({
-    svgCode: ""
-  }),
-
   mounted() {
     this.$root.$on("plotLSystem", () => {
       let {axiom, alpha, theta, step, iterations, rules, attributes} = this.$store.state;
       let method = Object.values(attributes).some(attr => Array.isArray(attr)) ?
         getMultiPathSVGCode :
         getSVGCode;
-      this.svgCode = method({
+      let svgCode = method({
         axiom,
         rules,
         alpha: alpha * Math.PI / 180,
@@ -30,6 +26,7 @@ export default {
         padding: 2,
         pathAttributes: attributes
       });
+      this.$store.commit("setSVGCode", {svgCode});
     });
   }
 };

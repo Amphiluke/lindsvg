@@ -11,7 +11,8 @@ let defaults = {
   step: 10,
   iterations: 3,
   rules: {},
-  attributes: {stroke: "#008000"}
+  attributes: {stroke: "#008000"},
+  svgCode: ""
 };
 
 export default new Vuex.Store({
@@ -58,6 +59,8 @@ export default new Vuex.Store({
       let lSystem = collection.items.find(({lid: aLid}) => aLid === lid);
       Object.assign(state, defaults, lSystem, {cid});
     },
+
+    setSVGCode: (state, {svgCode}) => state.svgCode = svgCode,
 
     openPanel: (state, {panelId, toggle = true}) => {
       if (state.openedPanel !== panelId) {

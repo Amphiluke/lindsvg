@@ -28,6 +28,8 @@
         />
       </div>
 
+      <hr>
+
       <div class="add-attribute-row">
         <h3>Add a new attribute</h3>
         <div class="attribute-item">
@@ -133,6 +135,7 @@ export default {
     @line-height: 16px;
     align-self: flex-end;
     background: linear-gradient(0deg, transparent @line-height, fade(#fff, 40%) 0, fade(#fff, 40%) @line-height * 2);
+    background-attachment: local;
     background-size: @line-height * 2 @line-height * 2;
     border: none;
     box-sizing: border-box;
@@ -153,13 +156,6 @@ export default {
     &:hover {
       opacity: 1;
     }
-  }
-  .add-attribute-row::before {
-    background: linear-gradient(90deg, var(--color-gray-lighter), var(--color-gray-light), var(--color-gray-lighter));
-    content: "";
-    display: block;
-    height: 1px;
-    margin: 15px auto;
   }
   .new-attribute-name {
     display: flex;

@@ -67,6 +67,16 @@ export default {
         this.$store.commit("openPanel", {panelId});
       }
     }
+  },
+
+  mounted() {
+    let searchParams = new URLSearchParams(location.search);
+    let cid = searchParams.get("cid");
+    let lid = searchParams.get("lid");
+    if (cid && lid) {
+      this.$store.commit("setupLSystem", {cid, lid});
+      this.$root.$emit("plotLSystem");
+    }
   }
 };
 </script>
