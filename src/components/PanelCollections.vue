@@ -3,7 +3,7 @@
     <h2 class="panel-title">
       Collections
     </h2>
-    <ul class="collections thin-scroll">
+    <ul class="panel-body collections thin-scroll">
       <li
         v-for="{cid, items} of collections"
         :key="cid"
@@ -61,11 +61,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .collections {
-    flex-grow: 1;
-    margin: 0;
-    overflow: auto;
-  }
   .collections,
   .collection-items {
     list-style: none;

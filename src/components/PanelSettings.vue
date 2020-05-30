@@ -6,7 +6,7 @@
     <form
       action="#"
       autocomplete="off"
-      class="parameters thin-scroll"
+      class="panel-body thin-scroll"
       @submit.prevent="plot"
     >
       <div class="parameter-row">
@@ -238,11 +238,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .parameters {
-    flex-grow: 1;
-    overflow: auto;
-    padding-right: 4px; // increase the distance from a scrollbar
-  }
   .parameter-row {
     border-bottom: 1px solid var(--color-gray-light);
     display: flex;

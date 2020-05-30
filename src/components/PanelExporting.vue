@@ -1,21 +1,24 @@
 <template>
   <section class="panel panel-exporting">
-    <h2>Exporting</h2>
-    <p>
-      <a
-        :href="svgURL"
-        :download="$store.state.lid + '.svg'"
-      >
-        Download SVG…
-      </a>
-    </p>
-
-    <hr>
-
+    <h2 class="panel-title">
+      Exporting
+    </h2>
     <form
       action="#"
+      class="panel-body thin-scroll"
       @submit.prevent
     >
+      <p>
+        <a
+          :href="svgURL"
+          :download="$store.state.lid + '.svg'"
+        >
+          Download SVG…
+        </a>
+      </p>
+
+      <hr>
+
       <label>
         <b>Permalink for the selected L-system</b><br>
         <textarea

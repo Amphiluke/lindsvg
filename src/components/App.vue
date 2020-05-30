@@ -34,11 +34,19 @@
         >
           Exporting
         </button>
+        <button
+          class="panel-button"
+          :class="{ active: openedPanel === 'about' }"
+          @click="openedPanel = 'about'"
+        >
+          About
+        </button>
       </div>
       <PanelCollections v-show="openedPanel === 'collections'" />
       <PanelSettings v-show="openedPanel === 'settings'" />
       <PanelAttributes v-show="openedPanel === 'attributes'" />
       <PanelExporting v-show="openedPanel === 'exporting'" />
+      <PanelAbout v-show="openedPanel === 'about'" />
     </div>
   </main>
 </template>
@@ -49,13 +57,15 @@ import PanelCollections from "./PanelCollections.vue";
 import PanelSettings from "./PanelSettings.vue";
 import PanelAttributes from "./PanelAttributes.vue";
 import PanelExporting from "./PanelExporting.vue";
+import PanelAbout from "./PanelAbout.vue";
 export default {
   components: {
     PlotArea,
     PanelCollections,
     PanelSettings,
     PanelAttributes,
-    PanelExporting
+    PanelExporting,
+    PanelAbout
   },
 
   computed: {
@@ -107,6 +117,12 @@ export default {
     ::v-deep .panel-title {
       flex-shrink: 0;
     }
+    ::v-deep .panel-body {
+      flex-grow: 1;
+      margin: 0;
+      overflow: auto;
+      padding-right: 4px; // increase the distance from a scrollbar
+    }
   }
 
   .panel-buttons {
@@ -129,6 +145,9 @@ export default {
     &:hover,
     &.active {
       background: var(--color-gray-light);
+    }
+    @media (max-height: 380px) {
+      padding: 0 5px;
     }
   }
 </style>

@@ -1,10 +1,12 @@
 <template>
   <section class="panel panel-attributes">
-    <h2>Attributes</h2>
+    <h2 class="panel-title">
+      Attributes
+    </h2>
     <form
       action="#"
       autocomplete="off"
-      class="attributes thin-scroll"
+      class="panel-body thin-scroll"
       @submit.prevent="plot"
     >
       <div
@@ -115,11 +117,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .attributes {
-    flex-grow: 1;
-    overflow: auto;
-    padding-right: 4px; // increase the distance from a scrollbar
-  }
   .attribute-row {
     position: relative;
     + .attribute-row {
