@@ -1,23 +1,28 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import bank from "./bank.js";
+import * as mutationTypes from "./mutation-types.js";
+import {STORED_COLLECTION_ID, getStoredCollection, storeLSystem, deleteLSystem} from "./user-storage.js";
 
 Vue.use(Vuex);
 
 let defaults = {
-  axiom: "",
+  axiom: "F",
   alpha: 0,
   theta: 0,
   step: 10,
   iterations: 3,
-  rules: {},
+  rules: {F: "F"},
   attributes: {stroke: "#008000"},
   svgCode: ""
 };
 
-export default new Vuex.Store({
+let store = new Vuex.Store({
   strict: true,
   state: {
+    // L-system bank (built in + user defined L-systems)
+    bank: [...bank, getStoredCollection()],
+
     // Actual L-system parameters
     ...defaults,
 
@@ -30,39 +35,51 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    setAxiom: (state, {axiom}) => state.axiom = axiom,
+    [mutationTypes.LS_SET_AXIOM]: (state, {axiom}) => state.axiom = axiom,
 
-    setAlpha: (state, {alpha}) => state.alpha = alpha,
+    [mutationTypes.LS_SET_ALPHA]: (state, {alpha}) => state.alpha = alpha,
 
-    setTheta: (state, {theta}) => state.theta = theta,
+    [mutationTypes.LS_SET_THETA]: (state, {theta}) => state.theta = theta,
 
-    setStep: (state, {step}) => state.step = step,
+    [mutationTypes.LS_SET_STEP]: (state, {step}) => state.step = step,
 
-    setIterations: (state, {iterations}) => state.iterations = iterations,
+    [mutationTypes.LS_SET_ITERATIONS]: (state, {iterations}) => state.iterations = iterations,
 
-    setRule: (state, {letter, rule}) => state.rules = {...state.rules, [letter]: rule},
+    [mutationTypes.LS_SET_RULE]: (state, {letter, rule}) => state.rules = {...state.rules, [letter]: rule},
 
-    unsetRule: (state, {letter}) => {
+    [mutationTypes.LS_UNSET_RULE]: (state, {letter}) => {
       let newEntries = Object.entries(state.rules).filter(([key]) => key !== letter);
       state.rules = Object.fromEntries(newEntries);
     },
 
-    setAttribute: (state, {name, value}) => state.attributes = {...state.attributes, [name]: value},
+    [mutationTypes.LS_SET_ATTRIBUTE]: (state, {name, value}) => state.attributes = {...state.attributes, [name]: value},
 
-    unsetAttribute: (state, {name}) => {
+    [mutationTypes.LS_UNSET_ATTRIBUTE]: (state, {name}) => {
       let newEntries = Object.entries(state.attributes).filter(([key]) => key !== name);
       state.attributes = Object.fromEntries(newEntries);
     },
 
-    setupLSystem: (state, {cid, lid}) => {
-      let collection = bank.find(({cid: aCid}) => aCid === cid);
+    [mutationTypes.LS_SETUP_L_SYSTEM]: (state, {cid, lid}) => {
+      let collection = state.bank.find(({cid: aCid}) => aCid === cid);
       let lSystem = collection.items.find(({lid: aLid}) => aLid === lid);
       Object.assign(state, defaults, lSystem, {cid});
     },
 
-    setSVGCode: (state, {svgCode}) => state.svgCode = svgCode,
+    [mutationTypes.ADD_L_SYSTEM]: (state, {lid}) => {
+      Object.assign(state, defaults, {cid: STORED_COLLECTION_ID, lid});
+      storeLSystemHelper(state);
+    },
 
-    openPanel: (state, {panelId, toggle = true}) => {
+    [mutationTypes.DELETE_L_SYSTEM]: (state, {lid}) => {
+      deleteLSystem(lid);
+      store.commit(mutationTypes.UPDATE_BANK);
+    },
+
+    [mutationTypes.UPDATE_BANK]: state => state.bank = [...bank, getStoredCollection()],
+
+    [mutationTypes.SET_SVG_CODE]: (state, {svgCode}) => state.svgCode = svgCode,
+
+    [mutationTypes.OPEN_PANEL]: (state, {panelId, toggle = true}) => {
       if (state.openedPanel !== panelId) {
         state.openedPanel = panelId;
       } else if (toggle) {
@@ -76,6 +93,22 @@ export default new Vuex.Store({
       let allLetters = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
       let usedLetters = Object.keys(state.rules);
       return allLetters.filter(letter => !usedLetters.includes(letter));
-    }
+    },
+
+    isUserDefined: state => (cid = state.cid) => cid === STORED_COLLECTION_ID
   }
 });
+
+store.subscribe(({type}, state) => {
+  if (type.startsWith("LS_") && store.getters.isUserDefined()) {
+    storeLSystemHelper(state);
+  }
+});
+
+function storeLSystemHelper({lid, axiom, alpha, theta, step, iterations, rules, attributes}) {
+  // Pass only those params that need to be stored
+  storeLSystem({lid, axiom, alpha, theta, step, iterations, rules, attributes});
+  store.commit(mutationTypes.UPDATE_BANK);
+}
+
+export default store;

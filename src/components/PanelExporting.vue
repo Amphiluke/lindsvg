@@ -55,7 +55,7 @@ export default {
   computed: {
     permalink() {
       let {cid, lid} = this.$store.state;
-      if (!cid || !lid) {
+      if (!cid || !lid || this.$store.getters.isUserDefined(cid)) {
         return "";
       }
       let {location} = window;

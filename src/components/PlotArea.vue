@@ -6,6 +6,8 @@
 
 <script>
 import {getSVGCode, getMultiPathSVGCode} from "lindsvg";
+import {SET_SVG_CODE} from "../store/mutation-types.js";
+
 export default {
   name: "PlotArea",
 
@@ -26,7 +28,7 @@ export default {
         padding: 2,
         pathAttributes: attributes
       });
-      this.$store.commit("setSVGCode", {svgCode});
+      this.$store.commit(SET_SVG_CODE, {svgCode});
     });
   }
 };

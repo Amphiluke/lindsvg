@@ -58,6 +58,8 @@ import PanelSettings from "./PanelSettings.vue";
 import PanelAttributes from "./PanelAttributes.vue";
 import PanelExporting from "./PanelExporting.vue";
 import PanelAbout from "./PanelAbout.vue";
+import {OPEN_PANEL, LS_SETUP_L_SYSTEM} from "../store/mutation-types.js";
+
 export default {
   components: {
     PlotArea,
@@ -74,7 +76,7 @@ export default {
         return this.$store.state.openedPanel;
       },
       set(panelId) {
-        this.$store.commit("openPanel", {panelId});
+        this.$store.commit(OPEN_PANEL, {panelId});
       }
     }
   },
@@ -84,7 +86,7 @@ export default {
     let cid = searchParams.get("cid");
     let lid = searchParams.get("lid");
     if (cid && lid) {
-      this.$store.commit("setupLSystem", {cid, lid});
+      this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
       this.$root.$emit("plotLSystem");
     }
   }

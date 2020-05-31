@@ -5,9 +5,16 @@
     </h2>
     <ul class="panel-body collections thin-scroll">
       <li
-        v-for="{cid, items} of collections"
+        v-for="{cid, items} of $store.state.bank"
         :key="cid"
       >
+        <button
+          v-if="$store.getters.isUserDefined(cid)"
+          type="button"
+          class="add-l-system-button icon-button icon-button-add"
+          title="Add a new L-system…"
+          @click="addLSystem"
+        />
         <h3 class="collection-name">
           {{ cid }}
         </h3>
@@ -24,6 +31,13 @@
               {{ lid }}
             </span>
             <button
+              v-if="$store.getters.isUserDefined(cid)"
+              type="button"
+              class="delete-l-system-button icon-button icon-button-delete"
+              title="Delete this L-system"
+              @click="deleteLSystem(lid)"
+            />
+            <button
               type="button"
               class="explore-button icon-button icon-button-config"
               title="Edit this L-system’s parameters"
@@ -37,24 +51,33 @@
 </template>
 
 <script>
-import bank from "../store/bank.js";
+import {LS_SETUP_L_SYSTEM, OPEN_PANEL, ADD_L_SYSTEM, DELETE_L_SYSTEM} from "../store/mutation-types.js";
+
 export default {
   name: "PanelCollections",
 
-  computed: {
-    collections: () => bank
-  },
-
   methods: {
     plot(cid, lid) {
-      this.$store.commit("setupLSystem", {cid, lid});
+      this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
       this.$root.$emit("plotLSystem");
     },
 
     explore(cid, lid) {
-      this.$store.commit("setupLSystem", {cid, lid});
+      this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
       this.$root.$emit("plotLSystem");
-      this.$store.commit("openPanel", {panelId: "settings"});
+      this.$store.commit(OPEN_PANEL, {panelId: "settings"});
+    },
+
+    addLSystem() {
+      let name = window.prompt("Enter the name for a new L-system");
+      if (name) {
+        this.$store.commit(ADD_L_SYSTEM, {lid: name});
+        this.$store.commit(OPEN_PANEL, {panelId: "settings"});
+      }
+    },
+
+    deleteLSystem(lid) {
+      this.$store.commit(DELETE_L_SYSTEM, {lid});
     }
   }
 };
@@ -65,6 +88,11 @@ export default {
   .collection-items {
     list-style: none;
     padding: 0;
+  }
+  .add-l-system-button {
+    float: right;
+    position: relative;
+    z-index: 1;
   }
   .collection-name {
     background: var(--color-gray-lighter);
@@ -86,17 +114,20 @@ export default {
     flex-grow: 1;
     padding: 5px 10px;
   }
-  .explore-button {
+  .explore-button,
+  .delete-l-system-button {
     flex-shrink: 0;
   }
   @media (hover) {
-    .explore-button {
+    .explore-button,
+    .delete-l-system-button {
       opacity: 0.5;
     }
     .collection-items li {
       &:hover,
       &.active {
-        .explore-button {
+        .explore-button,
+        .delete-l-system-button {
           opacity: 1;
         }
       }

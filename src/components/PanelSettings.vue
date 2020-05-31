@@ -92,7 +92,7 @@
       <div class="parameter-row">
         <label
           class="labeled-field"
-          data-label="Alpha"
+          data-label="Alpha, °"
         >
           <input
             type="text"
@@ -111,7 +111,7 @@
       <div class="parameter-row">
         <label
           class="labeled-field"
-          data-label="Theta"
+          data-label="Theta, °"
         >
           <input
             type="text"
@@ -186,6 +186,8 @@
 
 <script>
 import {mapState} from "vuex";
+import * as mutationTypes from "../store/mutation-types.js";
+
 export default {
   name: "PanelSettings",
 
@@ -206,20 +208,20 @@ export default {
 
   methods: {
     setParameter(name, value) {
-      let mutation = `set${name[0].toUpperCase()}${name.slice(1)}`;
+      let mutation = mutationTypes["LS_SET_" + name.toUpperCase()];
       this.$store.commit(mutation, {[name]: value});
     },
 
     setRule(letter, rule) {
-      this.$store.commit("setRule", {letter, rule});
+      this.$store.commit(mutationTypes.LS_SET_RULE, {letter, rule});
     },
 
     unsetRule(letter) {
-      this.$store.commit("unsetRule", {letter});
+      this.$store.commit(mutationTypes.LS_UNSET_RULE, {letter});
     },
 
     addNewRule() {
-      this.$store.commit("setRule", {
+      this.$store.commit(mutationTypes.LS_SET_RULE, {
         letter: this.newRuleLetter,
         rule: this.newRuleValue.toUpperCase()
       });
@@ -231,7 +233,7 @@ export default {
     },
 
     goStyling() {
-      this.$store.commit("openPanel", {panelId: "attributes"});
+      this.$store.commit(mutationTypes.OPEN_PANEL, {panelId: "attributes"});
     }
   }
 };

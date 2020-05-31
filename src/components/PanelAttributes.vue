@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import {LS_SET_ATTRIBUTE, LS_UNSET_ATTRIBUTE, OPEN_PANEL} from "../store/mutation-types.js";
+
 export default {
   name: "PanelAttributes",
 
@@ -93,11 +95,11 @@ export default {
       if (value.length === 1) {
         value = value[0];
       }
-      this.$store.commit("setAttribute", {name, value});
+      this.$store.commit(LS_SET_ATTRIBUTE, {name, value});
     },
 
     unsetAttribute(name) {
-      this.$store.commit("unsetAttribute", {name});
+      this.$store.commit(LS_UNSET_ATTRIBUTE, {name});
     },
 
     addNewAttribute() {
@@ -110,7 +112,7 @@ export default {
     },
 
     goConfiguring() {
-      this.$store.commit("openPanel", {panelId: "settings"});
+      this.$store.commit(OPEN_PANEL, {panelId: "settings"});
     }
   }
 };
