@@ -89,7 +89,7 @@ let svgCode = getSVGCode(lsParams, svgParams);
 let {pathData, minX, minY, width, height} = getSVGData(lsParams);
 ```
 
-An object returned by `getSVGData` contains [path data](https://www.w3.org/TR/SVG11/paths.html#PathData) needed to draw the L-system, and also the drawing boundaries that are essential for the `viewBox` attribute.
+An object returned by `getSVGData` contains [path data](https://www.w3.org/TR/SVG11/paths.html#PathData) needed to draw the L-system, as well as the drawing boundaries that are essential for the `viewBox` attribute.
 
 ### Using “multi-path” methods
 
@@ -122,7 +122,7 @@ let svgParams = {
     pathAttributes: {
         stroke: "#514d3a",
         "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "1"],
-        "stroke-linecap": ["square", "round"] // the rest items are equal to the last one
+        "stroke-linecap": ["square", "round" /* the rest items are equal to the last one */]
     }
 };
 
@@ -133,7 +133,7 @@ let svgCode = getMultiPathSVGCode(lsParams, svgParams);
 let {multiPathData, minX, minY, width, height} = getMultiPathSVGData(lsParams);
 ```
 
-If an attribute array contains less elements than the maximum branching depth (e.g. see `stroke-linecap` in the example above), the missing items are considered equal to the last one. So you don’t need to repeat the same value in the end of the list.
+If an attribute array contains fewer elements than the maximum branching depth (e.g. see `stroke-linecap` in the example above), the missing items are implicitly made equal to the last one. So you don’t need to repeat the same value in the end of the list.
 
 The property `multiPathData` in the object returned by `getMultiPathSVGData` is a _list_ of path data for every `<path>` element. The list is sorted in the order of increasing branch level (the deeper the branch the higher the index in the array).
 
@@ -164,4 +164,6 @@ lindsvg utilizes the ECMAScript 2018 syntax. If you want to use the module in en
 
 ## Demos
 
-Please, check out [this collection](https://codepen.io/collection/DVzqWb) on CodePen to get a few live examples of using lindsvg.
+Please, visit the project’s [demo web page](https://amphiluke.github.io/lindsvg/). You will find a few built-in L-system collections there, and will also be able to experiment with lindsvg while building your own L-systems.
+
+Also, check out [this collection](https://codepen.io/collection/DVzqWb) on CodePen to get a few advanced examples of using lindsvg.

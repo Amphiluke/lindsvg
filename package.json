@@ -1,6 +1,6 @@
 {
   "name": "lindsvg",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Lindenmayer System [Scalable] Vector Graphics",
   "main": "dist/lindsvg.js",
   "module": "dist/lindsvg.esm.js",
@@ -27,11 +27,11 @@
   "bugs": {
     "url": "https://github.com/Amphiluke/lindsvg/issues"
   },
-  "homepage": "https://amphiluke.github.io/l-systems/",
+  "homepage": "https://amphiluke.github.io/lindsvg/",
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "rollup": "^2.3.2",
-    "rollup-plugin-terser": "^5.3.0"
+    "eslint": "^7.1.0",
+    "rollup": "^2.12.0",
+    "rollup-plugin-terser": "^6.1.0"
   },
   "engines": {
     "node": ">=8.3.0"
