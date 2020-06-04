@@ -15,7 +15,7 @@ or reference the source the L-system parameters were taken from:
 * [WM] — William McWorter
 
 An asterisk (*) near the reference means that the original L-system parameters
-were modified by me
+were modified by me (for optimisation purposes)
 
 I apologize to the authors of L-systems going without any attribution.
 Any help with affiliation of those L-systems is appreciated.
@@ -184,6 +184,19 @@ export default [
         iterations: 7,
         step: 15
       },
+      {
+        lid: "Moore curve",
+        axiom: "LFL+F+LFL",
+        rules: {
+          F: "F",
+          L: "-RF+LFL+FR-",
+          R: "+LF-RFR-FL+"
+        },
+        alpha: 90,
+        theta: 90,
+        iterations: 5,
+        step: 7
+      },
       { // [WM]
         lid: "Moore’s curl",
         axiom: "X",
@@ -235,6 +248,18 @@ export default [
         theta: 36,
         iterations: 7,
         step: 15
+      },
+      {
+        lid: "Sierpinski arrowhead curve",
+        axiom: "A",
+        rules: {
+          A: "FC-FA-FC",
+          C: "FA+FC+FA"
+        },
+        alpha: 180,
+        theta: 60,
+        iterations: 8,
+        step: 3
       },
       {
         lid: "Sierpinski curve",
@@ -805,19 +830,16 @@ export default [
         iterations: 4,
         step: 18
       },
-      { // [MR]
+      { // [MR*]
         lid: "hexagonal star",
-        axiom: "S",
+        axiom: "L",
         rules: {
-          L: "LZFR--FR-F++LF++L-F+LF+R--Y",
-          R: "Z++L-FR-F+R--FR--F+LF++LFYR",
-          S: "L",
-          Y: "+",
-          Z: "-"
+          L: "L-FR--FR-F++LF++L-F+LF+R-",
+          R: "+L-FR-F+R--FR--F+LF++LF+R"
         },
-        alpha: 0,
+        alpha: -60,
         theta: 60,
-        iterations: 6,
+        iterations: 5,
         step: 4.75
       },
       { // [MR]
@@ -995,7 +1017,11 @@ export default [
         alpha: 0,
         theta: 90,
         iterations: 4,
-        step: 5
+        step: 5,
+        attributes: {
+          stroke: "#080",
+          "stroke-width": "1.5"
+        }
       },
       { // [SE*]
         lid: "wheel",
