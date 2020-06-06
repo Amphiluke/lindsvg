@@ -113,6 +113,7 @@ export default {
 <style lang="less" scoped>
   .filter-form {
     flex-shrink: 0;
+    margin-bottom: 15px;
     padding: 0 10px;
   }
   .filter-field {
@@ -137,6 +138,7 @@ export default {
     margin: 5px 0;
     position: sticky;
     top: 0;
+    z-index: 1;
   }
   .collection-items li {
     align-items: center;
