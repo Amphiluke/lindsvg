@@ -3,6 +3,19 @@
     <h2 class="panel-title">
       Collections
     </h2>
+    <form
+      action="#"
+      class="filter-form"
+      @submit.prevent
+    >
+      <input
+        type="search"
+        class="filter-field"
+        placeholder="Search the collections…"
+        :value="filter"
+        @input="queueFilterUpdate($event.target.value)"
+      >
+    </form>
     <ul class="panel-body collections thin-scroll">
       <li
         v-for="{cid, items} of $store.state.bank"
@@ -21,6 +34,7 @@
         <ul class="collection-items">
           <li
             v-for="{lid} of items"
+            v-show="matchesFilter(lid)"
             :key="lid"
             :class="{active: cid === $store.state.cid && lid === $store.state.lid}"
           >
@@ -52,11 +66,24 @@
 
 <script>
 import {LS_SETUP_L_SYSTEM, OPEN_PANEL, ADD_L_SYSTEM, DELETE_L_SYSTEM} from "../store/mutation-types.js";
+import {debounce} from "../utils.js";
 
 export default {
   name: "PanelCollections",
 
+  data: () => ({
+    filter: ""
+  }),
+
   methods: {
+    queueFilterUpdate: debounce(function (filter) {
+      this.filter = filter;
+    }, 300),
+
+    matchesFilter(lid) {
+      return lid.toUpperCase().includes(this.filter.toUpperCase());
+    },
+
     plot(cid, lid) {
       this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
       this.$root.$emit("plotLSystem");
@@ -84,6 +111,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .filter-form {
+    flex-shrink: 0;
+    padding: 0 10px;
+  }
+  .filter-field {
+    box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+  }
   .collections,
   .collection-items {
     list-style: none;
