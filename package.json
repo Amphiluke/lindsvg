@@ -29,8 +29,8 @@
   },
   "homepage": "https://amphiluke.github.io/lindsvg/",
   "devDependencies": {
-    "eslint": "^7.1.0",
-    "rollup": "^2.12.0",
+    "eslint": "^7.4.0",
+    "rollup": "^2.22.0",
     "rollup-plugin-terser": "^6.1.0"
   },
   "engines": {
