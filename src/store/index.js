@@ -18,7 +18,7 @@ let defaults = {
 };
 
 let store = new Vuex.Store({
-  strict: true,
+  strict: process.env.NODE_ENV === "development",
   state: {
     // L-system bank (built in + user defined L-systems)
     bank: [...bank, getStoredCollection()],
