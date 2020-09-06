@@ -1,4 +1,4 @@
-const CACHE_NAME = "lindsvg-v1.0.0";
+const CACHE_NAME = "lindsvg-v1.0.1";
 let cachedFiles = [
   "/lindsvg/",
   "/lindsvg/index.html",

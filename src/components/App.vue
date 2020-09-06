@@ -100,7 +100,7 @@ export default {
 <style lang="less" scoped>
   .sidebar {
     background: var(--color-gray-lighter);
-    box-shadow: 1px 0 0 0 var(--color-gray-light);
+    box-shadow: 1px 0 0 0 var(--color-gray-light), 0 1px 0 0 var(--color-gray-light) inset;
     height: 100vh;
     left: 0;
     min-width: var(--size-sidebar-button);
