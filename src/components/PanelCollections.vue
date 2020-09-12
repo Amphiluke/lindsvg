@@ -129,8 +129,9 @@ export default {
   }
   .add-l-system-button {
     float: right;
-    position: relative;
-    z-index: 1;
+    position: sticky;
+    top: 0;
+    z-index: 2;
   }
   .collection-name {
     background: var(--color-gray-lighter);
