@@ -17,6 +17,7 @@
         <label class="attribute-item">
           {{ name }}
           <textarea
+            autocapitalize="off"
             class="attribute-values thin-scroll"
             :value="[values].flat().join('\n')"
             @change="setAttribute(name, $event.target.value)"
@@ -39,6 +40,7 @@
             <label class="labeled-field">
               <input
                 v-model="newAttributeName"
+                autocapitalize="off"
                 type="text"
                 placeholder="Enter attribute name…"
               >
@@ -53,6 +55,7 @@
           </div>
           <textarea
             v-model="newAttributeValue"
+            autocapitalize="off"
             class="attribute-values thin-scroll"
             placeholder="Enter attribute value(s)"
           />

@@ -19,6 +19,7 @@
     <ul class="panel-body collections thin-scroll">
       <li
         v-for="{cid, items} of $store.state.bank"
+        v-show="items.some(({lid}) => matchesFilter(lid))"
         :key="cid"
       >
         <button
