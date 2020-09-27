@@ -5,6 +5,14 @@
   >
     <PlotArea />
     <div class="sidebar">
+      <button
+        v-show="openedPanel !== ''"
+        class="sidebar-collapse"
+        title="Hide sidebar"
+        @click="openedPanel = ''"
+      >
+        «
+      </button>
       <div class="panel-buttons">
         <button
           class="panel-button"
@@ -125,6 +133,12 @@ export default {
       overflow: auto;
       padding-right: 4px; // increase the distance from a scrollbar
     }
+  }
+
+  .sidebar-collapse {
+    position: absolute;
+    right: 10px;
+    top: 10px;
   }
 
   .panel-buttons {

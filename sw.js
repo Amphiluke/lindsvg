@@ -1,5 +1,5 @@
 const CACHE_NS = "lindsvg"; // Never change the namespace to be able to clear old versions’ caches
-const CACHE_VERSION = "1.0.3";
+const CACHE_VERSION = "1.0.4";
 const CACHE_NAME = `${CACHE_NS}-v${CACHE_VERSION}`;
 
 let cachedFiles = [

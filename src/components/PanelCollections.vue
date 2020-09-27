@@ -10,6 +10,7 @@
     >
       <input
         type="search"
+        autocapitalize="off"
         class="filter-field"
         placeholder="Search the collections…"
         :value="filter"
@@ -136,7 +137,7 @@ export default {
   }
   .collection-name {
     background: var(--color-gray-lighter);
-    box-shadow: 0 4px 7px 2px var(--color-gray-lighter);
+    box-shadow: 0 4px 7px 2px var(--color-gray-lighter), 0 -2px 0 0 var(--color-gray-lighter);
     margin: 5px 0;
     position: sticky;
     top: 0;
