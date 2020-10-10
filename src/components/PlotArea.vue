@@ -12,7 +12,7 @@ export default {
   name: "PlotArea",
 
   mounted() {
-    this.$root.$on("plotLSystem", () => {
+    this.$root.$on("plot-l-system", () => {
       let {axiom, alpha, theta, step, iterations, rules, attributes} = this.$store.state;
       let method = Object.values(attributes).some(attr => Array.isArray(attr)) ?
         getMultiPathSVGCode :

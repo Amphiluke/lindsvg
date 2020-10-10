@@ -95,7 +95,7 @@ export default {
     let lid = searchParams.get("lid");
     if (cid && lid) {
       this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
-      this.$root.$emit("plotLSystem");
+      this.$root.$emit("plot-l-system");
     }
   }
 };

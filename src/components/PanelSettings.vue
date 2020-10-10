@@ -229,7 +229,7 @@ export default {
     },
 
     plot() {
-      this.$root.$emit("plotLSystem");
+      this.$root.$emit("plot-l-system");
     },
 
     goStyling() {

@@ -67,7 +67,7 @@ export default {
   },
 
   mounted() {
-    this.$root.$on("plotLSystem", () => {
+    this.$root.$on("plot-l-system", () => {
       this.$nextTick(() => this.makeSVGURL());
     });
   },

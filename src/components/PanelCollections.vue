@@ -88,12 +88,12 @@ export default {
 
     plot(cid, lid) {
       this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
-      this.$root.$emit("plotLSystem");
+      this.$root.$emit("plot-l-system");
     },
 
     explore(cid, lid) {
       this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
-      this.$root.$emit("plotLSystem");
+      this.$root.$emit("plot-l-system");
       this.$store.commit(OPEN_PANEL, {panelId: "settings"});
     },
 
