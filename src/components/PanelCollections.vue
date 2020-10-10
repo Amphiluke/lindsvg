@@ -20,7 +20,7 @@
     <ul class="panel-body collections thin-scroll">
       <li
         v-for="{cid, items} of $store.state.bank"
-        v-show="items.some(({lid}) => matchesFilter(lid))"
+        v-show="isCollectionVisible(cid, items)"
         :key="cid"
       >
         <button
@@ -57,6 +57,7 @@
               type="button"
               class="explore-button icon-button icon-button-config"
               title="Edit this L-system’s parameters"
+              @focus="plot(cid, lid)"
               @click="explore(cid, lid)"
             />
           </li>
@@ -86,14 +87,17 @@ export default {
       return lid.toUpperCase().includes(this.filter.toUpperCase());
     },
 
+    isCollectionVisible(cid, items) {
+      return (this.$store.getters.isUserDefined(cid) && !this.filter) ||
+        items.some(({lid}) => this.matchesFilter(lid));
+    },
+
     plot(cid, lid) {
       this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
       this.$root.$emit("plot-l-system");
     },
 
-    explore(cid, lid) {
-      this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
-      this.$root.$emit("plot-l-system");
+    explore() {
       this.$store.commit(OPEN_PANEL, {panelId: "settings"});
     },
 
