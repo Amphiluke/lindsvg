@@ -8,14 +8,16 @@
       class="filter-form"
       @submit.prevent
     >
-      <input
-        type="search"
-        autocapitalize="off"
-        class="filter-field"
-        placeholder="Search the collections…"
-        :value="filter"
-        @input="queueFilterUpdate($event.target.value)"
-      >
+      <label class="filter-label">
+        <input
+          type="search"
+          autocapitalize="off"
+          class="filter-field"
+          placeholder="Search the collections…"
+          :value="filter"
+          @input="queueFilterUpdate($event.target.value)"
+        >
+      </label>
     </form>
     <ul class="panel-body collections thin-scroll">
       <li
@@ -122,11 +124,22 @@ export default {
     margin-bottom: 15px;
     padding: 0 10px;
   }
+  .filter-label {
+    align-items: center;
+    display: flex;
+    &::after {
+      background: url(images/icons.svg) -125px 0 no-repeat;
+      content: "";
+      flex-shrink: 0;
+      height: 25px;
+      width: 25px;
+    }
+  }
   .filter-field {
     box-sizing: border-box;
+    flex-grow: 1;
     padding-left: 0;
     padding-right: 0;
-    width: 100%;
   }
   .collections,
   .collection-items {
