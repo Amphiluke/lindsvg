@@ -8,7 +8,10 @@
       class="filter-form"
       @submit.prevent
     >
-      <label class="filter-label">
+      <label
+        class="filter-label"
+        :class="{'filter-applied': !!filter}"
+      >
         <input
           type="search"
           autocapitalize="off"
@@ -133,6 +136,9 @@ export default {
       flex-shrink: 0;
       height: 25px;
       width: 25px;
+    }
+    &:not(:focus-within):not(.filter-applied)::after {
+      opacity: 0.5;
     }
   }
   .filter-field {
