@@ -164,6 +164,6 @@ lindsvg utilizes the ECMAScript 2018 syntax. If you want to use the module in en
 
 ## Demos
 
-Please, visit the project’s [demo web page](https://amphiluke.github.io/lindsvg/). You will find a few built-in L-system collections there, and will also be able to experiment with lindsvg while building your own L-systems.
+Please, visit the project’s [demo web app](https://amphiluke.github.io/lindsvg/) (installable as a PWA and works offline too). You will find a few built-in L-system collections there, and will also be able to experiment with lindsvg while building your own L-systems.
 
 Also, check out [this collection](https://codepen.io/collection/DVzqWb) on CodePen to get a few advanced examples of using lindsvg.
