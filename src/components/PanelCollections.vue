@@ -98,11 +98,15 @@ export default {
     },
 
     plot(cid, lid) {
+      if (cid === this.$store.state.cid && lid === this.$store.state.lid) {
+        return;
+      }
       this.$store.commit(LS_SETUP_L_SYSTEM, {cid, lid});
       this.$root.$emit("plot-l-system");
     },
 
-    explore() {
+    explore(cid, lid) {
+      this.plot(cid, lid);
       this.$store.commit(OPEN_PANEL, {panelId: "settings"});
     },
 
