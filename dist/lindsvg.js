@@ -1,13 +1,13 @@
 /*!
 lindsvg v1.3.2
 https://amphiluke.github.io/lindsvg/
-(c) 2021 Amphiluke
+(c) 2022 Amphiluke
 */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.lindsvg = {}));
-}(this, (function (exports) { 'use strict';
+})(this, (function (exports) { 'use strict';
 
     let messages = {
         AXIOM: "Axiom may only contain the following characters: A..Z,+,-,[,]",
@@ -446,4 +446,4 @@ https://amphiluke.github.io/lindsvg/
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
