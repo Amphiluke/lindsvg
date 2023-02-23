@@ -28,7 +28,7 @@
       </ul>
       <hr>
       <p>
-        <small>&copy; 2020, Amphiluke</small>
+        <small>&copy; {{ new Date().getFullYear() }}, Amphiluke</small>
       </p>
       <!-- eslint-enable vue/max-attributes-per-line -->
     </div>

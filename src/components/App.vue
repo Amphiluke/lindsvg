@@ -137,6 +137,7 @@ export default {
 
   .sidebar-collapse {
     height: 28px;
+    padding: 0;
     position: absolute;
     right: 10px;
     text-align: center;
