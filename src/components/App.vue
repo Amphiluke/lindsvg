@@ -139,6 +139,7 @@ export default {
     height: 28px;
     position: absolute;
     right: 10px;
+    text-align: center;
     top: 10px;
     width: 28px;
   }
@@ -158,6 +159,7 @@ export default {
   .panel-button {
     background: none;
     border: none;
+    color: inherit;
     padding: 0 10px;
     transform: rotate(180deg);
     &:hover,

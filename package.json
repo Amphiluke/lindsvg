@@ -1,6 +1,6 @@
 {
   "name": "lindsvg-site",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Simple web application for the lindsvg project",
   "main": "index.js",
   "scripts": {
