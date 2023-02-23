@@ -1,5 +1,5 @@
 import vue from "rollup-plugin-vue";
-import {terser} from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import replace from "@rollup/plugin-replace";
 import resolve from "@rollup/plugin-node-resolve";
 
@@ -24,7 +24,8 @@ export default [
         }
       }),
       replace({
-        "process.env.NODE_ENV": `"${process.env.BUNDLE_TYPE || "production"}"`
+        "process.env.NODE_ENV": `"${process.env.BUNDLE_TYPE || "production"}"`,
+        preventAssignment: true
       }),
       resolve(),
       terser()
@@ -39,7 +40,8 @@ export default [
     plugins: [
       replace({
         PACKAGE_VERSION: pkg.version,
-        delimiters: ["{{", "}}"]
+        delimiters: ["{{", "}}"],
+        preventAssignment: true
       }),
       terser()
     ]
