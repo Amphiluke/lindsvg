@@ -87,14 +87,14 @@
       <div class="form-buttons">
         <button
           type="button"
-          class="configure-button"
+          class="btn configure-button"
           @click="goConfiguring"
         >
           Settings…
         </button>
         <button
           type="submit"
-          class="plot-button"
+          class="btn plot-button"
         >
           Plot
         </button>
@@ -321,7 +321,6 @@ export default {
   }
   .plot-button,
   .configure-button {
-    box-sizing: border-box;
     width: calc(50% - 5px);
   }
 </style>

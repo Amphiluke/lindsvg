@@ -168,14 +168,14 @@
       <div class="form-buttons">
         <button
           type="button"
-          class="style-button"
+          class="btn style-button"
           @click="goStyling"
         >
           Style…
         </button>
         <button
           type="submit"
-          class="plot-button"
+          class="btn plot-button"
         >
           Plot
         </button>
@@ -297,7 +297,6 @@ export default {
   }
   .plot-button,
   .style-button {
-    box-sizing: border-box;
     width: calc(50% - 5px);
   }
   .uppercase {

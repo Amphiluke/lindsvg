@@ -7,7 +7,7 @@
     <div class="sidebar">
       <button
         v-show="openedPanel !== ''"
-        class="sidebar-collapse"
+        class="btn sidebar-collapse"
         title="Hide sidebar"
         @click="openedPanel = ''"
       >
@@ -136,9 +136,11 @@ export default {
   }
 
   .sidebar-collapse {
+    height: 28px;
     position: absolute;
     right: 10px;
     top: 10px;
+    width: 28px;
   }
 
   .panel-buttons {

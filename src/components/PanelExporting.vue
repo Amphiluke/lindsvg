@@ -29,7 +29,7 @@
         />
       </label>
       <button
-        class="permalink-copy-button"
+        class="btn permalink-copy-button"
         :disabled="!permalink"
         @click="copyPermalink"
       >
@@ -98,7 +98,6 @@ export default {
     width: 100%;
   }
   .permalink-copy-button {
-    box-sizing: border-box;
     margin: 5px 0;
     width: 100%;
     &.copy-success {
