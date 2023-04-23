@@ -739,7 +739,10 @@ export default [
         alpha: 0,
         theta: 20,
         iterations: 3,
-        step: 3
+        step: 3.5,
+        attributes: {
+          stroke: ["#500", "#500", "#740", "#206000", "#387300"]
+        }
       },
       { // [AK]
         lid: "savine 2",
@@ -750,7 +753,11 @@ export default [
         alpha: 0,
         theta: 20,
         iterations: 3,
-        step: 3
+        step: 4,
+        attributes: {
+          stroke: ["#300", "#600", "#740", "#206000", "#327100"],
+          style: ["opacity: 1;", "opacity: 0.9;", "filter: drop-shadow(0 0 0 #030); opacity: 0.85;", "filter: drop-shadow(0 0 0 #030); opacity: 0.8;"]
+        }
       },
       {
         lid: "sticks",
@@ -781,6 +788,25 @@ export default [
         attributes: {
           stroke: ["#420", "#420", "#420", "#123202", "rgba(71,102,0,0.8)", "rgba(73,136,0,0.7)"],
           "stroke-width": ["7", "6", "5", "3", "2", "1"]
+        }
+      },
+      {
+        lid: "tree 2",
+        axiom: "FFF+FFFF-FF+FF-[-Y][+Y][Z][+Z]",
+        rules: {
+          F: "F",
+          Y: "FF+F-F-F[FFFZ][+Z]-F-FZ",
+          Z: "FF-F+F+F[FY][-Y]+F+F++Y"
+        },
+        alpha: 90,
+        theta: 10,
+        iterations: 7,
+        step: 6,
+        attributes: {
+          stroke: ["#514d3a", "#514d3a", "#514d2a", "#55771c", "#55771c", "#44621c", "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
+          "stroke-width": ["13", "6", "3", "1"],
+          "stroke-linecap": ["square", "square", "round"],
+          transform: ["skewY(-35)", "none"]
         }
       },
       {
