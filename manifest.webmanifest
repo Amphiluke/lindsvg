@@ -24,24 +24,6 @@
   ],
   "screenshots": [
     {
-      "src": "screenshots/wheel-wide.png",
-      "sizes": "1024x593",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "screenshots/juniper-wide.png",
-      "sizes": "1024x593",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "screenshots/tree-wide.png",
-      "sizes": "1024x593",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
       "src": "screenshots/wheel-narrow.png",
       "sizes": "540x720",
       "type": "image/png",
@@ -58,6 +40,24 @@
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow"
+    },
+    {
+      "src": "screenshots/wheel-wide.png",
+      "sizes": "1024x593",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshots/juniper-wide.png",
+      "sizes": "1024x593",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshots/tree-wide.png",
+      "sizes": "1024x593",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ],
   "background_color": "#ffffff",
