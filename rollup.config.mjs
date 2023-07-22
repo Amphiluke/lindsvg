@@ -1,5 +1,5 @@
-import pkg from "./package.json";
-import {terser} from "rollup-plugin-terser";
+import pkg from "./package.json" assert {type: "json"};
+import terser from "@rollup/plugin-terser";
 
 let config = {
     input: "src/lindsvg.mjs",

@@ -1,7 +1,7 @@
 /*!
 lindsvg v1.3.2
 https://amphiluke.github.io/lindsvg/
-(c) 2022 Amphiluke
+(c) 2023 Amphiluke
 */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -443,7 +443,5 @@ https://amphiluke.github.io/lindsvg/
     exports.getMultiPathSVGData = getMultiPathSVGData;
     exports.getSVGCode = getSVGCode;
     exports.getSVGData = getSVGData;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
