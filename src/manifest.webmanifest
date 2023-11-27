@@ -1,0 +1,71 @@
+{
+  "id": "/lindsvg/index.html",
+  "name": "L-systems via lindsvg",
+  "short_name": "lindsvg",
+  "description": "Simple L-system plotter and manager powered by lindsvg",
+  "categories": [
+    "graphics",
+    "utilities"
+  ],
+  "scope": "/lindsvg/",
+  "start_url": "/lindsvg/index.html",
+  "icons": [
+    {
+      "src": "/lindsvg/app-icons/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/lindsvg/app-icons/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/lindsvg/app-icons/maskable-icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/lindsvg/screenshots/wheel-narrow.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/lindsvg/screenshots/juniper-narrow.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/lindsvg/screenshots/tree-narrow.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/lindsvg/screenshots/wheel-wide.png",
+      "sizes": "1024x593",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/lindsvg/screenshots/juniper-wide.png",
+      "sizes": "1024x593",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/lindsvg/screenshots/tree-wide.png",
+      "sizes": "1024x593",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "background_color": "#ffffff",
+  "theme_color": "#f5f5f5",
+  "display": "standalone"
+}

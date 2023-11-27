@@ -1,0 +1,114 @@
+.labeledField {
+  display: flex;
+
+  &[data-label]::before {
+    align-self: center;
+    color: var(--color-on-surface-mid);
+    content: attr(data-label);
+    flex-shrink: 0;
+    margin-right: 5px;
+  }
+
+  & input[type="text"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    flex-grow: 1;
+    min-width: 50px;
+    text-align: right;
+  }
+}
+
+.thinScroll {
+  scrollbar-color: var(--color-on-surface-mid) var(--color-surface);
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--color-surface);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-on-surface-mid) ;
+    border: 5px solid var(--color-surface);
+    border-radius: 100px;
+  }
+}
+
+.button {
+  background: none;
+  border: 1px solid;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: var(--color-accent);
+  padding-block: 0.35em;
+
+  &:not(:disabled):hover,
+  &:focus-visible {
+    background: url(../assets/branches.svg) left -34px center no-repeat, url(../assets/branches.svg) right -35px center no-repeat;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 3px 2px currentColor inset;
+    outline: none;
+  }
+}
+
+.iconButton {
+  align-items: center;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  width: 32px;
+
+  &::before {
+    background: url(../assets/icons.svg) -100% -100% no-repeat;
+    content: "";
+    height: 25px;
+    width: 25px;
+  }
+}
+
+.iconButtonView::before {
+  background-position: 0 0;
+}
+
+.iconButtonConfig::before {
+  background-position: -25px 0;
+}
+
+.iconButtonErase::before,
+.iconButtonAdd::before {
+  background-position: -50px 0;
+}
+
+.iconButtonDelete::before {
+  background-position: -75px 0;
+}
+
+@keyframes add-breath {
+  0% {
+    transform: rotate(45deg) scale(0.8);
+  }
+  100% {
+    transform: rotate(45deg) scale(1.2);
+  }
+}
+
+.iconButtonAdd {
+  overflow: hidden;
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &:not(:disabled)::before {
+    animation: add-breath 1.2s ease-in-out infinite alternate;
+  }
+}

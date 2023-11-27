@@ -1,0 +1,88 @@
+:root {
+  color-scheme: light dark;
+
+  /* Primary color is white (#fff), secondary color is forestgreen (#228b22) */
+  /* https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors */
+
+  --color-background: #fff; /* primary 50 */
+  --color-surface: #f5f5f5; /* primary 200 */
+  --color-on-surface-high: #3c3c3c; /* primary 900 */
+  --color-on-surface-mid: #979797; /* primary 600 */
+  --color-on-surface-low: #dedede; /* primary 400 */
+  --color-accent: #005c00; /* secondary 900 */
+  --color-surface-shadow: var(--color-on-surface-mid);
+
+  @media (prefers-color-scheme: dark) {
+    /* Primary color is black (#000), secondary color is forestgreen (#228b22) */
+    --color-background: #000; /* primary 900 */
+    --color-surface: #262626; /* primary 800 */
+    --color-on-surface-high: #f5f5f5; /* primary 50 */
+    --color-on-surface-mid: #7b7b7b; /* primary 500 */
+    --color-on-surface-low: #555; /* primary 600 */
+    --color-accent: #59b856; /* secondary 400 */
+    --color-surface-shadow: var(--color-on-surface-low);
+  }
+
+  --size-sidebar-button: 28px;
+  --size-sidebar-panel: 290px;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+}
+
+body {
+  font: normal 16px / 1.4 system-ui, sans-serif;
+}
+
+a {
+  color: var(--color-accent);
+  text-underline-offset: 0.2em;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+button {
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+input[type="text"],
+input[type="search"],
+textarea {
+  background: none;
+  border: 1px var(--color-on-surface-mid);
+  border-radius: 0;
+  border-style: none none solid;
+  color: inherit;
+  outline: none;
+
+  &::placeholder {
+    color: var(--color-on-surface-mid);
+  }
+}
+
+input[type="text"],
+input[type="search"] {
+  height: 32px;
+}
+
+hr {
+  background: linear-gradient(90deg, var(--color-surface), var(--color-on-surface-mid), var(--color-surface));
+  border: none;
+  display: block;
+  height: 1px;
+  margin: 15px auto;
+  padding: 0;
+  width: 100%;
+}
