@@ -147,6 +147,7 @@ function deleteLSystem(lid) {
   }
 
   .filterField {
+    appearance: textfield; /* fixes border-radius issue in Safari */
     box-sizing: border-box;
     flex-grow: 1;
     min-width: 0;
@@ -154,7 +155,11 @@ function deleteLSystem(lid) {
     padding-right: 0;
   }
 
-  .collections,
+  .collections {
+    list-style: none;
+    padding: 0 4px 0 0;
+  }
+
   .collectionItems {
     list-style: none;
     padding: 0;
@@ -199,12 +204,10 @@ function deleteLSystem(lid) {
     flex-shrink: 0;
   }
 
-  @media (hover: hover) {
-    .collectionItems li:not(:hover, .active) {
-      .exploreButton:not(:focus),
-      .deleteLSystemButton:not(:focus) {
-        opacity: 0.01;
-      }
+  .collectionItems li:not(:hover, .active) {
+    .exploreButton:not(:focus),
+    .deleteLSystemButton:not(:focus) {
+      opacity: 0.01;
     }
   }
 </style>

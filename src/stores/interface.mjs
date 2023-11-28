@@ -6,7 +6,7 @@ export const POPOVER_DISMISS = "dismiss";
 
 export let useInterfaceStore = defineStore("interface", () => {
   /** Currently opened sidebar panel */
-  let openedPanel = ref("");
+  let openedPanel = ref("collections");
 
   /**
    * Toggle panel’s state

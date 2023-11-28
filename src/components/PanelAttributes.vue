@@ -165,14 +165,6 @@ function plot() {
         <h3>Add a new attribute</h3>
         <div :class="$style.attributeItem">
           <div :class="$style.newAttributeName">
-            <label :class="[interfaceStyles.labeledField, $style.labeledField]">
-              <input
-                v-model="newAttributeName"
-                autocapitalize="off"
-                type="text"
-                placeholder="Enter attribute name…"
-              >
-            </label>
             <label :class="$style.attributeListCtrl">
               <select
                 :class="$style.attributeList"
@@ -194,6 +186,14 @@ function plot() {
                   </option>
                 </optgroup>
               </select>
+            </label>
+            <label :class="[interfaceStyles.labeledField, $style.labeledField]">
+              <input
+                v-model="newAttributeName"
+                autocapitalize="off"
+                type="text"
+                placeholder="Enter attribute name…"
+              >
             </label>
             <button
               type="button"
