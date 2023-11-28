@@ -48,9 +48,11 @@ let interfaceStore = useInterfaceStore();
 }
 
 .collapse {
-  background: url(../assets/icons.svg) -175px 0 no-repeat;
+  background-color: var(--color-accent);
   border: none;
   height: 25px;
+  -webkit-mask: url(../assets/icons.svg) -175px 0 no-repeat;
+  mask: url(../assets/icons.svg) -175px 0 no-repeat;
   padding: 0;
   position: absolute;
   right: 10px;

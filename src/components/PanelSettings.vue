@@ -219,10 +219,12 @@ function plot() {
     position: relative;
 
     &::before {
-      background: url(../assets/icons.svg) -100px 0 no-repeat;
+      background-color: var(--color-accent);
       content: "";
       height: 25px;
       left: 20px;
+      -webkit-mask: url(../assets/icons.svg) -100px 0 no-repeat;
+      mask: url(../assets/icons.svg) -100px 0 no-repeat;
       pointer-events: none;
       position: absolute;
       top: 50%;

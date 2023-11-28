@@ -296,10 +296,12 @@ function plot() {
     position: relative;
 
     &::before {
-      background: url(../assets/icons.svg) -150px 0 no-repeat;
+      background-color: var(--color-accent);
       content: "";
       height: 25px;
       left: 50%;
+      -webkit-mask: url(../assets/icons.svg) -150px 0 no-repeat;
+      mask: url(../assets/icons.svg) -150px 0 no-repeat;
       opacity: 0.5;
       position: absolute;
       top: 50%;

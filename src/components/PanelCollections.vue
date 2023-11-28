@@ -134,10 +134,12 @@ function deleteLSystem(lid) {
     display: flex;
 
     &::after {
-      background: url(../assets/icons.svg) -125px 0 no-repeat;
+      background-color: var(--color-accent);
       content: "";
       flex-shrink: 0;
       height: 25px;
+      -webkit-mask: url(../assets/icons.svg) -125px 0 no-repeat;
+      mask: url(../assets/icons.svg) -125px 0 no-repeat;
       width: 25px;
     }
 
@@ -147,7 +149,7 @@ function deleteLSystem(lid) {
   }
 
   .filterField {
-    appearance: textfield; /* fixes border-radius issue in Safari */
+    -webkit-appearance: none; /* fixes border-radius issue in Safari */
     box-sizing: border-box;
     flex-grow: 1;
     min-width: 0;

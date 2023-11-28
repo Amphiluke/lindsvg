@@ -68,28 +68,34 @@
   width: 32px;
 
   &::before {
-    background: url(../assets/icons.svg) -100% -100% no-repeat;
+    background-color: var(--color-accent);
     content: "";
     height: 25px;
+    -webkit-mask: url(../assets/icons.svg) -100% -100% no-repeat;
+    mask: url(../assets/icons.svg) -100% -100% no-repeat;
     width: 25px;
   }
 }
 
 .iconButtonView::before {
-  background-position: 0 0;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
 }
 
 .iconButtonConfig::before {
-  background-position: -25px 0;
+  -webkit-mask-position: -25px 0;
+  mask-position: -25px 0;
 }
 
 .iconButtonErase::before,
 .iconButtonAdd::before {
-  background-position: -50px 0;
+  -webkit-mask-position: -50px 0;
+  mask-position: -50px 0;
 }
 
 .iconButtonDelete::before {
-  background-position: -75px 0;
+  -webkit-mask-position: -75px 0;
+  mask-position: -75px 0;
 }
 
 @keyframes add-breath {

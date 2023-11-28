@@ -37,13 +37,21 @@ let {popover} = storeToRefs(useInterfaceStore());
   box-shadow: 0 0 3px 0 var(--color-surface-shadow);
   box-sizing: border-box;
   display: grid;
-  gap: 20px;
+  gap: 5px 20px;
   grid-template-columns: 1fr auto auto;
   max-width: 500px;
   padding: 5px 20px;
   right: 15px;
   position: fixed;
   width: calc(100% - 30px - var(--size-sidebar-button));
+
+  @media (max-width: 450px) {
+    grid-template-columns: 1fr auto;
+
+    & :first-child {
+      grid-row: 1 / 3;
+    }
+  }
 }
 
 .button {
