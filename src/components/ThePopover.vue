@@ -8,7 +8,7 @@ let {popover} = storeToRefs(useInterfaceStore());
 <template>
   <aside
     v-show="!!popover.uid"
-    :class="$style.popover"
+    :class="[$style.popover, {[$style.acceptable]: !!popover.button}]"
   >
     <p>{{ popover.text }}</p>
     <button
@@ -38,12 +38,16 @@ let {popover} = storeToRefs(useInterfaceStore());
   box-sizing: border-box;
   display: grid;
   gap: 5px 20px;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto;
   max-width: 500px;
   padding: 5px 20px;
   right: 15px;
   position: fixed;
   width: calc(100% - 30px - var(--size-sidebar-button));
+}
+
+.acceptable {
+  grid-template-columns: 1fr auto auto;
 
   @media (max-width: 450px) {
     grid-template-columns: 1fr auto;

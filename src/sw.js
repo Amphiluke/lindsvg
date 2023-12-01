@@ -1,5 +1,5 @@
 const CACHE_NS = "lindsvg"; // Never change the namespace to be able to clear old versions’ caches
-const CACHE_VERSION = __PACKAGE_VERSION__; /* global __PACKAGE_VERSION__ */
+const CACHE_VERSION = __PACKAGE_VERSION__;
 const CACHE_NAME = `${CACHE_NS}-v${CACHE_VERSION}`;
 
 let cachedFiles = [
@@ -10,6 +10,7 @@ let cachedFiles = [
   "/lindsvg/index.html",
   "/lindsvg/index.js",
   "/lindsvg/app-icons/apple-touch-icon.png",
+  "/lindsvg/app-icons/doc-icon.png",
   "/lindsvg/app-icons/favicon.svg",
   "/lindsvg/app-icons/icon-192.png",
   "/lindsvg/app-icons/icon-512.png",

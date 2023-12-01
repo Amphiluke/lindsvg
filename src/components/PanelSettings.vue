@@ -194,7 +194,7 @@ function plot() {
 
     &:has([data-label="B"]),
     &:has([data-label="F"]) {
-      background: rgb(from var(--color-accent) r g b / calc(alpha - 0.92));
+      background: rgb(from var(--color-accent) r g b / 0.08);
     }
   }
 

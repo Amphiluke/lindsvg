@@ -14,6 +14,9 @@ module.exports = {
     ecmaVersion: 2022,
     sourceType: "module",
   },
+  globals: {
+    __PACKAGE_VERSION__: "readonly",
+  },
   plugins: [
     "@stylistic/js",
     "vue",

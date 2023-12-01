@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed} from "vue";
+import {ref, computed, onMounted} from "vue";
 import {refDebounced} from "@vueuse/core";
 import {useCollectionsStore, isUserDefined, USER_DEFINED_COLLECTION_ID} from "../stores/collections.mjs";
 import {useLSystemStore} from "../stores/lSystem.mjs";
@@ -51,6 +51,15 @@ function addLSystem() {
 function deleteLSystem(lid) {
   collectionsStore.deleteLSystem(lid);
 }
+
+onMounted(() => {
+  let searchParams = new URLSearchParams(location.search);
+  let cid = searchParams.get("cid");
+  let lid = searchParams.get("lid");
+  if (cid && lid) {
+    plot(cid, lid);
+  }
+});
 </script>
 
 <template>
@@ -177,7 +186,7 @@ function deleteLSystem(lid) {
 
   .collectionName {
     background: var(--color-surface);
-    box-shadow: 0 4px 7px 2px var(--color-surface), 0 -4px 0 0 var(--color-surface);
+    box-shadow: 0 4px 7px 2px var(--color-surface);
     margin-block: 0 8px;
     padding-block: 13px 5px;
     position: sticky;

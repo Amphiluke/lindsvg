@@ -3,7 +3,7 @@ import {useInterfaceStore} from "../stores/interface.mjs";
 import PanelCollections from "./PanelCollections.vue";
 import PanelSettings from "./PanelSettings.vue";
 import PanelAttributes from "./PanelAttributes.vue";
-import PanelExporting from "./PanelExporting.vue";
+import PanelSharing from "./PanelSharing.vue";
 import PanelAbout from "./PanelAbout.vue";
 
 let interfaceStore = useInterfaceStore();
@@ -13,14 +13,16 @@ let interfaceStore = useInterfaceStore();
   <div :class="$style.sidebar">
     <button
       v-show="interfaceStore.openedPanel !== ''"
+      type="button"
       :class="$style.collapse"
       title="Hide sidebar"
       @click="interfaceStore.openedPanel = ''"
     />
     <div :class="$style.buttons">
       <button
-        v-for="name of ['collections', 'settings', 'attributes', 'exporting', 'about']"
+        v-for="name of ['collections', 'settings', 'attributes', 'sharing', 'about']"
         :key="name"
+        type="button"
         :class="[$style.button, {[$style.active]: interfaceStore.openedPanel === name}]"
         @click="interfaceStore.togglePanel(name)"
       >
@@ -30,7 +32,7 @@ let interfaceStore = useInterfaceStore();
     <PanelCollections v-show="interfaceStore.openedPanel === 'collections'" />
     <PanelSettings v-show="interfaceStore.openedPanel === 'settings'" />
     <PanelAttributes v-show="interfaceStore.openedPanel === 'attributes'" />
-    <PanelExporting v-show="interfaceStore.openedPanel === 'exporting'" />
+    <PanelSharing v-show="interfaceStore.openedPanel === 'sharing'" />
     <PanelAbout v-show="interfaceStore.openedPanel === 'about'" />
   </div>
 </template>

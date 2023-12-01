@@ -67,5 +67,22 @@
   ],
   "background_color": "#ffffff",
   "theme_color": "#f5f5f5",
-  "display": "standalone"
+  "display": "standalone",
+  "file_handlers": [
+    {
+      "action": "/lindsvg/index.html?action=handleFile",
+      "accept": {
+        "application/json": [".lsvg"]
+      },
+      "label": "L-system configuration",
+      "icons": [
+        {
+          "src": "/lindsvg/app-icons/doc-icon.png",
+          "type": "image/png",
+          "sizes": "256x256"
+        }
+      ],
+      "launch_type": "single-client"
+    }
+  ]
 }

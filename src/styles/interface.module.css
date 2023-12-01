@@ -45,7 +45,11 @@
   border-radius: 100px;
   box-sizing: border-box;
   color: var(--color-accent);
+  display: inline-flex;
   padding-block: 0.35em;
+  place-content: center;
+  text-align: center;
+  text-decoration: none;
 
   &:not(:disabled):hover,
   &:focus-visible {
