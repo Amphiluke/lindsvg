@@ -1,6 +1,8 @@
 <script setup>
 import interfaceStyles from "../styles/interface.module.css";
 import panelStyles from "../styles/panel.module.css";
+
+let appVersion = __PACKAGE_VERSION__;
 </script>
 
 <template>
@@ -32,10 +34,18 @@ import panelStyles from "../styles/panel.module.css";
         </li>
       </ul>
       <hr>
-      <p>
+      <p :class="$style.metadata">
         <small>&copy; {{ new Date().getFullYear() }}, Amphiluke</small>
+        <small>v{{ appVersion }}</small>
       </p>
       <!-- eslint-enable vue/max-attributes-per-line -->
     </div>
   </section>
 </template>
+
+<style module>
+  .metadata {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>

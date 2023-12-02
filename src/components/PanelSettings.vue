@@ -123,6 +123,7 @@ function plot() {
         >
           <input
             type="text"
+            inputmode="decimal"
             :value="lSystemStore.alpha"
             @change="lSystemStore.alpha = Number($event.target.value)"
           >
@@ -136,6 +137,7 @@ function plot() {
         >
           <input
             type="text"
+            inputmode="decimal"
             :value="lSystemStore.theta"
             @change="lSystemStore.theta = Number($event.target.value)"
           >
@@ -149,6 +151,7 @@ function plot() {
         >
           <input
             type="text"
+            inputmode="decimal"
             :value="lSystemStore.step"
             @change="lSystemStore.step = Number($event.target.value)"
           >
@@ -162,6 +165,7 @@ function plot() {
         >
           <input
             type="text"
+            inputmode="numeric"
             :value="lSystemStore.iterations"
             @change="lSystemStore.iterations = Number($event.target.value)"
           >
