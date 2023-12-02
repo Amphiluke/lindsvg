@@ -15,6 +15,10 @@ function toLSFormat(value) {
   return value.trim().toUpperCase();
 }
 
+function toNumber(value) {
+  return Number(value.replace(",", "."));
+}
+
 function addNewRule() {
   lSystemStore.rules[newRuleLetter.value] = toLSFormat(newRuleValue.value);
   newRuleLetter.value = newRuleValue.value = "";
@@ -125,7 +129,7 @@ function plot() {
             type="text"
             inputmode="decimal"
             :value="lSystemStore.alpha"
-            @change="lSystemStore.alpha = Number($event.target.value)"
+            @change="lSystemStore.alpha = toNumber($event.target.value)"
           >
         </label>
       </div>
@@ -139,7 +143,7 @@ function plot() {
             type="text"
             inputmode="decimal"
             :value="lSystemStore.theta"
-            @change="lSystemStore.theta = Number($event.target.value)"
+            @change="lSystemStore.theta = toNumber($event.target.value)"
           >
         </label>
       </div>
@@ -153,7 +157,7 @@ function plot() {
             type="text"
             inputmode="decimal"
             :value="lSystemStore.step"
-            @change="lSystemStore.step = Number($event.target.value)"
+            @change="lSystemStore.step = toNumber($event.target.value)"
           >
         </label>
       </div>
@@ -167,7 +171,7 @@ function plot() {
             type="text"
             inputmode="numeric"
             :value="lSystemStore.iterations"
-            @change="lSystemStore.iterations = Number($event.target.value)"
+            @change="lSystemStore.iterations = toNumber($event.target.value)"
           >
         </label>
       </div>
