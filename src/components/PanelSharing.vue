@@ -3,7 +3,7 @@ import {computed, useCssModule} from "vue";
 import {useCollectionsStore, isUserDefined} from "../stores/collections.mjs";
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
-import {useObjectUrl, useFileDialog} from "@vueuse/core";
+import {useObjectUrl, useFileDialog, useShare} from "@vueuse/core";
 import interfaceStyles from "../styles/interface.module.css";
 import panelStyles from "../styles/panel.module.css";
 
@@ -41,6 +41,15 @@ let lsvgBlob = computed(() => {
   return new Blob([lsvg], {type: "application/json"});
 });
 let lsvgURL = useObjectUrl(lsvgBlob);
+
+let {share, isSupported: isShareSupported} = useShare();
+function launchShare() {
+  share({
+    title: "L-system",
+    text: "Image of an L-system from the lindsvg app",
+    files: [new File([svgBlob.value], "l-system.svg", {type: svgBlob.value.type})],
+  });
+}
 
 let permalink = computed(() => {
   if (!collectionsStore.selectedCID || !collectionsStore.selectedLID || isUserDefined(collectionsStore.selectedCID)) {
@@ -95,6 +104,17 @@ async function copyPermalink({target}) {
         >
           SVG
         </a>
+
+        <template v-if="isShareSupported">
+          <h3>Share file…</h3>
+          <button
+            type="button"
+            :class="[interfaceStyles.button, $style.fileButton, $style.shareButton]"
+            @click="launchShare"
+          >
+            SVG
+          </button>
+        </template>
       </div>
 
       <hr>
@@ -127,7 +147,7 @@ async function copyPermalink({target}) {
   .fileControls {
     align-items: center;
     display: grid;
-    gap: 20px 10px;
+    gap: 15px 10px;
     grid-template-columns: 1fr 25% 25%;
 
     & h3 {
@@ -147,6 +167,10 @@ async function copyPermalink({target}) {
         --border-alpha: 0.6;
         background: none;
       }
+    }
+
+    & .shareButton {
+      grid-column: 3 / 4;
     }
   }
 

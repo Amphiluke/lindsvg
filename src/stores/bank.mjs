@@ -503,7 +503,7 @@ export default [
         iterations: 5,
         step: 7,
         attributes: {
-          stroke: "#080",
+          stroke: "forestgreen",
           "stroke-width": ["4", "3", "2", "1"],
           "stroke-linecap": "round",
         },
@@ -618,7 +618,7 @@ export default [
         iterations: 4,
         step: 0.8,
         attributes: {
-          stroke: "#080",
+          stroke: "forestgreen",
           "stroke-width": ["4", "3", "2", "1"],
         },
       },
@@ -635,7 +635,7 @@ export default [
         iterations: 4,
         step: 2,
         attributes: {
-          stroke: "#080",
+          stroke: "forestgreen",
           "stroke-width": ["3", "2", "1"],
         },
       },
@@ -866,7 +866,7 @@ export default [
         iterations: 4,
         step: 5,
         attributes: {
-          stroke: "#080",
+          stroke: "forestgreen",
           "stroke-width": "1.5",
         },
       },
@@ -974,7 +974,7 @@ export default [
         iterations: 6,
         step: 14,
         attributes: {
-          stroke: "#080",
+          stroke: "forestgreen",
           "stroke-width": "1.5",
           "stroke-linejoin": "round",
         },
@@ -993,7 +993,7 @@ export default [
         iterations: 5,
         step: 20,
         attributes: {
-          stroke: "#080",
+          stroke: "forestgreen",
           "stroke-width": "1.5",
           "stroke-linejoin": "round",
         },
@@ -1070,7 +1070,7 @@ export default [
         iterations: 4,
         step: 5,
         attributes: {
-          stroke: "#080",
+          stroke: "forestgreen",
           "stroke-width": "1.5",
         },
       },
