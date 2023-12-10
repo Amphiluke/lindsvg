@@ -275,7 +275,7 @@ export default [
         step: 15,
       },
       {
-        lid: "Sierpinski arrowhead curve",
+        lid: "Sierpinski arrowhead",
         axiom: "A",
         rules: {
           A: "FC-FA-FC",

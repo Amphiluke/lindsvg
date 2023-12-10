@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed, onMounted} from "vue";
+import {ref, computed} from "vue";
 import {refDebounced} from "@vueuse/core";
 import {useCollectionsStore, isUserDefined, USER_DEFINED_COLLECTION_ID} from "../stores/collections.mjs";
 import {useLSystemStore} from "../stores/lSystem.mjs";
@@ -52,14 +52,12 @@ function deleteLSystem(lid) {
   collectionsStore.deleteLSystem(lid);
 }
 
-onMounted(() => {
-  let searchParams = new URLSearchParams(location.search);
-  let cid = searchParams.get("cid");
-  let lid = searchParams.get("lid");
-  if (cid && lid) {
-    plot(cid, lid);
-  }
-});
+function copyPermalink(cid, lid) {
+  let url = new URL(location.origin + location.pathname);
+  url.searchParams.set("cid", cid);
+  url.searchParams.set("lid", lid);
+  navigator.clipboard.writeText(url.toString());
+}
 </script>
 
 <template>
@@ -116,6 +114,14 @@ onMounted(() => {
               :class="[$style.deleteLSystemButton, interfaceStyles.iconButton, interfaceStyles.iconButtonDelete]"
               title="Delete this L-system"
               @click="deleteLSystem(lid)"
+            />
+            <button
+              v-else
+              type="button"
+              tabindex="-1"
+              :class="[$style.permalinkButton, interfaceStyles.iconButton, interfaceStyles.iconButtonLink]"
+              title="Copy L-system permalink"
+              @click="copyPermalink(cid, lid)"
             />
             <button
               type="button"
@@ -207,18 +213,19 @@ onMounted(() => {
   .collectionItemName {
     cursor: default;
     flex-grow: 1;
+    overflow: hidden;
     padding: 5px 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
+  .permalinkButton,
   .exploreButton,
   .deleteLSystemButton {
     flex-shrink: 0;
   }
 
-  .collectionItems li:not(:hover, .active) {
-    .exploreButton:not(:focus),
-    .deleteLSystemButton:not(:focus) {
-      opacity: 0.01;
-    }
+  .collectionItems li:not(:hover, .active) :where(.permalinkButton, .exploreButton, .deleteLSystemButton):not(:focus) {
+    opacity: 0.01;
   }
 </style>

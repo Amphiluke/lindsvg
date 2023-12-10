@@ -22,7 +22,7 @@ let appVersion = __PACKAGE_VERSION__;
         There are a few L-system collections built in the app for demonstration purposes. These L-systems were gathered from various sources including the web, books, and articles. I appreciate the authors of these L-systems (you may find their names <a href="https://github.com/Amphiluke/lindsvg/blob/pwa/src/stores/bank.mjs" target="_blank" rel="noopener">in the app sources</a>).
       </p>
       <h3>Links</h3>
-      <ul>
+      <ul :class="interfaceStyles.list">
         <li>
           <a href="https://codepen.io/collection/DVzqWb" target="_blank" rel="noopener">Advanced examples</a>
         </li>

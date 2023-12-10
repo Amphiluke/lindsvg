@@ -1,6 +1,6 @@
 <script setup>
-import {computed, useCssModule} from "vue";
-import {useCollectionsStore, isUserDefined} from "../stores/collections.mjs";
+import {computed} from "vue";
+import {useCollectionsStore} from "../stores/collections.mjs";
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
 import {useObjectUrl, useFileDialog, useShare} from "@vueuse/core";
@@ -10,7 +10,6 @@ import panelStyles from "../styles/panel.module.css";
 let collectionsStore = useCollectionsStore();
 let lSystemStore = useLSystemStore();
 let interfaceStore = useInterfaceStore();
-let cssModule = useCssModule();
 
 let fileDialog = useFileDialog({accept: ".lsvg", multiple: false, reset: true});
 fileDialog.onChange(async ([file]) => {
@@ -27,19 +26,17 @@ fileDialog.onChange(async ([file]) => {
 let svgBlob = computed(() => new Blob([lSystemStore.svgCode], {type: "image/svg+xml"}));
 let svgURL = useObjectUrl(svgBlob);
 
-let lsvgBlob = computed(() => {
-  let lsvg = JSON.stringify({
-    _version: __PACKAGE_VERSION__,
-    axiom: lSystemStore.axiom,
-    alpha: lSystemStore.alpha,
-    theta: lSystemStore.theta,
-    step: lSystemStore.step,
-    iterations: lSystemStore.iterations,
-    rules: lSystemStore.rules,
-    attributes: lSystemStore.attributes,
-  });
-  return new Blob([lsvg], {type: "application/json"});
-});
+let lsvg = computed(() => ({
+  _version: __PACKAGE_VERSION__,
+  axiom: lSystemStore.axiom,
+  alpha: lSystemStore.alpha,
+  theta: lSystemStore.theta,
+  step: lSystemStore.step,
+  iterations: lSystemStore.iterations,
+  rules: lSystemStore.rules,
+  attributes: lSystemStore.attributes,
+}));
+let lsvgBlob = computed(() => new Blob([JSON.stringify(lsvg.value)], {type: "application/json"}));
 let lsvgURL = useObjectUrl(lsvgBlob);
 
 let {share, isSupported: isShareSupported} = useShare();
@@ -51,21 +48,9 @@ function launchShare() {
   });
 }
 
-let permalink = computed(() => {
-  if (!collectionsStore.selectedCID || !collectionsStore.selectedLID || isUserDefined(collectionsStore.selectedCID)) {
-    return "";
-  }
-  let {location} = window;
-  let url = new URL(location.origin + location.pathname);
-  url.searchParams.set("cid", collectionsStore.selectedCID);
-  url.searchParams.set("lid", collectionsStore.selectedLID);
-  return url.toString();
-});
-
-async function copyPermalink({target}) {
-  await navigator.clipboard.writeText(permalink.value);
-  target.classList.add(cssModule.copySuccess);
-  setTimeout(() => target.classList.remove(cssModule.copySuccess), 4000);
+function copyLSVG() {
+  let text = JSON.stringify(lsvg.value, null, 2);
+  navigator.clipboard.writeText(text);
 }
 </script>
 
@@ -119,26 +104,33 @@ async function copyPermalink({target}) {
 
       <hr>
 
-      <h3>Permalink for the selected L-system</h3>
-      <textarea
-        :class="$style.permalinkField"
-        :value="permalink"
-        readonly
-        @click="$event.target.select()"
-      />
-      <button
-        type="button"
-        :class="[interfaceStyles.button, $style.permalinkCopyButton]"
-        :disabled="!permalink"
-        @click="copyPermalink"
-      >
-        <span :class="$style.permalinkCopyReady">Copy</span>
-        <span :class="$style.permalinkCopyDone">Copied!</span>
-      </button>
-      <p :class="$style.note">
-        Note that permalinks are only available for L-systems from the predefined collections.
-        Any manual changes in L-system parameters are not preserved.
-      </p>
+      <h3>Creating shareable permalink for an L-system</h3>
+      <!-- eslint-disable vue/max-attributes-per-line -->
+      <ol :class="interfaceStyles.list">
+        <li><a href="https://docs.github.com/en/get-started/writing-on-github/editing-and-sharing-content-with-gists/creating-gists#creating-a-gist" target="_blank" rel="noopener">Create</a> a <em>public</em> gist on GitHub.</li>
+        <li>
+          Copy LSVG file content
+          <svg
+            :class="$style.copyButton"
+            height="16"
+            width="16"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+            @click="copyLSVG"
+          >
+            <title>Copy LSVG to clipboard</title>
+            <path d="M0 6.75C0 5.78.78 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .14.11.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z" />
+            <path d="M5 1.75C5 .78 5.78 0 6.75 0h7.5C15.22 0 16 .78 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .14.11.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z" />
+          </svg>
+          into the newly created public gist and save it as JSON.
+        </li>
+        <li>
+          Replace <b>{gist_id}</b> in the following hyperlink with the actual identifier of your gist<br>
+          <span :class="$style.permalink">https://amphiluke.github.io/lindsvg/?gist=<b>{gist_id}</b></span>.
+        </li>
+      </ol>
+      <p>Example: <a href="https://gist.github.com/Amphiluke/d90562f1aaf0f9ee28340c13ce13a6ca" target="_blank" rel="noopener">gist</a> &amp; <a href="https://amphiluke.github.io/lindsvg/?gist=d90562f1aaf0f9ee28340c13ce13a6ca" target="_blank">permalink</a>.</p>
+      <!-- eslint-enable vue/max-attributes-per-line -->
     </form>
   </section>
 </template>
@@ -174,30 +166,14 @@ async function copyPermalink({target}) {
     }
   }
 
-  .permalinkField {
-    box-sizing: border-box;
-    height: 55px;
-    margin-top: 10px;
-    resize: vertical;
-    width: 100%;
+  .copyButton {
+    cursor: pointer;
+    fill: var(--color-accent);
+    margin-inline: 4px;
   }
 
-  .permalinkCopyButton {
-    margin: 5px 0;
-    width: 100%;
-
-    &.copySuccess {
-      pointer-events: none;
-    }
-
-    &:not(.copySuccess) .permalinkCopyDone,
-    &.copySuccess .permalinkCopyReady {
-      display: none;
-    }
-  }
-
-  .note {
-    color: var(--color-on-surface-mid);
-    font-size: 0.85em;
+  .permalink {
+    color: var(--color-accent);
+    word-wrap: break-word;
   }
 </style>

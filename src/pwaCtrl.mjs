@@ -1,6 +1,5 @@
 import "./sw.js?worker";
 import {useInterfaceStore, POPOVER_ACCEPT} from "./stores/interface.mjs";
-import {useLSystemStore} from "./stores/lSystem.mjs";
 
 export const USING_PWA = import.meta.env.PROD && ("serviceWorker" in navigator);
 
@@ -33,41 +32,6 @@ async function suggestUpdate(newSW) {
   navigator.serviceWorker.addEventListener("message", ({data}) => {
     if (data?.code === "SKIP_WAITING_OK") {
       window.location.reload();
-    }
-  });
-}
-
-let launchParamsSupported = ("launchQueue" in window) && ("files" in window.LaunchParams.prototype);
-
-/** @see https://github.com/WICG/web-app-launch/issues/92#issuecomment-1505562033 */
-function handleActionURL(action) {
-  let url = new URL(location.href);
-  if (url.searchParams.get("action") !== action) {
-    return false;
-  }
-  url.searchParams.delete("action");
-  window.history.replaceState(null, "", url);
-  return true;
-}
-
-export function applyLaunchParams() {
-  if (!launchParamsSupported || !handleActionURL("handleFile")) {
-    return;
-  }
-  /** @see https://github.com/WICG/file-handling/blob/main/explainer.md */
-  window.launchQueue.setConsumer(async ({files}) => {
-    if (!files.length) {
-      return;
-    }
-    try {
-      let blob = await files[0].getFile();
-      let config = JSON.parse(await blob.text());
-      let lSystemStore = useLSystemStore();
-      lSystemStore.setup(config);
-      lSystemStore.buildSVG();
-    } catch (error) {
-      useInterfaceStore().requestPopover({text: "Unfortunately, this file cannot be opened"});
-      console.error("Unable to open the file", error);
     }
   });
 }

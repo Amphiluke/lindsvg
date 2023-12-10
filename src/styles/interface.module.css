@@ -102,6 +102,11 @@
   mask-position: -75px 0;
 }
 
+.iconButtonLink::before {
+  -webkit-mask-position: -200px 0;
+  mask-position: -200px 0;
+}
+
 @keyframes add-breath {
   0% {
     transform: rotate(45deg) scale(0.8);
@@ -120,5 +125,13 @@
 
   &:not(:disabled)::before {
     animation: add-breath 1.2s ease-in-out infinite alternate;
+  }
+}
+
+.list {
+  padding-left: 30px;
+
+  & > li {
+    margin-block: 0.3em;
   }
 }
