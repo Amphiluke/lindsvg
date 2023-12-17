@@ -73,6 +73,10 @@ export default [
         theta: 90,
         iterations: 3,
         step: 4,
+        attributes: {
+          stroke: "darkgoldenrod",
+          "stroke-width": "1.5",
+        },
       },
       {
         lid: "cross",
@@ -179,6 +183,10 @@ export default [
         theta: 60,
         iterations: 4,
         step: 5,
+        attributes: {
+          stroke: "deepskyblue",
+          "stroke-width": "1.5",
+        },
       },
       { // [WM]
         lid: "lace",
@@ -208,6 +216,27 @@ export default [
         theta: 60,
         iterations: 7,
         step: 15,
+      },
+      {
+        lid: "meander",
+        axiom: "A",
+        rules: {
+          A: "CCDEEGA",
+          C: "FF+++++++++++++++",
+          D: "F+++++++++++++++",
+          E: "F---------------",
+          F: "F",
+          G: "FF--------------",
+        },
+        alpha: 0,
+        theta: 6,
+        iterations: 61,
+        step: 10,
+        attributes: {
+          stroke: "sienna",
+          "stroke-width": "4",
+          "stroke-linecap": "square",
+        },
       },
       {
         lid: "Moore curve",
@@ -288,7 +317,7 @@ export default [
       },
       {
         lid: "Sierpinski curve",
-        axiom: "F+FX+F+XF",
+        axiom: "F+XF+F+XF",
         rules: {
           F: "F",
           X: "XF-F+F-XF+F+XF-F+F-X",
@@ -354,6 +383,17 @@ export default [
         iterations: 8,
         step: 6,
       },
+      {
+        lid: "tridragon",
+        axiom: "F+F+F",
+        rules: {
+          F: "F+FF-F",
+        },
+        alpha: 0,
+        theta: 120,
+        step: 6,
+        iterations: 6,
+      },
     ],
   },
 
@@ -394,9 +434,13 @@ export default [
         theta: 10,
         iterations: 9,
         step: 60,
+        attributes: {
+          stroke: "white",
+          fill: "steelblue",
+        },
       },
       { // [AK]
-        lid: "urchin",
+        lid: "sea urchin",
         axiom: "F",
         rules: {
           F: "F[-F+F-F]+[+F-F-F]",
@@ -503,8 +547,8 @@ export default [
         iterations: 5,
         step: 7,
         attributes: {
-          stroke: "forestgreen",
-          "stroke-width": ["4", "3", "2", "1"],
+          stroke: ["olive", "darkolivegreen", "forestgreen"],
+          "stroke-width": ["5", "3", "2", "1"],
           "stroke-linecap": "round",
         },
       },
@@ -551,7 +595,11 @@ export default [
         alpha: 90,
         theta: 20,
         iterations: 9,
-        step: 10,
+        step: 12,
+        attributes: {
+          stroke: ["darkolivegreen", "forestgreen"],
+          "stroke-width": ["3", "2", "1"],
+        },
       },
       {
         lid: "dandelion",
@@ -750,7 +798,7 @@ export default [
         iterations: 6,
         step: 10,
         attributes: {
-          stroke: "#514d3a",
+          stroke: "#6f4d35",
           "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "2", "1"],
           "stroke-linecap": ["square", "round"],
         },
@@ -828,7 +876,7 @@ export default [
         iterations: 7,
         step: 6,
         attributes: {
-          stroke: ["#514d3a", "#514d3a", "#514d2a", "#55771c", "#55771c", "#44621c", "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
+          stroke: ["#6f4d35", "#6f4d35", "#5f4d35", "#55771c", "#55771c", "#44621c", "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
           "stroke-width": ["13", "6", "3", "1"],
           "stroke-linecap": ["square", "square", "round"],
           transform: ["skewY(-35)", "translate(0)"],
@@ -866,7 +914,25 @@ export default [
         iterations: 4,
         step: 5,
         attributes: {
-          stroke: "forestgreen",
+          stroke: "mediumaquamarine",
+          "stroke-width": "2",
+        },
+      },
+      {
+        lid: "Dekking’s church",
+        axiom: "WXYZ",
+        rules: {
+          W: "FW+F-ZFW-F+X",
+          X: "FW+F-Z",
+          Y: "++F--Y+F-Z",
+          Z: "++F--Y-F+X++F--Y-F+X",
+        },
+        alpha: 180,
+        theta: 90,
+        step: 8,
+        iterations: 7,
+        attributes: {
+          "stroke": "mediumslateblue",
           "stroke-width": "1.5",
         },
       },
@@ -959,6 +1025,9 @@ export default [
         theta: 30,
         iterations: 4,
         step: 4.5,
+        attributes: {
+          stroke: "cornflowerblue",
+        },
       },
       { // [HS*]
         lid: "Penrose mosaic",
@@ -1032,6 +1101,9 @@ export default [
         theta: 60,
         iterations: 3,
         step: 2,
+        attributes: {
+          stroke: "deepskyblue",
+        },
       },
       { // [SE*]
         lid: "snowflake 2",
@@ -1044,6 +1116,9 @@ export default [
         theta: 45,
         iterations: 9,
         step: 1,
+        attributes: {
+          stroke: "deepskyblue",
+        },
       },
       { // [PP]
         lid: "spiral tiling",
@@ -1086,6 +1161,17 @@ export default [
         theta: 5,
         iterations: 8,
         step: 2,
+      },
+      {
+        lid: "wire globule",
+        axiom: "F",
+        rules: {
+          F: "FF-F-FF+",
+        },
+        alpha: 0,
+        theta: 35,
+        step: 25,
+        iterations: 5,
       },
     ],
   },
