@@ -111,6 +111,7 @@ function copyPermalink(cid, lid) {
             <button
               v-if="isUserDefined(cid)"
               type="button"
+              tabindex="-1"
               :class="[$style.deleteLSystemButton, interfaceStyles.iconButton, interfaceStyles.iconButtonDelete]"
               title="Delete this L-system"
               @click="deleteLSystem(lid)"
