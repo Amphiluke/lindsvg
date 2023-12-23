@@ -13,8 +13,8 @@ let lSystemStore = useLSystemStore();
 <style module>
 .plotArea svg {
   left: calc(50% + var(--size-sidebar-button) / 2);
-  max-height: 100dvh;
-  max-width: calc(100dvw - var(--size-sidebar-button));
+  max-height: calc(100dvh - 16px);
+  max-width: calc(100dvw - var(--size-sidebar-button) - 16px);
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);

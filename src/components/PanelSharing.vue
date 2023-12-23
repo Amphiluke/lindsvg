@@ -12,9 +12,12 @@ let lSystemStore = useLSystemStore();
 let interfaceStore = useInterfaceStore();
 
 let fileDialog = useFileDialog({accept: ".lsvg", multiple: false, reset: true});
-fileDialog.onChange(async ([file]) => {
+fileDialog.onChange(async (files) => {
   try {
-    let config = JSON.parse(await file.text());
+    if (!files?.length) { // it might be reset
+      return;
+    }
+    let config = JSON.parse(await files[0].text());
     lSystemStore.setup(config);
     lSystemStore.buildSVG();
   } catch (error) {

@@ -451,7 +451,7 @@ export default [
         step: 15,
         attributes: {
           stroke: ["#800", "#800", "#800", "#971a8b", "#804", "rgba(229,169,169,0.12)"],
-          transform: ["translate(0)", "translate(0)", "translate(0)", "translate(0)", "translate(0)", "scale(0.85)"],
+          transform: ["n/a", "n/a", "n/a", "n/a", "n/a", "scale(0.85)"],
         },
       },
     ],
@@ -879,7 +879,7 @@ export default [
           stroke: ["#6f4d35", "#6f4d35", "#5f4d35", "#55771c", "#55771c", "#44621c", "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
           "stroke-width": ["13", "6", "3", "1"],
           "stroke-linecap": ["square", "square", "round"],
-          transform: ["skewY(-35)", "translate(0)"],
+          transform: ["skewY(-35)", "n/a"],
         },
       },
       {
