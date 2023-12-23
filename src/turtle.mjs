@@ -1,4 +1,13 @@
-let proto = {
+export class Turtle {
+    constructor({x, y, step, alpha, theta}) {
+        this.stack = [];
+        this.x = this.minX = this.maxX = x;
+        this.y = this.minY = this.maxY = y;
+        this.step = step;
+        this.alpha = -alpha; // negate since Y axis is inverted
+        this.theta = theta;
+    }
+
     translate(stepCount = 1) {
         this.x += stepCount * this.step * Math.cos(this.alpha);
         this.y += stepCount * this.step * Math.sin(this.alpha);
@@ -6,20 +15,24 @@ let proto = {
         this.maxX = Math.max(this.maxX, this.x);
         this.minY = Math.min(this.minY, this.y);
         this.maxY = Math.max(this.maxY, this.y);
-    },
+    }
+
     rotate(factor) {
         this.alpha += factor * this.theta;
-    },
+    }
+
     pushStack(repeatCount = 1) {
         for (; repeatCount > 0; repeatCount--) {
             this.stack.push({x: this.x, y: this.y, alpha: this.alpha});
         }
-    },
+    }
+
     popStack(repeatCount) {
         for (; repeatCount > 0; repeatCount--) {
             ({x: this.x, y: this.y, alpha: this.alpha} = this.stack.pop());
         }
-    },
+    }
+
     getDrawingRect() {
         let minX = Math.floor(this.minX);
         let minY = Math.floor(this.minY);
@@ -27,15 +40,4 @@ let proto = {
         let maxY = Math.ceil(this.maxY);
         return {minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY};
     }
-};
-
-export function createTurtle({x, y, step, alpha, theta}) {
-    let turtle = Object.create(proto);
-    turtle.stack = [];
-    turtle.x = turtle.minX = turtle.maxX = x;
-    turtle.y = turtle.minY = turtle.maxY = y;
-    turtle.step = step;
-    turtle.alpha = -alpha; // negate since Y axis is inverted
-    turtle.theta = theta;
-    return turtle;
 }

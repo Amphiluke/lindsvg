@@ -1,5 +1,5 @@
 /*!
-lindsvg v1.3.2
+lindsvg v1.3.3
 https://amphiluke.github.io/lindsvg/
 (c) 2023 Amphiluke
 */
@@ -17,7 +17,7 @@ https://amphiluke.github.io/lindsvg/
         THETA: "The “theta” parameter must be a finite number",
         STEP: "The “step” parameter must be a positive finite number",
         COUNT: "The number of iterations must be integer and finite",
-        NUMBER: "A valid finite number expected"
+        NUMBER: "A valid finite number expected",
     };
 
     let letterRE = /^[A-Z]$/;
@@ -112,7 +112,7 @@ https://amphiluke.github.io/lindsvg/
         configurable: true,
         enumerable: false,
         writable: true,
-        value: "LSError"
+        value: "LSError",
     });
 
     /** @type {Rules} */
@@ -122,7 +122,7 @@ https://amphiluke.github.io/lindsvg/
         "+": "+",
         "-": "-",
         "[": "[",
-        "]": "]"
+        "]": "]",
     };
 
     /** @type {LSParams} */
@@ -130,7 +130,7 @@ https://amphiluke.github.io/lindsvg/
         alpha: 0,
         theta: 0,
         step: 10,
-        iterations: 3
+        iterations: 3,
     };
 
     /**
@@ -176,7 +176,16 @@ https://amphiluke.github.io/lindsvg/
         return codeword.match(/([FB[\]+-])\1*/g); // tokenize
     }
 
-    let proto = {
+    class Turtle {
+        constructor({x, y, step, alpha, theta}) {
+            this.stack = [];
+            this.x = this.minX = this.maxX = x;
+            this.y = this.minY = this.maxY = y;
+            this.step = step;
+            this.alpha = -alpha; // negate since Y axis is inverted
+            this.theta = theta;
+        }
+
         translate(stepCount = 1) {
             this.x += stepCount * this.step * Math.cos(this.alpha);
             this.y += stepCount * this.step * Math.sin(this.alpha);
@@ -184,20 +193,24 @@ https://amphiluke.github.io/lindsvg/
             this.maxX = Math.max(this.maxX, this.x);
             this.minY = Math.min(this.minY, this.y);
             this.maxY = Math.max(this.maxY, this.y);
-        },
+        }
+
         rotate(factor) {
             this.alpha += factor * this.theta;
-        },
+        }
+
         pushStack(repeatCount = 1) {
             for (; repeatCount > 0; repeatCount--) {
                 this.stack.push({x: this.x, y: this.y, alpha: this.alpha});
             }
-        },
+        }
+
         popStack(repeatCount) {
             for (; repeatCount > 0; repeatCount--) {
                 ({x: this.x, y: this.y, alpha: this.alpha} = this.stack.pop());
             }
-        },
+        }
+
         getDrawingRect() {
             let minX = Math.floor(this.minX);
             let minY = Math.floor(this.minY);
@@ -205,17 +218,6 @@ https://amphiluke.github.io/lindsvg/
             let maxY = Math.ceil(this.maxY);
             return {minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY};
         }
-    };
-
-    function createTurtle({x, y, step, alpha, theta}) {
-        let turtle = Object.create(proto);
-        turtle.stack = [];
-        turtle.x = turtle.minX = turtle.maxX = x;
-        turtle.y = turtle.minY = turtle.maxY = y;
-        turtle.step = step;
-        turtle.alpha = -alpha; // negate since Y axis is inverted
-        turtle.theta = theta;
-        return turtle;
     }
 
     function formatCoordinates(x, y) {
@@ -346,11 +348,11 @@ https://amphiluke.github.io/lindsvg/
      */
     function getSVGData(lsParams) {
         let codeword = generateCodeword(lsParams);
-        let turtle = createTurtle({x: 0, y: 0, ...lsParams});
+        let turtle = new Turtle({x: 0, y: 0, ...lsParams});
         let pathData = getPathData(tokenizeCodeword(codeword), turtle);
         return {
             pathData,
-            ...turtle.getDrawingRect()
+            ...turtle.getDrawingRect(),
         };
     }
 
@@ -361,11 +363,11 @@ https://amphiluke.github.io/lindsvg/
      */
     function getMultiPathSVGData(lsParams) {
         let codeword = generateCodeword(lsParams);
-        let turtle = createTurtle({x: 0, y: 0, ...lsParams});
+        let turtle = new Turtle({x: 0, y: 0, ...lsParams});
         let multiPathData = getMultiPathData(tokenizeCodeword(codeword), turtle);
         return {
             multiPathData,
-            ...turtle.getDrawingRect()
+            ...turtle.getDrawingRect(),
         };
     }
 
@@ -378,8 +380,8 @@ https://amphiluke.github.io/lindsvg/
                 // for backward compatibility with v1.1.0, also check fill and stroke as direct props of svgParams
                 fill: svgParams.fill || "none",
                 stroke: svgParams.stroke || "#000",
-                ...svgParams.pathAttributes
-            }
+                ...svgParams.pathAttributes,
+            },
         };
     }
 
@@ -392,7 +394,7 @@ https://amphiluke.github.io/lindsvg/
             if (Array.isArray(value)) {
                 value = value[Math.min(index, value.length - 1)];
             }
-            if (value === undefined) {
+            if (value === undefined || value.toLowerCase() === "n/a") {
                 return accumulator;
             }
             value = value.replace(/"/g, "&quot;");
@@ -414,7 +416,7 @@ https://amphiluke.github.io/lindsvg/
             viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
             width,
             height,
-            content: `<path d="${pathData}"${pathAttrStr}></path>`
+            content: `<path d="${pathData}"${pathAttrStr}></path>`,
         });
     }
 
@@ -435,7 +437,7 @@ https://amphiluke.github.io/lindsvg/
             viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
             width,
             height,
-            content
+            content,
         });
     }
 

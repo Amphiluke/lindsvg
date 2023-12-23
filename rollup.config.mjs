@@ -1,4 +1,4 @@
-import pkg from "./package.json" assert {type: "json"};
+import pkg from "./package.json" with {type: "json"};
 import terser from "@rollup/plugin-terser";
 
 let config = {
@@ -9,32 +9,36 @@ let config = {
 ${pkg.name} v${pkg.version}
 ${pkg.homepage}
 (c) ${new Date().getUTCFullYear()} ${pkg.author}
-*/`
+*/`,
     },
     plugins: [
         terser({
-            output: {comments: /^!/}
-        })
-    ]
+            output: {comments: /^!/},
+        }),
+    ],
 };
 
 export default [
     {
         input: config.input,
-        output: {file: "dist/lindsvg.esm.js", format: "esm", ...config.output}
+        output: {file: "dist/lindsvg.esm.js", format: "esm", ...config.output},
     },
     {
         input: config.input,
         output: {file: "dist/lindsvg.esm.min.js", format: "esm", ...config.output},
-        plugins: config.plugins
+        plugins: config.plugins,
     },
     {
         input: config.input,
-        output: {file: "dist/lindsvg.js", format: "umd", ...config.output}
+        output: {file: "dist/lindsvg.js", format: "umd", ...config.output},
     },
     {
         input: config.input,
         output: {file: "dist/lindsvg.min.js", format: "umd", ...config.output},
-        plugins: config.plugins
-    }
+        plugins: config.plugins,
+    },
+    {
+        input: config.input,
+        output: {file: "dist/lindsvg.cjs", format: "cjs", ...config.output},
+    },
 ];

@@ -3,6 +3,8 @@ lindsvg v1.3.3
 https://amphiluke.github.io/lindsvg/
 (c) 2023 Amphiluke
 */
+'use strict';
+
 let messages = {
     AXIOM: "Axiom may only contain the following characters: A..Z,+,-,[,]",
     RULE: "Production rules may only contain the following characters: A..Z,+,-,[,]",
@@ -435,4 +437,7 @@ function getMultiPathSVGCode(lsParams, svgParams) {
     });
 }
 
-export { getMultiPathSVGCode, getMultiPathSVGData, getSVGCode, getSVGData };
+exports.getMultiPathSVGCode = getMultiPathSVGCode;
+exports.getMultiPathSVGData = getMultiPathSVGData;
+exports.getSVGCode = getSVGCode;
+exports.getSVGData = getSVGData;

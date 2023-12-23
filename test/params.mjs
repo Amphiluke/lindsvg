@@ -7,7 +7,7 @@ export let singlePathLSParams = {
     alpha: 90 * Math.PI / 180,
     theta: 20 * Math.PI / 180,
     iterations: 7,
-    step: 2
+    step: 2,
 };
 
 export let multiPathLSParams = {
@@ -20,7 +20,7 @@ export let multiPathLSParams = {
     alpha: 90 * Math.PI / 180,
     theta: 10 * Math.PI / 180,
     iterations: 7,
-    step: 5
+    step: 5,
 };
 
 export let lsInvalidParams = {
@@ -32,7 +32,7 @@ export let lsInvalidParams = {
     alpha: (90 * Math.PI / 180).toString(),
     theta: Infinity,
     iterations: 7.1,
-    step: -2
+    step: -2,
 };
 
 export let singlePathSVGParams = {
@@ -41,8 +41,8 @@ export let singlePathSVGParams = {
     padding: 10,
     pathAttributes: {
         // fill: "skyblue",
-        stroke: "#69983a"
-    }
+        stroke: "#69983a",
+    },
 };
 
 export let multiPathSVGParams = {
@@ -54,6 +54,6 @@ export let multiPathSVGParams = {
             "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
         "stroke-width": ["11", "5", "3", "1"],
         "stroke-linecap": ["square", "square", "round"],
-        transform: ["skewY(-35)", ""]
-    }
+        transform: ["skewY(-35)", "n/a"],
+    },
 };

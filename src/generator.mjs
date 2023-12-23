@@ -8,7 +8,7 @@ let ctrlRules = {
     "+": "+",
     "-": "-",
     "[": "[",
-    "]": "]"
+    "]": "]",
 };
 
 /** @type {LSParams} */
@@ -16,7 +16,7 @@ let defaults = {
     alpha: 0,
     theta: 0,
     step: 10,
-    iterations: 3
+    iterations: 3,
 };
 
 /**

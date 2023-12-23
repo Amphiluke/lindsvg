@@ -1,5 +1,5 @@
 import {generateCodeword, tokenizeCodeword} from "./generator.mjs";
-import {createTurtle} from "./turtle.mjs";
+import {Turtle} from "./turtle.mjs";
 
 function formatCoordinates(x, y) {
     // Unary plus is used to remove insignificant trailing zeros
@@ -129,11 +129,11 @@ function getMultiPathData(tokens, turtle) {
  */
 export function getSVGData(lsParams) {
     let codeword = generateCodeword(lsParams);
-    let turtle = createTurtle({x: 0, y: 0, ...lsParams});
+    let turtle = new Turtle({x: 0, y: 0, ...lsParams});
     let pathData = getPathData(tokenizeCodeword(codeword), turtle);
     return {
         pathData,
-        ...turtle.getDrawingRect()
+        ...turtle.getDrawingRect(),
     };
 }
 
@@ -144,11 +144,11 @@ export function getSVGData(lsParams) {
  */
 export function getMultiPathSVGData(lsParams) {
     let codeword = generateCodeword(lsParams);
-    let turtle = createTurtle({x: 0, y: 0, ...lsParams});
+    let turtle = new Turtle({x: 0, y: 0, ...lsParams});
     let multiPathData = getMultiPathData(tokenizeCodeword(codeword), turtle);
     return {
         multiPathData,
-        ...turtle.getDrawingRect()
+        ...turtle.getDrawingRect(),
     };
 }
 
@@ -161,8 +161,8 @@ function makeSVGConfig(svgParams, naturalWidth, naturalHeight) {
             // for backward compatibility with v1.1.0, also check fill and stroke as direct props of svgParams
             fill: svgParams.fill || "none",
             stroke: svgParams.stroke || "#000",
-            ...svgParams.pathAttributes
-        }
+            ...svgParams.pathAttributes,
+        },
     };
 }
 
@@ -175,7 +175,7 @@ function makeAttrString(attrs, index) {
         if (Array.isArray(value)) {
             value = value[Math.min(index, value.length - 1)];
         }
-        if (value === undefined) {
+        if (value === undefined || value.toLowerCase() === "n/a") {
             return accumulator;
         }
         value = value.replace(/"/g, "&quot;");
@@ -197,7 +197,7 @@ export function getSVGCode(lsParams, svgParams) {
         viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
         width,
         height,
-        content: `<path d="${pathData}"${pathAttrStr}></path>`
+        content: `<path d="${pathData}"${pathAttrStr}></path>`,
     });
 }
 
@@ -218,6 +218,6 @@ export function getMultiPathSVGCode(lsParams, svgParams) {
         viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
         width,
         height,
-        content
+        content,
     });
 }

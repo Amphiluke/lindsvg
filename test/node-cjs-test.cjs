@@ -1,11 +1,7 @@
-let {getSVGCode, getMultiPathSVGCode} = require("../dist/lindsvg.js");
-let {promisify} = require("util");
-let {writeFile, unlink} = require("fs");
-let {join} = require("path");
+let {getSVGCode, getMultiPathSVGCode} = require("../dist/lindsvg.cjs");
+let {writeFile, unlink} = require("node:fs/promises");
+let {join} = require("node:path");
 let {dump} = require("js-yaml");
-
-let asyncWriteFile = promisify(writeFile);
-let asyncUnlink = promisify(unlink);
 
 async function runTest() {
     let {singlePathLSParams, multiPathLSParams, lsInvalidParams, singlePathSVGParams, multiPathSVGParams} = await import("./params.mjs");
@@ -13,13 +9,13 @@ async function runTest() {
     let singlePathSVG = join(__dirname, "svg", "single-path.svg");
     let multiPathSVG = join(__dirname, "svg", "multi-path.svg");
 
-    await Promise.allSettled([asyncUnlink(singlePathSVG), asyncUnlink(multiPathSVG)]);
+    await Promise.allSettled([unlink(singlePathSVG), unlink(multiPathSVG)]);
 
     let singlePathSVGCode = getSVGCode(singlePathLSParams, singlePathSVGParams);
-    await asyncWriteFile(singlePathSVG, singlePathSVGCode);
+    await writeFile(singlePathSVG, singlePathSVGCode);
 
     let multiPathSVGCode = getMultiPathSVGCode(multiPathLSParams, multiPathSVGParams);
-    await asyncWriteFile(multiPathSVG, multiPathSVGCode);
+    await writeFile(multiPathSVG, multiPathSVGCode);
 
     try {
         console.log("Below, an exception is expected");

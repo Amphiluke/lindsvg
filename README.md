@@ -4,7 +4,6 @@
 
 Simple dependency-free module used to generate SVG images of deterministic L-systems.
 
-<a id="lindsvg-demo-svg"></a>
 ![Generated SVG tree](https://amphiluke.github.io/l-systems/img/autumn-tree.svg)
 
 ## Installation
@@ -17,7 +16,7 @@ Installing the module is as simple as:
 npm install lindsvg
 ```
 
-Now you may get it in your scripts as usual: `require("lindsvg")`, or `import * as lindsvg from "lindsvg"` if you use such bundlers as webpack or rollup.
+Now you may get it in your scripts as usual: `require("lindsvg")`, or `import * as lindsvg from "lindsvg"`.
 
 ### In a browser
 
@@ -31,8 +30,8 @@ If you rather prefer using ES modules in a browser, just choose the “esm” bu
 
 ```html
 <script type="module">
-    import * as lindsvg from "https://cdn.jsdelivr.net/npm/lindsvg/dist/lindsvg.esm.min.js";
-    // ...
+  import * as lindsvg from "https://cdn.jsdelivr.net/npm/lindsvg/dist/lindsvg.esm.min.js";
+  // ...
 </script>
 ```
 
@@ -54,32 +53,32 @@ All methods expect L-system parameters object as their first argument. These par
 ### Using “single-path” methods
 
 ```javascript
-let {getSVGCode, getSVGData} = require("lindsvg");
+import {getSVGCode, getSVGData} from "lindsvg";
 
 // L-system parameters
 let lsParams = {
-    axiom: "A---A",      // The initial codeword (axiom)
-    rules: {             // L-system production rules
-        F: "F",          // Move forward a step with drawing a line
-        B: "B",          // Move forward a step without drawing a line
-        A: "B-F+Z+F-BA", // Auxiliary rules...
-        Z: "F-FF-F--[--Z]F-FF-F--F-FF-F--"
-    },
-    alpha: 0,            // Initial angle in radians
-    theta: Math.PI / 3,  // Angle increment in radians
-    step: 15,            // The length of a “turtle” step
-    iterations: 7        // Total number of iterations
+  axiom: "A---A",    // The initial codeword (axiom)
+  rules: {           // L-system production rules
+    F: "F",          // Move forward a step with drawing a line
+    B: "B",          // Move forward a step without drawing a line
+    A: "B-F+Z+F-BA", // Auxiliary rules...
+    Z: "F-FF-F--[--Z]F-FF-F--F-FF-F--",
+  },
+  alpha: 0,           // Initial angle in radians
+  theta: Math.PI / 3, // Angle increment in radians
+  step: 15,           // The length of a “turtle” step
+  iterations: 7,      // Total number of iterations
 };
 
 // Output SVG parameters (all of them are optional)
 let svgParams = {
-    width: 600,       // Desired SVG element width
-    height: 600,      // Desired SVG element height
-    padding: 5,       // Additional space to extend the viewBox
-    pathAttributes: { // Name to value map for the <path> element attributes
-        stroke: "green",
-        "stroke-width": "2"
-    }
+  width: 600,       // Desired SVG element width
+  height: 600,      // Desired SVG element height
+  padding: 5,       // Additional space to extend the viewBox
+  pathAttributes: { // Name to value map for the <path> element attributes
+    stroke: "green",
+    "stroke-width": "2",
+  },
 };
 
 // Get ready-to-render L-system’s SVG code as a string...
@@ -95,35 +94,35 @@ An object returned by `getSVGData` contains [path data](https://www.w3.org/TR/SV
 
 Using “multi-path” methods (`getMultiPathSVGCode` and `getMultiPathSVGData`) allows you to specify different path attributes for every `<path>` element separately, which may make branched L-systems (like plants) look “more naturally”.
 
-For example, to generate the tree [demonstrated above](#lindsvg-demo-svg) (all but foliage) the following options were used:
+For example, to generate the tree [demonstrated above](#lindsvg) (all but foliage) the following options were used:
 
 ```javascript
-let {getMultiPathSVGCode, getMultiPathSVGData} = require("lindsvg");
+import {getMultiPathSVGCode, getMultiPathSVGData} from "lindsvg";
 
 // L-system parameters
 let lsParams = {
-    axiom: "F-FFF-F+F+X",
-    rules: {
-        F: "F",
-        X: "FFF-[-F+F[Y]-[X]]+[+F+F[X]-[X]]",
-        Y: "FF-[-F+F]+[+F+FY]"
-    },
-    alpha: 90 * Math.PI / 180,
-    theta: 14 * Math.PI / 180,
-    iterations: 6,
-    step: 12
+  axiom: "F-FFF-F+F+X",
+  rules: {
+    F: "F",
+    X: "FFF-[-F+F[Y]-[X]]+[+F+F[X]-[X]]",
+    Y: "FF-[-F+F]+[+F+FY]",
+  },
+  alpha: 90 * Math.PI / 180,
+  theta: 14 * Math.PI / 180,
+  iterations: 6,
+  step: 12,
 };
 
 // Output SVG parameters
 let svgParams = {
-    width: 565,
-    height: 445,
-    padding: 10,
-    pathAttributes: {
-        stroke: "#514d3a",
-        "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "1"],
-        "stroke-linecap": ["square", "round" /* the rest items are equal to the last one */]
-    }
+  width: 565,
+  height: 445,
+  padding: 10,
+  pathAttributes: {
+    stroke: "#514d3a",
+    "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "1"],
+    "stroke-linecap": ["square", "round" /* the rest items are equal to the last one */],
+  },
 };
 
 // Get ready-to-render L-system’s SVG code as a string...
@@ -135,6 +134,8 @@ let {multiPathData, minX, minY, width, height} = getMultiPathSVGData(lsParams);
 
 If an attribute array contains fewer elements than the maximum branching depth (e.g. see `stroke-linecap` in the example above), the missing items are implicitly made equal to the last one. So you don’t need to repeat the same value in the end of the list.
 
+You may also use the special value `"n/a"` which prevents an attribute from being added on the corresponding `<path>` element (e.g. when you need to add an attribute only to one or to a few `<path>`s: `pathAttributes: {transform: ["skewY(-35)", "n/a"]}`).
+
 The property `multiPathData` in the object returned by `getMultiPathSVGData` is a _list_ of path data for every `<path>` element. The list is sorted in the order of increasing branch level (the deeper the branch the higher the index in the array).
 
 ### Error handling
@@ -142,25 +143,21 @@ The property `multiPathData` in the object returned by `getMultiPathSVGData` is 
 In case of invalid input L-system parameters, the methods throw a custom exception. You may use it to get a detailed explanation of which parameter(s) failed to pass validation, and format the message as you wish.
 
 ```javascript
-let {getSVGCode} = require("lindsvg");
-let yaml = require("js-yaml");
+import {getSVGCode} from "lindsvg";
+import {dump} from "js-yaml";
 
 try {
-    console.log(getSVGCode(lsParams, svgParams));
+  console.log(getSVGCode(lsParams, svgParams));
 } catch (error) {
-    // Log the original message
-    console.error(error);
-    if (error.name === "LSError") {
-        // Get a JSON representation of the error list and format it as YAML
-        let errorJSON = error.toJSON();
-        console.log(yaml.dump(errorJSON, {indent: 4}));
-    }
+  // Log the original message
+  console.error(error);
+  if (error.name === "LSError") {
+    // Get a JSON representation of the error list and format it as YAML
+    let errorJSON = error.toJSON();
+    console.log(dump(errorJSON, {indent: 4}));
+  }
 }
 ```
-
-## Compatibility note
-
-lindsvg utilizes the ECMAScript 2018 syntax. If you want to use the module in environments that do not support ES 2018, please transpile the sources with babel or whatever for your needs.
 
 ## Demos
 

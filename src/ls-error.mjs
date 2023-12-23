@@ -25,7 +25,7 @@ Object.defineProperty(LSError.prototype, "name", {
     configurable: true,
     enumerable: false,
     writable: true,
-    value: "LSError"
+    value: "LSError",
 });
 
 export {LSError};

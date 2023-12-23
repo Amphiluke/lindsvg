@@ -6,7 +6,7 @@ let messages = {
     THETA: "The “theta” parameter must be a finite number",
     STEP: "The “step” parameter must be a positive finite number",
     COUNT: "The number of iterations must be integer and finite",
-    NUMBER: "A valid finite number expected"
+    NUMBER: "A valid finite number expected",
 };
 
 let letterRE = /^[A-Z]$/;
