@@ -154,8 +154,8 @@ function copyPermalink(cid, lid) {
       content: "";
       flex-shrink: 0;
       height: 25px;
-      -webkit-mask: url(../assets/icons.svg) -125px 0 no-repeat;
-      mask: url(../assets/icons.svg) -125px 0 no-repeat;
+      -webkit-mask: url(../assets/icons.svg) -100px 0 no-repeat;
+      mask: url(../assets/icons.svg) -100px 0 no-repeat;
       width: 25px;
     }
 

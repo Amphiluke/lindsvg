@@ -10,54 +10,48 @@ let interfaceStore = useInterfaceStore();
 
 let newAttributeName = ref("");
 let newAttributeValue = ref("");
-let attributes = {
-  // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Presentation
-  "Presentation Attributes": [
-    "clip-path",
-    "clip-rule",
-    "color",
-    "color-interpolation",
-    "cursor",
-    "display",
-    "fill",
-    "fill-opacity",
-    "fill-rule",
-    "filter",
-    "marker-end",
-    "marker-mid",
-    "marker-start",
-    "mask",
-    "opacity",
-    "overflow",
-    "paint-order",
-    "pathLength",
-    "pointer-events",
-    "shape-rendering",
-    "stroke",
-    "stroke-dasharray",
-    "stroke-dashoffset",
-    "stroke-linecap",
-    "stroke-linejoin",
-    "stroke-miterlimit",
-    "stroke-opacity",
-    "stroke-width",
-    "transform",
-    "vector-effect",
-    "visibility",
-  ],
+let attributes = [
+  // Presentation Attributes (https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Presentation)
+  "clip-path",
+  "clip-rule",
+  "color",
+  "color-interpolation",
+  "cursor",
+  "display",
+  "fill",
+  "fill-opacity",
+  "fill-rule",
+  "filter",
+  "marker-end",
+  "marker-mid",
+  "marker-start",
+  "mask",
+  "opacity",
+  "overflow",
+  "paint-order",
+  "pathLength",
+  "pointer-events",
+  "shape-rendering",
+  "stroke",
+  "stroke-dasharray",
+  "stroke-dashoffset",
+  "stroke-linecap",
+  "stroke-linejoin",
+  "stroke-miterlimit",
+  "stroke-opacity",
+  "stroke-width",
+  "transform",
+  "vector-effect",
+  "visibility",
 
-  // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Core
-  "Core Attributes": [
-    "id",
-    "tabindex",
-  ],
+  // Core Attributes (https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Core)
+  "id",
+  "tabindex",
 
-  // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Styling
-  "Styling Attributes": [
-    "class",
-    "style",
-  ],
-};
+  // Styling Attributes (https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Styling)
+  "class",
+  "style",
+];
 
 function setAttribute(name, value) {
   value = value.trim().split(/\r?\n/);
@@ -120,36 +114,23 @@ function plot() {
         <h3>Add a new attribute</h3>
         <div :class="$style.attributeItem">
           <div :class="$style.newAttributeName">
-            <label :class="$style.attributeListCtrl">
-              <select
-                :class="$style.attributeList"
-                title="Select attribute"
-                @change="newAttributeName = $event.target.value"
-              >
-                <optgroup
-                  v-for="(attributeList, group) in attributes"
-                  :key="group"
-                  :label="group"
-                >
-                  <option
-                    v-for="attribute in attributeList"
-                    :key="attribute"
-                    :value="attribute"
-                    :disabled="Object.hasOwn(lSystemStore.attributes, attribute)"
-                  >
-                    {{ attribute }}
-                  </option>
-                </optgroup>
-              </select>
-            </label>
             <label :class="[interfaceStyles.labeledField, $style.labeledField]">
               <input
                 v-model="newAttributeName"
+                list="svg-attributes"
                 autocapitalize="off"
                 type="text"
                 placeholder="Enter attribute name…"
               >
             </label>
+            <datalist id="svg-attributes">
+              <option
+                v-for="(attribute, index) of attributes"
+                :key="index"
+                :value="attribute"
+                :disabled="Object.hasOwn(lSystemStore.attributes, attribute)"
+              />
+            </datalist>
             <button
               type="button"
               :class="[$style.addAttributeButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd]"
@@ -245,37 +226,6 @@ function plot() {
     }
   }
   
-  .attributeListCtrl {
-    display: flex;
-    flex-shrink: 0;
-    position: relative;
-
-    &::before {
-      background-color: var(--color-accent);
-      content: "";
-      height: 25px;
-      left: 50%;
-      -webkit-mask: url(../assets/icons.svg) -150px 0 no-repeat;
-      mask: url(../assets/icons.svg) -150px 0 no-repeat;
-      opacity: 0.5;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 25px;
-    }
-
-    &:hover::before,
-    &:focus-within::before {
-      opacity: 1;
-    }
-  }
-
-  .attributeList {
-    cursor: pointer;
-    opacity: 0.01;
-    width: 32px;
-  }
-
   .addAttributeButton {
     flex-shrink: 0;
 

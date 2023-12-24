@@ -81,30 +81,25 @@
   }
 }
 
-.iconButtonView::before {
+.iconButtonConfig::before {
   -webkit-mask-position: 0 0;
   mask-position: 0 0;
 }
 
-.iconButtonConfig::before {
+.iconButtonErase::before,
+.iconButtonAdd::before {
   -webkit-mask-position: -25px 0;
   mask-position: -25px 0;
 }
 
-.iconButtonErase::before,
-.iconButtonAdd::before {
+.iconButtonDelete::before {
   -webkit-mask-position: -50px 0;
   mask-position: -50px 0;
 }
 
-.iconButtonDelete::before {
-  -webkit-mask-position: -75px 0;
-  mask-position: -75px 0;
-}
-
 .iconButtonLink::before {
-  -webkit-mask-position: -200px 0;
-  mask-position: -200px 0;
+  -webkit-mask-position: -125px 0;
+  mask-position: -125px 0;
 }
 
 @keyframes add-breath {
