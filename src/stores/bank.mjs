@@ -351,8 +351,8 @@ export default [
         axiom: "FX",
         rules: {
           F: "F",
-          X: "X+YF+",
-          Y: "-FX-Y",
+          X: "X+YF",
+          Y: "FX-Y",
         },
         alpha: 0,
         theta: 90,
@@ -653,6 +653,24 @@ export default [
           "stroke-width": "1.5",
         },
       },
+      {
+        lid: "grass",
+        axiom: "[X][Y]++[X][Y]++[X][Y]++[X][Y]++[X][Y]",
+        rules: {
+          W: "YF++ZF----XF[-YF----WF]++",
+          X: "+YF--ZF[---WF--XF]+",
+          Y: "-WF++XF[+++YF++ZF]-",
+          Z: "--YF++++WF[+ZF++++XF]--XF",
+        },
+        alpha: 110,
+        theta: 5,
+        step: 10,
+        iterations: 4,
+        attributes: {
+          stroke: ["olivedrab", "forestgreen"],
+          "stroke-width": ["3", "2", "1"],
+        },
+      },
       { // [AK]
         lid: "liana sarment",
         axiom: "FYX",
@@ -904,6 +922,20 @@ export default [
     cid: "Shapes",
     items: [
       {
+        lid: "carpet",
+        axiom: "F-F-F-F",
+        rules: {
+          F: "F[F]-F+F[--F]+F-F",
+        },
+        alpha: 0,
+        theta: 90,
+        step: 3,
+        iterations: 5,
+        attributes: {
+          stroke: ["gold", "brown"],
+        },
+      },
+      {
         lid: "crystal",
         axiom: "F+F+F+F",
         rules: {
@@ -934,6 +966,25 @@ export default [
         attributes: {
           "stroke": "mediumslateblue",
           "stroke-width": "1.5",
+        },
+      },
+      {
+        lid: "double Penrose",
+        axiom: "[X][Y]++[X][Y]++[X][Y]++[X][Y]++[X][Y]",
+        alpha: 0,
+        rules: {
+          W: "YF++ZF----XF[-YF----WF]++",
+          X: "+YF--ZF[---WF--XF]+",
+          Y: "-WF++XF[+++YF++ZF]-",
+          Z: "--YF++++WF[+ZF++++XF]--XF",
+        },
+        theta: 36,
+        step: 25,
+        iterations: 5,
+        attributes: {
+          stroke: "forestgreen",
+          "stroke-width": "2",
+          "stroke-linejoin": "round",
         },
       },
       {
@@ -1077,6 +1128,25 @@ export default [
         theta: 72,
         iterations: 4,
         step: 5,
+      },
+      {
+        lid: "plate",
+        axiom: "S",
+        rules: {
+          F: "F",
+          S: "[[L]D[L]DD[L]D]-S",
+          D: "FF++++++++++++++++++",
+          L: "+++++++++F",
+        },
+        alpha: 0,
+        theta: 5,
+        step: 100,
+        iterations: 73,
+        attributes: {
+          stroke: ["slateblue", "crimson"],
+          "stroke-width": ["1.5", "2"],
+          "stroke-dasharray": ["n/a", "10 3"],
+        },
       },
       {
         lid: "Sierpinski carpet",
