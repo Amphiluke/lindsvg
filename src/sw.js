@@ -30,7 +30,7 @@ async function cleanup() {
 }
 
 async function handleRequest(request) {
-  let response = await caches.match(request);
+  let response = await caches.match(request, {ignoreVary: true});
   if (response) {
     return response;
   }
