@@ -197,7 +197,7 @@ function copyPermalink(cid, lid) {
     margin-block: 0 8px;
     padding-block: 13px 5px;
     position: sticky;
-    top: 0;
+    top: -1px;
     z-index: 1;
   }
 
