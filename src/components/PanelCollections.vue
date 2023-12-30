@@ -193,11 +193,11 @@ function copyPermalink(cid, lid) {
 
   .collectionName {
     background: var(--color-surface);
-    box-shadow: 0 4px 7px 2px var(--color-surface);
+    box-shadow: 0 4px 7px 2px var(--color-surface), 0 -4px 7px 2px var(--color-surface);
     margin-block: 0 8px;
     padding-block: 13px 5px;
     position: sticky;
-    top: -1px;
+    top: 0;
     z-index: 1;
   }
 
