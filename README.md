@@ -35,6 +35,21 @@ If you rather prefer using ES modules in a browser, just choose the “esm” bu
 </script>
 ```
 
+## Supported commands
+
+The following turtle commands are currently supported by lindsvg:
+
+| Command             | Description                                           |
+| ------------------- | ----------------------------------------------------- |
+| `F`                 | Move forward one step with drawing a line             |
+| `B`                 | Move forward one step without drawing a line          |
+| `+`                 | Turn left by turning angle (theta)                    |
+| `-`                 | Turn right by turning angle (theta)                   |
+| `\|`                | Reverse direction (turn by 180 degrees)               |
+| `[`                 | Push current state of the turtle onto the stack       |
+| `]`                 | Pop a state from the stack and apply it to the turtle |
+| `A`,`C`–`E`,`G`–`Z` | Auxiliary user-defined rules                          |
+
 ## API &amp; examples
 
 The module exports two pairs of methods.

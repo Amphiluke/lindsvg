@@ -48,6 +48,9 @@ function getPathData(tokens, turtle) {
             case "-":
                 turtle.rotate(-tokenLength);
                 break;
+            case "|":
+                turtle.reverse(tokenLength);
+                break;
             case "[":
                 turtle.pushStack(tokenLength);
                 break;
@@ -96,6 +99,9 @@ function getMultiPathData(tokens, turtle) {
                 break;
             case "-":
                 turtle.rotate(-tokenLength);
+                break;
+            case "|":
+                turtle.reverse(tokenLength);
                 break;
             case "[":
                 branchLevel += tokenLength;

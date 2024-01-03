@@ -1,6 +1,6 @@
 let messages = {
-    AXIOM: "Axiom may only contain the following characters: A..Z,+,-,[,]",
-    RULE: "Production rules may only contain the following characters: A..Z,+,-,[,]",
+    AXIOM: "Axiom may only contain the following characters: A..Z,+,-,|,[,]",
+    RULE: "Production rules may only contain the following characters: A..Z,+,-,|,[,]",
     LETTER: "Allowed alphabet letters are: A..Z",
     ALPHA: "The “alpha” parameter must be a finite number",
     THETA: "The “theta” parameter must be a finite number",
@@ -14,7 +14,7 @@ export function checkLetter(letter, msg = messages.LETTER) {
     return letterRE.test(letter) || msg;
 }
 
-let ruleRE = /^[A-Z+\-[\]]*$/;
+let ruleRE = /^[A-Z+\-[\]|]*$/;
 export function checkRule(rule, msg = messages.RULE) {
     return ruleRE.test(rule) || msg;
 }

@@ -9,6 +9,6 @@
   "author": "Amphiluke",
   "license": "MIT",
   "dependencies": {
-    "lindsvg": "file:../../lindsvg-1.3.3.tgz"
+    "lindsvg": "file:../../lindsvg-1.4.0.tgz"
   }
 }

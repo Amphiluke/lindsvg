@@ -1,11 +1,11 @@
 /*!
-lindsvg v1.3.3
+lindsvg v1.4.0
 https://amphiluke.github.io/lindsvg/
-(c) 2023 Amphiluke
+(c) 2024 Amphiluke
 */
 let messages = {
-    AXIOM: "Axiom may only contain the following characters: A..Z,+,-,[,]",
-    RULE: "Production rules may only contain the following characters: A..Z,+,-,[,]",
+    AXIOM: "Axiom may only contain the following characters: A..Z,+,-,|,[,]",
+    RULE: "Production rules may only contain the following characters: A..Z,+,-,|,[,]",
     LETTER: "Allowed alphabet letters are: A..Z",
     ALPHA: "The “alpha” parameter must be a finite number",
     THETA: "The “theta” parameter must be a finite number",
@@ -19,7 +19,7 @@ function checkLetter(letter, msg = messages.LETTER) {
     return letterRE.test(letter) || msg;
 }
 
-let ruleRE = /^[A-Z+\-[\]]*$/;
+let ruleRE = /^[A-Z+\-[\]|]*$/;
 function checkRule(rule, msg = messages.RULE) {
     return ruleRE.test(rule) || msg;
 }
@@ -115,6 +115,7 @@ let ctrlRules = {
     B: "",
     "+": "+",
     "-": "-",
+    "|": "|",
     "[": "[",
     "]": "]",
 };
@@ -134,7 +135,7 @@ let defaults = {
  */
 function cleanCodeword(codeword) {
     // Remove auxiliary drawing-indifferent letters
-    let cleanCodeword = codeword.replace(/[^FB[\]+-]/g, "");
+    let cleanCodeword = codeword.replace(/[^FB[\]+-|]/g, "");
     do {
         codeword = cleanCodeword;
         // Remove useless brackets that don’t contain F commands or other brackets (preserving bracket balance!)
@@ -167,7 +168,7 @@ function generateCodeword(lsParams) {
  * @return {String[]}
  */
 function tokenizeCodeword(codeword) {
-    return codeword.match(/([FB[\]+-])\1*/g); // tokenize
+    return codeword.match(/([FB[\]+-|])\1*/g); // tokenize
 }
 
 class Turtle {
@@ -191,6 +192,10 @@ class Turtle {
 
     rotate(factor) {
         this.alpha += factor * this.theta;
+    }
+
+    reverse(repeatCount = 1) {
+        this.alpha += (repeatCount % 2) * Math.PI;
     }
 
     pushStack(repeatCount = 1) {
@@ -261,6 +266,9 @@ function getPathData(tokens, turtle) {
             case "-":
                 turtle.rotate(-tokenLength);
                 break;
+            case "|":
+                turtle.reverse(tokenLength);
+                break;
             case "[":
                 turtle.pushStack(tokenLength);
                 break;
@@ -309,6 +317,9 @@ function getMultiPathData(tokens, turtle) {
                 break;
             case "-":
                 turtle.rotate(-tokenLength);
+                break;
+            case "|":
+                turtle.reverse(tokenLength);
                 break;
             case "[":
                 branchLevel += tokenLength;
