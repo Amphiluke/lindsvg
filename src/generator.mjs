@@ -8,6 +8,7 @@ let ctrlRules = {
     "+": "+",
     "-": "-",
     "|": "|",
+    "!": "!",
     "[": "[",
     "]": "]",
 };
@@ -27,7 +28,7 @@ let defaults = {
  */
 function cleanCodeword(codeword) {
     // Remove auxiliary drawing-indifferent letters
-    let cleanCodeword = codeword.replace(/[^FB[\]+-|]/g, "");
+    let cleanCodeword = codeword.replace(/[^FB[\]+-|!]/g, "");
     do {
         codeword = cleanCodeword;
         // Remove useless brackets that don’t contain F commands or other brackets (preserving bracket balance!)
@@ -60,5 +61,5 @@ export function generateCodeword(lsParams) {
  * @return {String[]}
  */
 export function tokenizeCodeword(codeword) {
-    return codeword.match(/([FB[\]+-|])\1*/g); // tokenize
+    return codeword.match(/([FB[\]+-|!])\1*/g); // tokenize
 }

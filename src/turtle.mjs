@@ -25,6 +25,10 @@ export class Turtle {
         this.alpha += (repeatCount % 2) * Math.PI;
     }
 
+    swapSigns(repeatCount = 1) {
+        this.theta *= (-1) ** repeatCount;
+    }
+
     pushStack(repeatCount = 1) {
         for (; repeatCount > 0; repeatCount--) {
             this.stack.push({x: this.x, y: this.y, alpha: this.alpha});

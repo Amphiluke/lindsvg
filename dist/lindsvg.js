@@ -1,5 +1,5 @@
 /*!
-lindsvg v1.4.0
+lindsvg v1.5.0
 https://amphiluke.github.io/lindsvg/
 (c) 2024 Amphiluke
 */
@@ -10,8 +10,8 @@ https://amphiluke.github.io/lindsvg/
 })(this, (function (exports) { 'use strict';
 
     let messages = {
-        AXIOM: "Axiom may only contain the following characters: A..Z,+,-,|,[,]",
-        RULE: "Production rules may only contain the following characters: A..Z,+,-,|,[,]",
+        AXIOM: "Axiom may only contain the following characters: A..Z,+,-,|,!,[,]",
+        RULE: "Production rules may only contain the following characters: A..Z,+,-,|,!,[,]",
         LETTER: "Allowed alphabet letters are: A..Z",
         ALPHA: "The “alpha” parameter must be a finite number",
         THETA: "The “theta” parameter must be a finite number",
@@ -25,7 +25,7 @@ https://amphiluke.github.io/lindsvg/
         return letterRE.test(letter) || msg;
     }
 
-    let ruleRE = /^[A-Z+\-[\]|]*$/;
+    let ruleRE = /^[A-Z+\-|![\]]*$/;
     function checkRule(rule, msg = messages.RULE) {
         return ruleRE.test(rule) || msg;
     }
@@ -122,6 +122,7 @@ https://amphiluke.github.io/lindsvg/
         "+": "+",
         "-": "-",
         "|": "|",
+        "!": "!",
         "[": "[",
         "]": "]",
     };
@@ -141,7 +142,7 @@ https://amphiluke.github.io/lindsvg/
      */
     function cleanCodeword(codeword) {
         // Remove auxiliary drawing-indifferent letters
-        let cleanCodeword = codeword.replace(/[^FB[\]+-|]/g, "");
+        let cleanCodeword = codeword.replace(/[^FB[\]+-|!]/g, "");
         do {
             codeword = cleanCodeword;
             // Remove useless brackets that don’t contain F commands or other brackets (preserving bracket balance!)
@@ -174,7 +175,7 @@ https://amphiluke.github.io/lindsvg/
      * @return {String[]}
      */
     function tokenizeCodeword(codeword) {
-        return codeword.match(/([FB[\]+-|])\1*/g); // tokenize
+        return codeword.match(/([FB[\]+-|!])\1*/g); // tokenize
     }
 
     class Turtle {
@@ -202,6 +203,10 @@ https://amphiluke.github.io/lindsvg/
 
         reverse(repeatCount = 1) {
             this.alpha += (repeatCount % 2) * Math.PI;
+        }
+
+        swapSigns(repeatCount = 1) {
+            this.theta *= (-1) ** repeatCount;
         }
 
         pushStack(repeatCount = 1) {
@@ -275,6 +280,9 @@ https://amphiluke.github.io/lindsvg/
                 case "|":
                     turtle.reverse(tokenLength);
                     break;
+                case "!":
+                    turtle.swapSigns(tokenLength);
+                    break;
                 case "[":
                     turtle.pushStack(tokenLength);
                     break;
@@ -326,6 +334,9 @@ https://amphiluke.github.io/lindsvg/
                     break;
                 case "|":
                     turtle.reverse(tokenLength);
+                    break;
+                case "!":
+                    turtle.swapSigns(tokenLength);
                     break;
                 case "[":
                     branchLevel += tokenLength;

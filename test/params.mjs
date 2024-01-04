@@ -11,7 +11,7 @@ export let singlePathLSParams = {
 };
 
 export let multiPathLSParams = {
-    axiom: "FFF+FFFF-FF+FF-[-Y][+Y][Z][+Z]",
+    axiom: "FFF+FFFF-FF+FF-[-Y][+Y][!Z!][+Z]",
     rules: {
         F: "F",
         Y: "FF+F-F-F[FFFZ][+Z]-F-FZ",

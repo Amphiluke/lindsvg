@@ -46,6 +46,7 @@ The following turtle commands are currently supported by lindsvg:
 | `+`                 | Turn left by turning angle (theta)                    |
 | `-`                 | Turn right by turning angle (theta)                   |
 | `\|`                | Reverse direction (turn by 180 degrees)               |
+| `!`                 | Reverse the meaning of `+` and `-`                    |
 | `[`                 | Push current state of the turtle onto the stack       |
 | `]`                 | Pop a state from the stack and apply it to the turtle |
 | `A`,`C`–`E`,`G`–`Z` | Auxiliary user-defined rules                          |
