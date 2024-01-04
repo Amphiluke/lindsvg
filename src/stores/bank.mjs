@@ -1,17 +1,18 @@
 /*
-L-system author index:
+L-system author/source index:
 
-* [AH] — Anthony Hanmer
-* [AK] — A.V. Kalmykov
-* [AM] — Adrian Mariano
-* [HS] — Herb Savage
-* [GT] — Gary Teachout
-* [KP] — Ken Philip
-* [MR] — Michael A. Rouse
-* [PB] — Paul Bourke
-* [PP] — from P. Prusinkiewicz & J. Hanan, 1989
-* [SE] — SirEdvin
-* [WM] — William McWorter
+* [AH] - Anthony Hanmer
+* [AK] - A.V. Kalmykov
+* [AM] - Adrian Mariano
+* [HS] - Herb Savage
+* [GT] - Gary Teachout
+* [KP] - Ken Philip
+* [MR] - Michael A. Rouse
+* [PB] - Paul Bourke
+* [PP] - from P. Prusinkiewicz & J. Hanan, 1989
+* [SE] - SirEdvin
+* [SF] - Spanky Fractal Database (https://web.archive.org/web/20160903112517/http://www.nahee.com/spanky/pub/fractals/lsystems/)
+* [WM] - William McWorter
 
 An asterisk (*) near the reference means that the original L-system parameters
 were modified for optimisation purposes
@@ -62,6 +63,22 @@ export default [
         iterations: 5,
         step: 10,
       },
+      { // [WM]
+        lid: "border",
+        axiom: "XYXYXYX+XYXYXYX+XYXYXYX+XYXYXYX",
+        attributes: {
+          stroke: "sienna",
+          "stroke-width": "1.5",
+        },
+        alpha: 0,
+        theta: 90,
+        step: 5,
+        iterations: 3,
+        rules: {
+          X: "FX+FX+FXFY-FY-",
+          Y: "+FX+FXFY-FY-FY",
+        },
+      },
       {
         lid: "chain",
         axiom: "F+F+F+F",
@@ -78,7 +95,7 @@ export default [
           "stroke-width": "1.5",
         },
       },
-      {
+      { // [WM]
         lid: "cross",
         axiom: "X",
         rules: {
@@ -100,6 +117,32 @@ export default [
         theta: 90,
         iterations: 4,
         step: 3.5,
+      },
+      { // [AM]
+        lid: "fass 1",
+        axiom: "-L",
+        rules: {
+          F: "F",
+          L: "LF+RFR+FL-F-LFLFL-FRFR+",
+          R: "-LFLF+RFRFR+F+RF-LFL-FR",
+        },
+        alpha: 0,
+        theta: 90,
+        step: 6,
+        iterations: 4,
+      },
+      { // [AM]
+        lid: "fass 2",
+        axiom: "-L",
+        alpha: 0,
+        theta: 90,
+        step: 7,
+        iterations: 3,
+        rules: {
+          F: "F",
+          L: "LFLF+RFR+FLFL-FRF-LFL-FR+F+RF-LFL-FRFRFR+",
+          R: "-LFLFLF+RFR+FL-F-LF+RFR+FLF+RFRF-LFL-FRFR",
+        },
       },
       { // [WM]
         lid: "frame",
@@ -127,7 +170,7 @@ export default [
         step: 8,
       },
       { // [GT*]
-        lid: "Hex-7-b",
+        lid: "hex-7-b",
         axiom: "X",
         rules: {
           X: "-F++F-X-F--F+Y---F--F+Y+F++F-X+++F++F-X-F++F-X+++F--F+Y--",
@@ -263,7 +306,7 @@ export default [
         iterations: 4,
         step: 3.5,
       },
-      {
+      { // [AM]
         lid: "Peano curve",
         axiom: "F",
         rules: {
@@ -303,6 +346,20 @@ export default [
         iterations: 7,
         step: 15,
       },
+      { // [AM]
+        lid: "quartet",
+        axiom: "FG",
+        rules: {
+          A: "FGFA+HFA+FG-FA",
+          G: "FG+FA-FG-JFGFA",
+          H: "-",
+          J: "+",
+        },
+        alpha: 0,
+        theta: 90,
+        step: 7,
+        iterations: 5,
+      },
       {
         lid: "Sierpinski arrowhead",
         axiom: "A",
@@ -340,6 +397,20 @@ export default [
         iterations: 10,
         step: 5,
       },
+      { // [GT]
+        lid: "tri-9-a",
+        axiom: "X",
+        rules: {
+          X: "FFFFWWPP+FP+FW+FP+FX-FP-FX-FP-FY+FP+FX-FP-FX-FP-FY+FP+FX-FP-FY+FP+FX",
+          Y: "FFFFWWPP-FP-FW-FP-FY+FP+FY+FP+FX-FP-FY+FP+FY+FP+FX-FP-FY+FP+FX-FP-FY",
+          P: "FP",
+          W: "FFFFFFFPPPPWWW",
+        },
+        alpha: 180,
+        theta: 60,
+        step: 8,
+        iterations: 3,
+      },
     ],
   },
 
@@ -372,7 +443,7 @@ export default [
         iterations: 12,
         step: 3,
       },
-      {
+      { // [WM]
         lid: "terdragon",
         axiom: "F",
         rules: {
@@ -384,6 +455,17 @@ export default [
         step: 6,
       },
       {
+        lid: "terdragon tiling",
+        axiom: "X",
+        rules: {
+          X: "F-F-F+F+FX++F-F-F+F+FX--F-F-F+F+FX",
+        },
+        alpha: 30,
+        theta: 60,
+        step: 5,
+        iterations: 7,
+      },
+      { // [SF] (Maze01)
         lid: "tridragon",
         axiom: "F+F+F",
         rules: {
@@ -393,6 +475,28 @@ export default [
         theta: 120,
         step: 6,
         iterations: 6,
+      },
+      { // [WM]
+        lid: "twindragon boundary",
+        axiom: "OTUZ",
+        alpha: 0,
+        theta: 90,
+        step: 5,
+        iterations: 12,
+        rules: {
+          O: "FO+F-T",
+          P: "++F--U+F-X",
+          Q: "-F+V++F--Q",
+          R: "-F+ZFS",
+          S: "FW",
+          T: "++F--U",
+          U: "++F--Y",
+          V: "FS",
+          W: "FO+F-P",
+          X: "++F--Y+F-X",
+          Y: "-F+R++F--Q",
+          Z: "-F+ZFW",
+        },
       },
     ],
   },
@@ -415,7 +519,7 @@ export default [
         lid: "Cesaro 2",
         axiom: "AAAA",
         rules: {
-          A: "F+++++++++F------------------",
+          A: "F+++++++++F|",
           F: "F++++++++F----------------F++++++++F",
         },
         alpha: 0,
@@ -883,7 +987,7 @@ export default [
       },
       {
         lid: "tree 2",
-        axiom: "FFF+FFFF-FF+FF-[-Y][+Y][Z][+Z]",
+        axiom: "FFF+FFFF-FF+FF-[-Y][+Y][Z][+!Z!]",
         rules: {
           F: "F",
           Y: "FF+F-F-F[FFFZ][+Z]-F-FZ",
@@ -950,7 +1054,7 @@ export default [
           "stroke-width": "2",
         },
       },
-      {
+      { // [SF]
         lid: "Dekking’s church",
         axiom: "WXYZ",
         rules: {
@@ -965,6 +1069,21 @@ export default [
         iterations: 7,
         attributes: {
           "stroke": "mediumslateblue",
+          "stroke-width": "1.5",
+        },
+      },
+      { // [SF]
+        lid: "doily",
+        axiom: "F--F--F--F--F--F",
+        rules: {
+          F: "-F[--F--F]++F[++F--F]--F+",
+        },
+        alpha: 0,
+        theta: 30,
+        step: 5,
+        iterations: 4,
+        attributes: {
+          stroke: ["cornflowerblue", "cornflowerblue", "gold", "cornflowerblue"],
           "stroke-width": "1.5",
         },
       },
@@ -1010,6 +1129,22 @@ export default [
         iterations: 5,
         step: 4.75,
       },
+      { // [SF]
+        lid: "hex",
+        axiom: "F",
+        rules: {
+          F: "-F+F+G[+F+F]-",
+          G: "GG",
+        },
+        alpha: -30,
+        theta: 60,
+        step: 10,
+        iterations: 7,
+        attributes: {
+          stroke: "dodgerblue",
+          "stroke-width": "1.5",
+        },
+      },
       { // [MR]
         lid: "HexGasket",
         axiom: "F+F+F+F+F+F--",
@@ -1023,14 +1158,14 @@ export default [
       },
       { // [AH]
         lid: "horizons",
-        axiom: "+F++++F",
+        axiom: "+F|F",
         rules: {
-          F: "F+F+F++++F+F+F",
+          F: "F+F+F|F+F+F",
         },
         alpha: 0,
         theta: 45,
         iterations: 5,
-        step: 1.3,
+        step: 1.5,
       },
       {
         lid: "Levi’s carpet",
@@ -1038,10 +1173,10 @@ export default [
         rules: {
           F: "+F--F+",
         },
-        alpha: 180,
+        alpha: 0,
         theta: 45,
         iterations: 14,
-        step: 1.8,
+        step: 2,
       },
       {
         lid: "Levi’s fractal",
@@ -1052,7 +1187,7 @@ export default [
         alpha: 180,
         theta: 45,
         iterations: 14,
-        step: 1.9,
+        step: 2,
       },
       {
         lid: "mosaic",
@@ -1075,9 +1210,10 @@ export default [
         alpha: 0,
         theta: 30,
         iterations: 4,
-        step: 4.5,
+        step: 5,
         attributes: {
-          stroke: "cornflowerblue",
+          stroke: ["cornflowerblue", "mediumorchid"],
+          "stroke-width": ["2", "1"],
         },
       },
       { // [HS*]
@@ -1117,6 +1253,18 @@ export default [
           "stroke-width": "1.5",
           "stroke-linejoin": "round",
         },
+      },
+      { // [WM]
+        lid: "pentant",
+        axiom: "X-X-X-X-X",
+        rules: {
+          X: "FX-FX-FX+FY+FY+FX-FX",
+          Y: "FY+FY-FX-FX-FY+FY+FY",
+        },
+        alpha: 0,
+        theta: 72,
+        step: 3,
+        iterations: 4,
       },
       { // [WM]
         lid: "pentigree",
@@ -1190,6 +1338,25 @@ export default [
           stroke: "deepskyblue",
         },
       },
+      { // [HS]
+        lid: "sphinx",
+        axiom: "X",
+        rules: {
+          F: "BB",
+          B: "BB",
+          X: "+FF-YFF+FF--FFF|X|F--YFFFYFFF|",
+          Y: "-FF+XFF-FF++FFF|Y|F++XFFFXFFF|",
+        },
+        alpha: 180,
+        theta: 60,
+        step: 10,
+        iterations: 5,
+        attributes: {
+          stroke: "sandybrown",
+          "stroke-linejoin": "round",
+          "stroke-width": "2.5",
+        },
+      },
       { // [PP]
         lid: "spiral tiling",
         axiom: "AAAA",
@@ -1242,6 +1409,26 @@ export default [
         theta: 35,
         step: 25,
         iterations: 5,
+      },
+      { // [WM]
+        lid: "Xmas tree",
+        axiom: "W",
+        rules: {
+          W: "++FX--FW--FY++",
+          X: "-FZ++FY-",
+          Y: "--FZ++FY++FW--",
+          Z: "+FX--FW+",
+        },
+        alpha: 180,
+        theta: 36,
+        step: 8,
+        iterations: 8,
+        attributes: {
+          stroke: "darkgreen",
+          "stroke-width": "6",
+          "stroke-dasharray": "5 2",
+          fill: "limegreen",
+        },
       },
     ],
   },
