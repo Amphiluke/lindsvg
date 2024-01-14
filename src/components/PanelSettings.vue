@@ -24,6 +24,24 @@ function addNewRule() {
   newRuleLetter.value = newRuleValue.value = "";
 }
 
+function moveFocus(delta) {
+  let {activeElement} = document;
+  if (activeElement.tagName !== "INPUT" || activeElement.type !== "text") {
+    return;
+  }
+  let focusTarget = [...activeElement.form.querySelectorAll("input[type='text']")]
+    .find((_input, index, inputs) => inputs[index - delta] === activeElement);
+  if (!focusTarget) {
+    return;
+  }
+  focusTarget.focus();
+  setTimeout(() => { // immediate selecting won’t work on keydown, so queueing
+    if (focusTarget === document.activeElement) {
+      focusTarget.select();
+    }
+  }, 0);
+}
+
 function plot() {
   lSystemStore.buildSVG();
 }
@@ -38,6 +56,8 @@ function plot() {
       action="#"
       autocomplete="off"
       :class="[panelStyles.body, interfaceStyles.thinScroll]"
+      @keydown.down="moveFocus(1)"
+      @keydown.up="moveFocus(-1)"
       @submit.prevent="plot"
     >
       <div :class="$style.parameterRow">

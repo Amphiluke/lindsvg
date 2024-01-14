@@ -1,7 +1,7 @@
 {
   "name": "lindsvg-pwa",
   "private": true,
-  "version": "2.4.0",
+  "version": "2.4.1",
   "type": "module",
   "scripts": {
     "lint": "eslint \"src/**/*.{mjs,vue}\"",
@@ -10,17 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vueuse/core": "^10.7.1",
+    "@vueuse/core": "^10.7.2",
     "lindsvg": "^1.5.0",
     "normalize.css": "^8.0.1",
     "pinia": "^2.1.7",
-    "vue": "^3.4.5"
+    "vue": "^3.4.13"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^1.5.3",
-    "@vitejs/plugin-vue": "^5.0.2",
+    "@vitejs/plugin-vue": "^5.0.3",
     "eslint": "^8.56.0",
-    "eslint-plugin-vue": "^9.19.2",
-    "vite": "^5.0.10"
+    "eslint-plugin-vue": "^9.20.1",
+    "vite": "^5.0.11"
   }
 }

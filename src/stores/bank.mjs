@@ -107,17 +107,6 @@ export default [
         iterations: 5,
         step: 4.5,
       },
-      {
-        lid: "curve",
-        axiom: "F-F-F-F-",
-        rules: {
-          F: "FF-F-F-F-F-F+F",
-        },
-        alpha: 0,
-        theta: 90,
-        iterations: 4,
-        step: 3.5,
-      },
       { // [AM]
         lid: "fass 1",
         axiom: "-L",
@@ -429,6 +418,17 @@ export default [
         theta: 90,
         iterations: 12,
         step: 5,
+      },
+      { // [AH]
+        lid: "horizons dragon",
+        axiom: "+F++++F",
+        rules: {
+          F: "F+++F-F++++F+F+FF",
+        },
+        alpha: 0,
+        theta: 45,
+        step: 3,
+        iterations: 5,
       },
       {
         lid: "median dragon",
