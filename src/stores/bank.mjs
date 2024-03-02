@@ -520,7 +520,7 @@ export default [
         axiom: "AAAA",
         rules: {
           A: "F+++++++++F|",
-          F: "F++++++++F----------------F++++++++F",
+          F: "F++++++++F|++F++++++++F",
         },
         alpha: 0,
         theta: 10,
@@ -532,7 +532,7 @@ export default [
         axiom: "A+A",
         rules: {
           A: "F++++++F",
-          F: "A----------------A",
+          F: "A|++A",
         },
         alpha: 0,
         theta: 10,
@@ -1357,14 +1357,14 @@ export default [
           "stroke-width": "2.5",
         },
       },
-      { // [PP]
+      { // [PP*]
         lid: "spiral tiling",
         axiom: "AAAA",
         rules: {
           F: "F",
           A: "X+X+X+X+X+X+",
-          X: "[F+F+F+F[---X-Y]+++++F++++++++F-F-F-F]",
-          Y: "[F+F+F+F[---Y]+++++F++++++++F-F-F-F]",
+          X: "[F+F+F+F[---X-Y]+++++F|----F-F-F-F]",
+          Y: "[F+F+F+F[---Y]+++++F|----F-F-F-F]",
         },
         alpha: 0,
         theta: 15,
