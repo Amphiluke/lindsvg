@@ -75,31 +75,35 @@
     background-color: var(--color-accent);
     content: "";
     height: 25px;
-    -webkit-mask: url(../assets/icons.svg) -100% -100% no-repeat;
-    mask: url(../assets/icons.svg) -100% -100% no-repeat;
+    -webkit-mask: url(../assets/icons.svg) var(--mask-pos, -100% -100%) no-repeat;
+    mask: url(../assets/icons.svg) var(--mask-pos, -100% -100%) no-repeat;
     width: 25px;
   }
 }
 
 .iconButtonConfig::before {
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
+  --mask-pos: 0 0;
 }
 
 .iconButtonErase::before,
 .iconButtonAdd::before {
-  -webkit-mask-position: -25px 0;
-  mask-position: -25px 0;
+  --mask-pos: -25px 0;
 }
 
 .iconButtonDelete::before {
-  -webkit-mask-position: -50px 0;
-  mask-position: -50px 0;
+  --mask-pos: -50px 0;
 }
 
 .iconButtonLink::before {
-  -webkit-mask-position: -125px 0;
-  mask-position: -125px 0;
+  --mask-pos: -125px 0;
+}
+
+.iconButtonCopy::before {
+  --mask-pos: -175px 0;
+}
+
+.iconButtonCheck::before {
+  --mask-pos: -200px 0;
 }
 
 @keyframes add-breath {

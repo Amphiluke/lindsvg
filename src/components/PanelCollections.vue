@@ -52,11 +52,17 @@ function deleteLSystem(lid) {
   collectionsStore.deleteLSystem(lid);
 }
 
-function copyPermalink(cid, lid) {
+async function copyPermalink(target, cid, lid) {
   let url = new URL(location.origin + location.pathname);
   url.searchParams.set("cid", cid);
   url.searchParams.set("lid", lid);
-  navigator.clipboard.writeText(url.toString());
+  await navigator.clipboard.writeText(url.toString());
+  target.classList.remove(interfaceStyles.iconButtonLink);
+  target.classList.add(interfaceStyles.iconButtonCheck);
+  setTimeout(() => {
+    target.classList.remove(interfaceStyles.iconButtonCheck);
+    target.classList.add(interfaceStyles.iconButtonLink);
+  }, 2000);
 }
 </script>
 
@@ -122,7 +128,7 @@ function copyPermalink(cid, lid) {
               tabindex="-1"
               :class="[$style.permalinkButton, interfaceStyles.iconButton, interfaceStyles.iconButtonLink]"
               title="Copy L-system permalink"
-              @click="copyPermalink(cid, lid)"
+              @click="({target}) => copyPermalink(target, cid, lid)"
             />
             <button
               type="button"

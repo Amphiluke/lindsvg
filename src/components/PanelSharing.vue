@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from "vue";
+import {computed, useCssModule} from "vue";
 import {useCollectionsStore} from "../stores/collections.mjs";
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
@@ -51,9 +51,12 @@ function launchShare() {
   });
 }
 
-function copyLSVG() {
+let copiedClassName = useCssModule().copied;
+async function copyLSVG({target}) {
   let text = JSON.stringify(lsvg.value, null, 2);
-  navigator.clipboard.writeText(text);
+  await navigator.clipboard.writeText(text);
+  target.classList.add(copiedClassName);
+  setTimeout(() => target.classList.remove(copiedClassName), 2000);
 }
 </script>
 
@@ -113,18 +116,12 @@ function copyLSVG() {
         <li><a href="https://docs.github.com/en/get-started/writing-on-github/editing-and-sharing-content-with-gists/creating-gists#creating-a-gist" target="_blank" rel="noopener">Create</a> a <em>public</em> gist on GitHub.</li>
         <li>
           Copy LSVG file content
-          <svg
-            :class="$style.copyButton"
-            height="16"
-            width="16"
-            viewBox="0 0 16 16"
-            xmlns="http://www.w3.org/2000/svg"
+          <button
+            type="button"
+            title="Copy LSVG to clipboard"
+            :class="[interfaceStyles.iconButton, interfaceStyles.iconButtonCopy, $style.copyButton]"
             @click="copyLSVG"
-          >
-            <title>Copy LSVG to clipboard</title>
-            <path d="M0 6.75C0 5.78.78 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .14.11.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z" />
-            <path d="M5 1.75C5 .78 5.78 0 6.75 0h7.5C15.22 0 16 .78 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .14.11.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z" />
-          </svg>
+          />
           into the newly created public gist and save it as JSON.
         </li>
         <li>
@@ -170,9 +167,20 @@ function copyLSVG() {
   }
 
   .copyButton {
-    cursor: pointer;
-    fill: var(--color-accent);
-    margin-inline: 4px;
+    display: inline-flex;
+    height: 18px;
+    margin-inline: 2px;
+    width: 18px;
+
+    &::before {
+      --mask-pos: -179px -4px;
+      height: 100%;
+      width: 100%;
+    }
+
+    &.copied::before {
+      --mask-pos: -204px -4px;
+    }
   }
 
   .permalink {
