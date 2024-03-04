@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed} from "vue";
+import {ref, computed, useCssModule} from "vue";
 import {refDebounced} from "@vueuse/core";
 import {useCollectionsStore, isUserDefined, USER_DEFINED_COLLECTION_ID} from "../stores/collections.mjs";
 import {useLSystemStore} from "../stores/lSystem.mjs";
@@ -52,16 +52,15 @@ function deleteLSystem(lid) {
   collectionsStore.deleteLSystem(lid);
 }
 
+let copiedClassName = useCssModule().copied;
 async function copyPermalink(target, cid, lid) {
   let url = new URL(location.origin + location.pathname);
   url.searchParams.set("cid", cid);
   url.searchParams.set("lid", lid);
   await navigator.clipboard.writeText(url.toString());
-  target.classList.remove(interfaceStyles.iconButtonLink);
-  target.classList.add(interfaceStyles.iconButtonCheck);
+  target.classList.add(copiedClassName);
   setTimeout(() => {
-    target.classList.remove(interfaceStyles.iconButtonCheck);
-    target.classList.add(interfaceStyles.iconButtonLink);
+    target.classList.remove(copiedClassName);
   }, 2000);
 }
 </script>
@@ -234,5 +233,13 @@ async function copyPermalink(target, cid, lid) {
 
   .collectionItems li:not(:hover, .active) :where(.permalinkButton, .exploreButton, .deleteLSystemButton):not(:focus) {
     opacity: 0.01;
+  }
+
+  .copied {
+    pointer-events: none;
+
+    &::before {
+      --mask-pos: -200px 0;
+    }
   }
 </style>

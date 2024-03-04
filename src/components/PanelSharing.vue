@@ -178,8 +178,12 @@ async function copyLSVG({target}) {
       width: 100%;
     }
 
-    &.copied::before {
-      --mask-pos: -204px -4px;
+    &.copied {
+      pointer-events: none;
+
+      &::before {
+        --mask-pos: -204px -4px;
+      }
     }
   }
 
