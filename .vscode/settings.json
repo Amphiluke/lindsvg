@@ -1,5 +1,9 @@
 {
   "liveServer.settings.mount": [
     ["/lindsvg", "./dist"]
+  ],
+  "eslint.validate": [
+    "javascript",
+    "vue"
   ]
 }

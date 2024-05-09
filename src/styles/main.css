@@ -68,6 +68,7 @@ textarea {
   border: 1px var(--color-on-surface-mid);
   border-radius: 0;
   border-style: none none solid;
+  caret-color: var(--color-accent);
   color: inherit;
   outline: none;
 
