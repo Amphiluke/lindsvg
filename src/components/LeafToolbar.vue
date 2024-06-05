@@ -106,6 +106,7 @@ let selectedIndex = computed({
   }
 
   .lSystems {
+    color: var(--color-on-surface-high);
     flex: 1 1 0;
     max-width: max-content;
     min-width: 0;
