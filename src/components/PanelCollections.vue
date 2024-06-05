@@ -14,7 +14,7 @@ let interfaceStore = useInterfaceStore();
 let filter = ref("");
 let debouncedFilter = refDebounced(filter, 300);
 let filteredCollections = computed(() => {
-  let query = debouncedFilter.value.toLowerCase();
+  let query = debouncedFilter.value.trim().toLowerCase();
   if (!query) {
     return collectionsStore.collections;
   }

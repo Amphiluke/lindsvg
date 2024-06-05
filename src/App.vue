@@ -3,6 +3,7 @@ import {onMounted} from "vue";
 import {processLaunchOptions} from "./launchCtrl.mjs";
 import PlotArea from "./components/PlotArea.vue";
 import TheSidebar from "./components/TheSidebar.vue";
+import LeafToolbar from "./components/LeafToolbar.vue";
 import ThePopover from "./components/ThePopover.vue";
 
 onMounted(() => processLaunchOptions());
@@ -11,6 +12,7 @@ onMounted(() => processLaunchOptions());
 <template>
   <div>
     <PlotArea />
+    <LeafToolbar />
     <TheSidebar />
     <ThePopover />
   </div>

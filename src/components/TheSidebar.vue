@@ -11,13 +11,22 @@ let interfaceStore = useInterfaceStore();
 
 <template>
   <div :class="$style.sidebar">
-    <button
-      v-show="interfaceStore.openedPanel !== ''"
-      type="button"
-      :class="$style.collapse"
-      title="Hide sidebar"
-      @click="interfaceStore.openedPanel = ''"
-    />
+    <div :class="$style.ctrlButtons">
+      <button
+        v-show="interfaceStore.openedPanel === 'collections'"
+        type="button"
+        :class="$style.toolbarButton"
+        title="Detach panel to a toolbar"
+        @click="interfaceStore.isLeafToolbarOpen = true"
+      />
+      <button
+        v-show="interfaceStore.openedPanel !== ''"
+        type="button"
+        :class="$style.collapseButton"
+        title="Hide sidebar"
+        @click="interfaceStore.openedPanel = ''"
+      />
+    </div>
     <div :class="$style.buttons">
       <button
         v-for="name of ['collections', 'settings', 'attributes', 'sharing', 'about']"
@@ -49,16 +58,22 @@ let interfaceStore = useInterfaceStore();
   top: 0;
 }
 
-.collapse {
-  background-color: var(--color-accent);
-  border: none;
-  height: 25px;
-  -webkit-mask: url(../assets/icons.svg) -150px 0 no-repeat;
-  mask: url(../assets/icons.svg) -150px 0 no-repeat;
-  padding: 0;
+.ctrlButtons {
+  display: flex;
+  gap: 10px;
   position: absolute;
   right: 10px;
   top: 10px;
+}
+
+.toolbarButton,
+.collapseButton {
+  background-color: var(--color-accent);
+  border: none;
+  height: 25px;
+  -webkit-mask: url(../assets/icons.svg) var(--mask-pos) no-repeat;
+  mask: url(../assets/icons.svg) var(--mask-pos) no-repeat;
+  padding: 0;
   width: 25px;
 
   @media (hover) {
@@ -66,6 +81,14 @@ let interfaceStore = useInterfaceStore();
       opacity: 0.7;
     }
   }
+}
+
+.toolbarButton {
+  --mask-pos: -250px 0;
+}
+
+.collapseButton {
+  --mask-pos: -150px 0;
 }
 
 .buttons {

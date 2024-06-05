@@ -19,7 +19,7 @@ export let useCollectionsStore = defineStore("collections", () => {
   /** @type {import("./bank.mjs").LSystem[]} */
   let userStorage = useLocalStorage("userCollection", []);
 
-  /** @type {import("./bank.mjs").LSCollection} */
+  /** @type {import("./bank.mjs").LSCollection[]} */
   let collections = readonly([...bank, {cid: USER_DEFINED_COLLECTION_ID, items: userStorage}]);
 
   let selectedCID = ref("");

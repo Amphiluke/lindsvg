@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref, readonly, reactive} from "vue";
+import {ref, readonly, reactive, watch} from "vue";
 
 export const POPOVER_ACCEPT = "accept";
 export const POPOVER_DISMISS = "dismiss";
@@ -15,6 +15,23 @@ export let useInterfaceStore = defineStore("interface", () => {
   function togglePanel(panelId) {
     openedPanel.value = (panelId === openedPanel.value) ? "" : panelId;
   }
+
+  /**
+   * Is the Leaf toolbar currently open
+   */
+  let isLeafToolbarOpen = ref(false);
+
+  // The Collections panel and the Leaf toolbar are mutually exclusive
+  watch(openedPanel, (panelId) => {
+    if (panelId === "collections" && isLeafToolbarOpen.value) {
+      isLeafToolbarOpen.value = false;
+    }
+  });
+  watch(isLeafToolbarOpen, (isOpen) => {
+    if (isOpen && openedPanel.value === "collections") {
+      openedPanel.value = "";
+    }
+  });
 
   /** @type {{uid: Symbol | undefined, text: String | undefined, button: String | undefined, resolve: Function | undefined}} */
   let popoverData = reactive({uid: undefined, text: undefined, button: undefined, resolve: undefined});
@@ -43,6 +60,7 @@ export let useInterfaceStore = defineStore("interface", () => {
   return {
     openedPanel,
     togglePanel,
+    isLeafToolbarOpen,
     popover: readonly(popoverData),
     requestPopover,
   };

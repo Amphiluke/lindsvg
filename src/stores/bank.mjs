@@ -193,6 +193,13 @@ export default [
         theta: 90,
         iterations: 3,
         step: 4,
+        attributes: {
+          fill: "peru",
+          stroke: "forestgreen",
+          "stroke-linejoin": "round",
+          "stroke-opacity": "0.8",
+          "stroke-width": "5",
+        },
       },
       {
         lid: "Koch’s curve",
@@ -1200,6 +1207,10 @@ export default [
         theta: 90,
         iterations: 2,
         step: 7,
+        attributes: {
+          stroke: "olive",
+          "stroke-width": "1.5",
+        },
       },
       { // [AM]
         lid: "napkin",

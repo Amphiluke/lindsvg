@@ -106,6 +106,15 @@
   --mask-pos: -200px 0;
 }
 
+.iconButtonDown::before,
+.iconButtonUp::before {
+  --mask-pos: -225px 0;
+}
+
+.iconButtonUp::before {
+  transform: scaleY(-1);
+}
+
 @keyframes add-breath {
   0% {
     transform: rotate(45deg) scale(0.8);
