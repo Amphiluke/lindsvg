@@ -79,6 +79,29 @@ export default [
           Y: "+FX+FXFY-FY-FY",
         },
       },
+      { // [AH]
+        lid: "Cesaro 1",
+        axiom: "F",
+        rules: {
+          F: "F++++++++++F--------------------F++++++++++F",
+        },
+        alpha: 180,
+        theta: 8,
+        iterations: 6,
+        step: 2.9,
+      },
+      { // [AH*]
+        lid: "Cesaro 2",
+        axiom: "AAAA",
+        rules: {
+          A: "F+++++++++F|",
+          F: "F++++++++F|++F++++++++F",
+        },
+        alpha: 0,
+        theta: 10,
+        iterations: 6,
+        step: 4,
+      },
       {
         lid: "chain",
         axiom: "F+F+F+F",
@@ -182,24 +205,6 @@ export default [
         theta: 90,
         iterations: 6,
         step: 7,
-      },
-      {
-        lid: "island",
-        axiom: "F+F+F+F",
-        rules: {
-          F: "F+F-F-FFF+F+F-F",
-        },
-        alpha: 0,
-        theta: 90,
-        iterations: 3,
-        step: 4,
-        attributes: {
-          fill: "peru",
-          stroke: "forestgreen",
-          "stroke-linejoin": "round",
-          "stroke-opacity": "0.8",
-          "stroke-width": "5",
-        },
       },
       {
         lid: "Koch’s curve",
@@ -379,6 +384,14 @@ export default [
         theta: 90,
         iterations: 4,
         step: 8,
+        attributes: {
+          fill: "orchid",
+          "fill-opacity": "0.6",
+          stroke: "darkorchid",
+          "stroke-width": "5",
+          "paint-order": "stroke",
+          "stroke-linecap": "square",
+        },
       },
       { // [WM]
         lid: "Sierpinski median curve",
@@ -503,66 +516,6 @@ export default [
           X: "++F--Y+F-X",
           Y: "-F+R++F--Q",
           Z: "-F+ZFW",
-        },
-      },
-    ],
-  },
-
-  {
-    cid: "Miscellaneous",
-    items: [
-      { // [AH]
-        lid: "Cesaro 1",
-        axiom: "F",
-        rules: {
-          F: "F++++++++++F--------------------F++++++++++F",
-        },
-        alpha: 180,
-        theta: 8,
-        iterations: 6,
-        step: 2.9,
-      },
-      { // [AH*]
-        lid: "Cesaro 2",
-        axiom: "AAAA",
-        rules: {
-          A: "F+++++++++F|",
-          F: "F++++++++F|++F++++++++F",
-        },
-        alpha: 0,
-        theta: 10,
-        iterations: 6,
-        step: 4,
-      },
-      {
-        lid: "rack-wheel",
-        axiom: "A+A",
-        rules: {
-          A: "F++++++F",
-          F: "A|++A",
-        },
-        alpha: 0,
-        theta: 10,
-        iterations: 9,
-        step: 60,
-        attributes: {
-          stroke: "white",
-          fill: "steelblue",
-        },
-      },
-      { // [AK]
-        lid: "sea urchin",
-        axiom: "F",
-        rules: {
-          F: "F[-F+F-F]+[+F-F-F]",
-        },
-        alpha: 0,
-        theta: 20,
-        iterations: 5,
-        step: 15,
-        attributes: {
-          stroke: ["#800", "#800", "#800", "#971a8b", "#804", "rgba(229,169,169,0.12)"],
-          transform: ["n/a", "n/a", "n/a", "n/a", "n/a", "scale(0.85)"],
         },
       },
     ],
@@ -1032,6 +985,17 @@ export default [
   {
     cid: "Shapes",
     items: [
+      { // [AH]
+        lid: "ADH309a",
+        axiom: "F+++F",
+        rules: {
+          F: "F+FF++F++F-F++FF",
+        },
+        alpha: 180,
+        theta: 60,
+        iterations: 5,
+        step: 3,
+      },
       {
         lid: "carpet",
         axiom: "F-F-F-F",
@@ -1175,6 +1139,26 @@ export default [
         step: 1.5,
       },
       {
+        lid: "island",
+        axiom: "F+F+F+F",
+        rules: {
+          F: "F+F-F-FFF+F+F-F",
+        },
+        alpha: 0,
+        theta: 90,
+        iterations: 3,
+        step: 4,
+        attributes: {
+          fill: "forestgreen",
+          "fill-opacity": "0.8",
+          "paint-order": "stroke",
+          stroke: "peru",
+          "stroke-linejoin": "round",
+          "stroke-width": "6",
+          style: "filter: drop-shadow(0 4px 1px navy) blur(1px)",
+        },
+      },
+      {
         lid: "Levi’s carpet",
         axiom: "F++F++F++F",
         rules: {
@@ -1305,6 +1289,37 @@ export default [
           stroke: ["slateblue", "crimson"],
           "stroke-width": ["1.5", "2"],
           "stroke-dasharray": ["n/a", "10 3"],
+        },
+      },
+      {
+        lid: "rack-wheel",
+        axiom: "A+A",
+        rules: {
+          A: "F++++++F",
+          F: "A|++A",
+        },
+        alpha: 0,
+        theta: 10,
+        iterations: 9,
+        step: 60,
+        attributes: {
+          stroke: "white",
+          fill: "steelblue",
+        },
+      },
+      { // [AK]
+        lid: "sea urchin",
+        axiom: "F",
+        rules: {
+          F: "F[-F+F-F]+[+F-F-F]",
+        },
+        alpha: 0,
+        theta: 20,
+        iterations: 5,
+        step: 15,
+        attributes: {
+          stroke: ["#800", "#800", "#800", "#971a8b", "#804", "rgba(229,169,169,0.12)"],
+          transform: ["n/a", "n/a", "n/a", "n/a", "n/a", "scale(0.85)"],
         },
       },
       {
