@@ -52,9 +52,14 @@ function launchShare() {
 }
 
 let copiedClassName = useCssModule().copied;
-async function copyLSVG({target}) {
-  let text = JSON.stringify(lsvg.value, null, 2);
-  await navigator.clipboard.writeText(text);
+async function copy(target, type) {
+  let content = type === "svg" ? lSystemStore.svgCode : JSON.stringify(lsvg.value);
+  let clipboardData = {"text/plain": new Blob([content], {type: "text/plain"})};
+  if ((type === "svg") && ("supports" in ClipboardItem) && ClipboardItem.supports(svgBlob.value.type)) {
+    clipboardData[svgBlob.value.type] = svgBlob.value;
+  }
+  let clipboardItem = new ClipboardItem(clipboardData);
+  await navigator.clipboard.write([clipboardItem]);
   target.classList.add(copiedClassName);
   setTimeout(() => target.classList.remove(copiedClassName), 2000);
 }
@@ -96,6 +101,23 @@ async function copyLSVG({target}) {
           SVG
         </a>
 
+        <h3>Copy file…</h3>
+        <button
+          id="copy-lsvg"
+          type="button"
+          :class="[interfaceStyles.button, $style.fileButton]"
+          @click="({target}) => copy(target, 'lsvg')"
+        >
+          LSVG
+        </button>
+        <button
+          type="button"
+          :class="[interfaceStyles.button, $style.fileButton]"
+          @click="({target}) => copy(target, 'svg')"
+        >
+          SVG
+        </button>
+
         <template v-if="isShareSupported">
           <h3>Share file…</h3>
           <button
@@ -115,14 +137,7 @@ async function copyLSVG({target}) {
       <ol :class="interfaceStyles.list">
         <li><a href="https://docs.github.com/en/get-started/writing-on-github/editing-and-sharing-content-with-gists/creating-gists#creating-a-gist" target="_blank" rel="noopener">Create</a> a <em>public</em> gist on GitHub.</li>
         <li>
-          Copy LSVG file content
-          <button
-            type="button"
-            title="Copy LSVG to clipboard"
-            :class="[interfaceStyles.iconButton, interfaceStyles.iconButtonCopy, $style.copyButton]"
-            @click="copyLSVG"
-          />
-          into the newly created public gist and save it as JSON.
+          <label for="copy-lsvg" :class="$style.copyLabel">Copy LSVG file content</label> into the newly created public gist and save it as JSON.
         </li>
         <li>
           Replace <b>{gist_id}</b> in the following hyperlink with the actual identifier of your gist<br>
@@ -166,24 +181,29 @@ async function copyLSVG({target}) {
     }
   }
 
-  .copyButton {
-    display: inline-flex;
-    height: 18px;
-    margin-inline: 2px;
-    width: 18px;
+  .copyLabel {
+    cursor: pointer;
+    text-decoration: 1px underline dashed;
+    text-underline-offset: 0.25em;
+  }
+
+  .copied {
+    color: transparent;
+    pointer-events: none;
+    position: relative;
+    user-select: none;
 
     &::before {
-      --mask-pos: -179px -4px;
-      height: 100%;
-      width: 100%;
-    }
-
-    &.copied {
-      pointer-events: none;
-
-      &::before {
-        --mask-pos: -204px -4px;
-      }
+      background-color: var(--color-accent);
+      content: "";
+      height: 18px;
+      left: 50%;
+      -webkit-mask: url(../assets/icons.svg) -204px -4px no-repeat;
+      mask: url(../assets/icons.svg) -204px -4px no-repeat;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
     }
   }
 
