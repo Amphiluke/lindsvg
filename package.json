@@ -10,19 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vueuse/core": "^10.11.0",
+    "@vueuse/core": "^11.1.0",
     "lindsvg": "^1.5.0",
     "normalize.css": "^8.0.1",
-    "pinia": "^2.2.0",
-    "vue": "^3.4.35"
+    "pinia": "^2.2.4",
+    "vue": "^3.5.11"
   },
   "devDependencies": {
-    "@eslint/js": "^9.8.0",
-    "@stylistic/eslint-plugin-js": "^2.6.1",
-    "@vitejs/plugin-vue": "^5.1.2",
-    "eslint": "^9.8.0",
-    "eslint-plugin-vue": "^9.27.0",
-    "globals": "^15.9.0",
-    "vite": "^5.3.5"
+    "@eslint/js": "^9.12.0",
+    "@stylistic/eslint-plugin-js": "^2.9.0",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "eslint": "^9.12.0",
+    "eslint-plugin-vue": "^9.28.0",
+    "globals": "^15.11.0",
+    "vite": "^5.4.8"
   }
 }
