@@ -92,10 +92,10 @@ let interfaceStore = useInterfaceStore();
 }
 
 .buttons {
-  box-shadow: 0 -1px 0 0 var(--color-on-surface-mid);
   display: flex;
   height: var(--size-sidebar-button);
   left: 0;
+  outline: 1px solid var(--color-on-surface-mid);
   position: fixed;
   top: 0;
   transform: rotate(90deg) translateY(-100%);
