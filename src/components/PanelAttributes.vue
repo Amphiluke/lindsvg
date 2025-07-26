@@ -171,7 +171,7 @@ function plot() {
   .attributeRow {
     position: relative;
 
-    & + .attributeRow {
+    + .attributeRow {
       margin-top: 10px;
     }
   }
@@ -183,22 +183,22 @@ function plot() {
   }
 
   .attributeValues {
-    --color-zebra: rgba(255 255 255 / 0.7);
+    --color-zebra: #ffffffb3;
     align-self: flex-end;
-    background: linear-gradient(0deg, transparent 1.25em, var(--color-zebra) 0, var(--color-zebra) 2.5em);
+    background: linear-gradient(0deg, transparent 1lh, var(--color-zebra) 0, var(--color-zebra) 2lh);
     background-attachment: local;
     background-size: 2.5em 2.5em;
     border: none;
     box-sizing: border-box;
     line-height: 1.25em;
-    height: 6.25em;
+    height: 5lh;
     margin: 10px 0;
     padding: 0 10px;
     resize: vertical;
     width: calc(100% - 10px);
 
     @media (prefers-color-scheme: dark) {
-      --color-zebra: rgba(0 0 0 / 0.1);
+      --color-zebra: #0000001a;
     }
   }
 
@@ -206,7 +206,7 @@ function plot() {
     position: absolute;
     right: 0;
     top: 0.5em;
-    transform: translateY(-50%);
+    translate: 0 -50%;
 
     &:not(:hover) {
       opacity: 0.5;
@@ -216,12 +216,12 @@ function plot() {
   .newAttributeName {
     display: flex;
 
-    & .labeledField {
+    .labeledField {
       flex-grow: 1;
       min-width: 0;
     }
 
-    & input[type="text"] {
+    input[type="text"] {
       text-align: left;
     }
   }

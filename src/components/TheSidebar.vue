@@ -108,8 +108,8 @@ let interfaceStore = useInterfaceStore();
   border: none;
   color: inherit;
   padding: 0 10px;
+  rotate: 180deg;
   text-transform: capitalize;
-  transform: rotate(180deg);
 
   @media (max-height: 55ch) {
     padding: 0 6px;

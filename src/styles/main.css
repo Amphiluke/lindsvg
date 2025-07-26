@@ -37,6 +37,7 @@
 }
 
 body {
+  accent-color: var(--color-accent);
   font: normal 16px / 1.4 system-ui, sans-serif;
 }
 

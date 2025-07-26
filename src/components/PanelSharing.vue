@@ -157,13 +157,13 @@ async function copy(target, type) {
     gap: 15px 10px;
     grid-template-columns: 1fr 25% 25%;
 
-    & h3 {
+    h3 {
       font: inherit;
       grid-column: 1 / 2;
       margin: 0;
     }
 
-    & .fileButton {
+    .fileButton {
       --border-alpha: 0.3;
       border-color: rgb(from var(--color-accent) r g b / var(--border-alpha));
       border-radius: 5px;
@@ -176,7 +176,7 @@ async function copy(target, type) {
       }
     }
 
-    & .shareButton {
+    .shareButton {
       grid-column: 3 / 4;
     }
   }
@@ -202,7 +202,7 @@ async function copy(target, type) {
       mask: url(../assets/icons.svg) -204px -4px no-repeat;
       position: absolute;
       top: 50%;
-      transform: translate(-50%, -50%);
+      translate: -50% -50%;
       width: 18px;
     }
   }

@@ -1,5 +1,5 @@
 import js from "@eslint/js";
-import stylisticJs from "@stylistic/eslint-plugin-js";
+import stylisticJs from "@stylistic/eslint-plugin";
 import pluginVue from "eslint-plugin-vue";
 import globals from "globals";
 

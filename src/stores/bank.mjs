@@ -941,7 +941,7 @@ export default [
         iterations: 5,
         step: 15,
         attributes: {
-          stroke: ["#420", "#420", "#420", "#123202", "rgba(71,102,0,0.8)", "rgba(73,136,0,0.7)"],
+          stroke: ["#420", "#420", "#420", "#123202", "#476600cc", "#498800b3"],
           "stroke-width": ["7", "6", "5", "3", "2", "1"],
         },
       },
@@ -958,7 +958,7 @@ export default [
         iterations: 7,
         step: 6,
         attributes: {
-          stroke: ["#6f4d35", "#6f4d35", "#5f4d35", "#55771c", "#55771c", "#44621c", "rgba(131, 163, 90, 0.5)", "rgba(164, 184, 102, 0.5)", "rgba(192, 200, 97, 0.5)"],
+          stroke: ["#6f4d35", "#6f4d35", "#5f4d35", "#55771c", "#55771c", "#44621c", "#83a35a80", "#a4b86680", "#c0c86180"],
           "stroke-width": ["13", "6", "3", "1"],
           "stroke-linecap": ["square", "square", "round"],
           transform: ["skewY(-35)", "n/a"],
@@ -1318,7 +1318,7 @@ export default [
         iterations: 5,
         step: 15,
         attributes: {
-          stroke: ["#800", "#800", "#800", "#971a8b", "#804", "rgba(229,169,169,0.12)"],
+          stroke: ["#800", "#800", "#800", "#971a8b", "#804", "#e5a9a91f"],
           transform: ["n/a", "n/a", "n/a", "n/a", "n/a", "scale(0.85)"],
         },
       },

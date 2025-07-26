@@ -192,7 +192,7 @@ async function copyPermalink(target, cid, lid) {
     float: right;
     margin-top: 12px;
     position: sticky;
-    top: 12;
+    top: 12px;
     z-index: 2;
   }
 

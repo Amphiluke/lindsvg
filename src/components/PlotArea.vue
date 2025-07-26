@@ -17,6 +17,6 @@ let lSystemStore = useLSystemStore();
   max-width: calc(100dvw - var(--size-sidebar-button) - 16px);
   position: fixed;
   top: 50%;
-  transform: translate(-50%, -50%);
+  translate: -50% -50%;
 }
 </style>

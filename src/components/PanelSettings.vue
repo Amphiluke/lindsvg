@@ -222,7 +222,7 @@ function plot() {
 
     &:has([data-label="B"]),
     &:has([data-label="F"]) {
-      background: rgb(from var(--color-accent) r g b / 0.08);
+      background: linear-gradient(90deg, rgb(from var(--color-accent) r g b / 0), rgb(from var(--color-accent) r g b / 0.08) 15%, rgb(from var(--color-accent) r g b / 0.08) 85%, rgb(from var(--color-accent) r g b / 0));
     }
   }
 
@@ -256,7 +256,7 @@ function plot() {
       pointer-events: none;
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
+      translate: 0 -50%;
       width: 25px;
     }
   }

@@ -52,7 +52,7 @@ let {popover} = storeToRefs(useInterfaceStore());
   @media (max-width: 450px) {
     grid-template-columns: 1fr auto;
 
-    & :first-child {
+    :first-child {
       grid-row: 1 / 3;
     }
   }
