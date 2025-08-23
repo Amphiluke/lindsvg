@@ -244,6 +244,10 @@ function plot() {
     justify-content: space-between;
     padding-block: 15px 5px;
     position: sticky;
+
+    @supports not (color: rgb(from red r g b / 0)) {
+      background: var(--color-surface);
+    }
   }
 
   .plotButton,
