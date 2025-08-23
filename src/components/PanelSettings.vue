@@ -283,10 +283,13 @@ function plot() {
   }
 
   .formButtons {
+    background: linear-gradient(0deg, var(--color-surface) 50%, rgb(from var(--color-surface) r g b / 0));
+    bottom: 0;
     display: flex;
     gap: 10px;
     justify-content: space-between;
-    margin-block: 15px 5px;
+    padding-block: 15px 5px;
+    position: sticky;
   }
 
   .plotButton,

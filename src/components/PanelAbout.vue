@@ -13,7 +13,7 @@ let appVersion = __PACKAGE_VERSION__;
     <h2 :class="panelStyles.title">
       About
     </h2>
-    <div :class="[panelStyles.body, interfaceStyles.thinScroll]">
+    <div :class="[panelStyles.body, interfaceStyles.thinScroll, $style.pretty]">
       <!-- eslint-disable vue/max-attributes-per-line -->
       <p>
         This web application is a simple SVG-based L-system plotter and manager designed to serve as a live demonstration for the <a href="https://github.com/Amphiluke/lindsvg" target="_blank" rel="noopener">lindsvg</a> module which is used by the app under the hood.
@@ -47,5 +47,9 @@ let appVersion = __PACKAGE_VERSION__;
   .metadata {
     display: flex;
     justify-content: space-between;
+  }
+
+  .pretty {
+    text-wrap: pretty;
   }
 </style>
