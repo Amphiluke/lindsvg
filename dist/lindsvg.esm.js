@@ -1,7 +1,7 @@
 /*!
 lindsvg v1.5.0
 https://amphiluke.github.io/lindsvg/
-(c) 2024 Amphiluke
+(c) 2025 Amphiluke
 */
 let messages = {
     AXIOM: "Axiom may only contain the following characters: A..Z,+,-,|,!,[,]",

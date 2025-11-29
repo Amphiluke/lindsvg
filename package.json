@@ -17,7 +17,7 @@
     "src"
   ],
   "scripts": {
-    "lint": "eslint src/**/*.mjs",
+    "lint": "eslint",
     "test": "node test/node-esm-test.mjs && echo \"Check *.svg files located in the test/svg directory\"",
     "build": "rollup -c"
   },
@@ -36,9 +36,12 @@
   },
   "homepage": "https://amphiluke.github.io/lindsvg/",
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@rollup/plugin-terser": "^0.4.4",
-    "eslint": "^8.57.1",
-    "rollup": "^4.22.4"
+    "@stylistic/eslint-plugin": "^5.6.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "rollup": "^4.53.3"
   },
   "engines": {
     "node": ">=8.3.0"
