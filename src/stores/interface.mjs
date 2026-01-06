@@ -1,11 +1,16 @@
-import {defineStore} from "pinia";
 import {ref, readonly, reactive, watch} from "vue";
+import {defineStore} from "pinia";
+
+/** @import {Ref} from "vue" */
 
 export const POPOVER_ACCEPT = "accept";
 export const POPOVER_DISMISS = "dismiss";
 
 export let useInterfaceStore = defineStore("interface", () => {
-  /** Currently opened sidebar panel */
+  /**
+   * Currently opened sidebar panel
+   * @type {Ref<"collections" | "settings" | "attributes" | "sharing" | "about" | "">}
+   */
   let openedPanel = ref("collections");
 
   /**

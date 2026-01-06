@@ -1,9 +1,10 @@
 <script setup>
-import {computed, useCssModule} from "vue";
+import {useCssModule} from "vue";
+import {useFileDialog} from "@vueuse/core";
 import {useCollectionsStore} from "../stores/collections.mjs";
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
-import {useObjectUrl, useFileDialog, useShare} from "@vueuse/core";
+import {useExport} from "../composables/export.mjs";
 import interfaceStyles from "../styles/interface.module.css";
 import panelStyles from "../styles/panel.module.css";
 
@@ -26,40 +27,11 @@ fileDialog.onChange(async (files) => {
   }
 });
 
-let svgBlob = computed(() => new Blob([lSystemStore.svgCode], {type: "image/svg+xml"}));
-let svgURL = useObjectUrl(svgBlob);
-
-let lsvg = computed(() => ({
-  _version: __PACKAGE_VERSION__,
-  axiom: lSystemStore.axiom,
-  alpha: lSystemStore.alpha,
-  theta: lSystemStore.theta,
-  step: lSystemStore.step,
-  iterations: lSystemStore.iterations,
-  rules: lSystemStore.rules,
-  attributes: lSystemStore.attributes,
-}));
-let lsvgBlob = computed(() => new Blob([JSON.stringify(lsvg.value)], {type: "application/json"}));
-let lsvgURL = useObjectUrl(lsvgBlob);
-
-let {share, isSupported: isShareSupported} = useShare();
-function launchShare() {
-  share({
-    title: "L-system",
-    text: "Image of an L-system from the lindsvg app",
-    files: [new File([svgBlob.value], "l-system.svg", {type: svgBlob.value.type})],
-  });
-}
+let {canExport, canShare, copyToClipboard, launchShare, urls: exportURLs} = useExport();
 
 let copiedClassName = useCssModule().copied;
 async function copy(target, type) {
-  let content = type === "svg" ? lSystemStore.svgCode : JSON.stringify(lsvg.value);
-  let clipboardData = {"text/plain": new Blob([content], {type: "text/plain"})};
-  if ((type === "svg") && ("supports" in ClipboardItem) && ClipboardItem.supports(svgBlob.value.type)) {
-    clipboardData[svgBlob.value.type] = svgBlob.value;
-  }
-  let clipboardItem = new ClipboardItem(clipboardData);
-  await navigator.clipboard.write([clipboardItem]);
+  copyToClipboard(type);
   target.classList.add(copiedClassName);
   setTimeout(() => target.classList.remove(copiedClassName), 2000);
 }
@@ -76,7 +48,7 @@ async function copy(target, type) {
       @submit.prevent
     >
       <div :class="$style.fileControls">
-        <h3>Open file…</h3>
+        <h3>Open file:</h3>
         <button
           type="button"
           :class="[interfaceStyles.button, $style.fileButton]"
@@ -85,47 +57,44 @@ async function copy(target, type) {
           LSVG
         </button>
 
-        <h3>Save file…</h3>
+        <h3>Save file:</h3>
         <a
-          :href="lsvgURL"
+          v-for="(urlRef, type) of exportURLs"
+          :key="type"
+          :href="urlRef.value"
           :class="[interfaceStyles.button, $style.fileButton]"
-          :download="(collectionsStore.selectedLID || 'l-system') + '.lsvg'"
+          :download="`${collectionsStore.selectedLID || 'l-system'}.${type}`"
+          :aria-disabled="canExport ? null : 'true'"
         >
-          LSVG
-        </a>
-        <a
-          :href="svgURL"
-          :class="[interfaceStyles.button, $style.fileButton]"
-          :download="(collectionsStore.selectedLID || 'l-system') + '.svg'"
-        >
-          SVG
+          {{ type.toUpperCase() }}
         </a>
 
-        <h3>Copy file…</h3>
+        <h3>Copy file:</h3>
         <button
-          id="copy-lsvg"
+          v-for="type of Object.keys(exportURLs)"
+          :id="`copy-${type}`"
+          :key="type"
           type="button"
+          :disabled="!canExport"
           :class="[interfaceStyles.button, $style.fileButton]"
-          @click="({target}) => copy(target, 'lsvg')"
+          @click="({target}) => copy(target, type)"
         >
-          LSVG
-        </button>
-        <button
-          type="button"
-          :class="[interfaceStyles.button, $style.fileButton]"
-          @click="({target}) => copy(target, 'svg')"
-        >
-          SVG
+          {{ type.toUpperCase() }}
         </button>
 
-        <template v-if="isShareSupported">
-          <h3>Share file…</h3>
+        <template v-if="canShare">
+          <h3 :class="$style.shareTitle">
+            Share file:
+          </h3>
           <button
+            v-for="type of ['svg', 'png']"
+            :key="type"
             type="button"
-            :class="[interfaceStyles.button, $style.fileButton, $style.shareButton]"
-            @click="launchShare"
+            :disabled="!canExport"
+            :class="[interfaceStyles.button, $style.fileButton]"
+            @click="launchShare(type)"
           >
-            SVG
+            {{ type.toUpperCase() }}
           </button>
         </template>
       </div>
@@ -154,8 +123,8 @@ async function copy(target, type) {
   .fileControls {
     align-items: center;
     display: grid;
-    gap: 15px 10px;
-    grid-template-columns: 1fr 25% 25%;
+    gap: 15px 8px;
+    grid-template-columns: 1fr 19% 19% 19%;
 
     h3 {
       font: inherit;
@@ -163,21 +132,31 @@ async function copy(target, type) {
       margin: 0;
     }
 
+    .shareTitle {
+      grid-column: 1 / 3;
+    }
+
     .fileButton {
       --border-alpha: 0.3;
       border-color: rgb(from var(--color-accent) r g b / var(--border-alpha));
       border-radius: 5px;
       font: inherit;
-
+      font-size: 0.9em;
+      
       &:hover,
       &:focus-visible {
-        --border-alpha: 0.6;
         background: none;
       }
-    }
 
-    .shareButton {
-      grid-column: 3 / 4;
+      &:not(:disabled, [aria-disabled="true"]):is(:hover, :focus-visible) {
+        --border-alpha: 0.6;
+      }
+
+      &:disabled,
+      &[aria-disabled="true"] {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
     }
   }
 
