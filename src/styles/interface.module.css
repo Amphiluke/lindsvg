@@ -142,4 +142,9 @@
   > li {
     margin-block: 0.3em;
   }
+
+  &:is(ul) > li::marker {
+    color: var(--color-accent);
+    content: '\2766\2002';
+  }
 }
