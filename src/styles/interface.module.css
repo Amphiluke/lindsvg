@@ -6,7 +6,7 @@
     color: var(--color-on-surface-mid);
     content: attr(data-label);
     flex-shrink: 0;
-    margin-right: 5px;
+    margin-inline-end: 5px;
   }
 
   input[type="text"] {
@@ -16,7 +16,7 @@
     border: none;
     flex-grow: 1;
     min-width: 50px;
-    text-align: right;
+    text-align: end;
   }
 }
 
@@ -115,6 +115,10 @@
   scale: 1 -1;
 }
 
+.iconButtonColor::before {
+  --mask-pos: -275px 0;
+}
+
 @keyframes add-breath {
   0% {
     scale: 0.8;
@@ -137,7 +141,7 @@
 }
 
 .list {
-  padding-left: 30px;
+  padding-inline-start: 30px;
 
   > li {
     margin-block: 0.3em;

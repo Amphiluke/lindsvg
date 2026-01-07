@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {ref, useTemplateRef, nextTick} from "vue";
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
 import interfaceStyles from "../styles/interface.module.css";
@@ -11,7 +11,7 @@ let interfaceStore = useInterfaceStore();
 let newAttributeName = ref("");
 let newAttributeValue = ref("");
 let attributes = [
-  // Presentation Attributes (https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Presentation)
+  // Presentation Attributes (https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute#presentation_attributes)
   "clip-path",
   "clip-rule",
   "color",
@@ -44,14 +44,51 @@ let attributes = [
   "vector-effect",
   "visibility",
 
-  // Core Attributes (https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Core)
+  // Core Attributes (https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute#core_attributes)
   "id",
   "tabindex",
-
-  // Styling Attributes (https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/Styling)
   "class",
   "style",
 ];
+
+let colorPickerRef = useTemplateRef("colorPicker");
+let canPickColor = "showPicker" in HTMLInputElement.prototype;
+let pickColorAttrIndex = ref(undefined);
+
+function openColorPicker(attrIndex) {
+  pickColorAttrIndex.value = attrIndex;
+  colorPickerRef.value.showPicker();
+}
+
+function appendNewValueColor(color) {
+  newAttributeValue.value = `${newAttributeValue.value}\n${color}`.trim();
+}
+
+function appendValueColor(color) {
+  let [name, value] = Object.entries(lSystemStore.attributes)[pickColorAttrIndex.value];
+  if (Array.isArray(value)) {
+    value = [...value, color];
+  } else if (value) {
+    value = [value, color];
+  } else {
+    value = color;
+  }
+  lSystemStore.attributes[name] = value;
+}
+
+function colorPickerChangeHandler() {
+  let field;
+  if (pickColorAttrIndex.value === -1) {
+    appendNewValueColor(colorPickerRef.value.value);
+    field = document.getElementById("path-attr-new");
+  } else {
+    appendValueColor(colorPickerRef.value.value);
+    field = document.getElementById(`path-attr-${pickColorAttrIndex.value}`);
+  }
+  pickColorAttrIndex.value = undefined;
+  colorPickerRef.value.value = "";
+  nextTick().then(() => field.scroll({top: Number.MAX_SAFE_INTEGER}));
+}
 
 function setAttribute(name, value) {
   value = value.trim().split(/\r?\n/);
@@ -87,67 +124,83 @@ function plot() {
       @submit.prevent="plot"
     >
       <div
-        v-for="(values, name) of lSystemStore.attributes"
+        v-for="(values, name, index) of lSystemStore.attributes"
         :key="name"
         :class="$style.attributeRow"
       >
-        <label :class="$style.attributeItem">
+        <label
+          :for="'path-attr-' + index"
+          :class="$style.attributeName"
+        >
           {{ name }}
-          <textarea
-            autocapitalize="off"
-            spellcheck="false"
-            :class="[$style.attributeValues, interfaceStyles.thinScroll]"
-            :value="[values].flat().join('\n')"
-            @change="setAttribute(name, $event.target.value)"
-          />
         </label>
+        <button
+          v-if="canPickColor && ['color', 'stroke', 'fill'].includes(name)"
+          type="button"
+          :class="[$style.pickColorButton, interfaceStyles.iconButton, interfaceStyles.iconButtonColor]"
+          title="Add color value…"
+          @click="openColorPicker(index)"
+        />
         <button
           type="button"
           :class="[$style.unsetAttributeButton, interfaceStyles.iconButton, interfaceStyles.iconButtonDelete]"
           title="Delete this attribute"
           @click="unsetAttribute(name)"
         />
+        <textarea
+          :id="'path-attr-' + index"
+          autocapitalize="off"
+          spellcheck="false"
+          :class="[$style.attributeValues, interfaceStyles.thinScroll]"
+          :value="[values].flat().join('\n')"
+          placeholder="Enter attribute value(s)"
+          @change="({target}) => setAttribute(name, target.value)"
+        />
       </div>
 
       <hr v-if="Object.keys(lSystemStore.attributes).length > 0">
 
-      <div :class="$style.addAttributeRow">
-        <h3>Add a new attribute</h3>
-        <div :class="$style.attributeItem">
-          <div :class="$style.newAttributeName">
-            <label :class="[interfaceStyles.labeledField, $style.labeledField]">
-              <input
-                v-model="newAttributeName"
-                list="svg-attributes"
-                autocapitalize="off"
-                type="text"
-                placeholder="Enter attribute name…"
-              >
-            </label>
-            <datalist id="svg-attributes">
-              <option
-                v-for="(attribute, index) of attributes"
-                :key="index"
-                :value="attribute"
-                :disabled="Object.hasOwn(lSystemStore.attributes, attribute)"
-              />
-            </datalist>
-            <button
-              type="button"
-              :class="[$style.addAttributeButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd]"
-              title="Add a new attribute"
-              :disabled="!newAttributeName"
-              @click="addNewAttribute"
-            />
-          </div>
-          <textarea
-            v-model="newAttributeValue"
+      <h3>Add a new attribute</h3>
+      <datalist id="svg-attributes">
+        <option
+          v-for="(attribute, index) of attributes"
+          :key="index"
+          :value="attribute"
+          :disabled="Object.hasOwn(lSystemStore.attributes, attribute)"
+        />
+      </datalist>
+      <div :class="$style.attributeRow">
+        <label :class="[interfaceStyles.labeledField, $style.labeledField]">
+          <input
+            v-model="newAttributeName"
+            list="svg-attributes"
             autocapitalize="off"
-            spellcheck="false"
-            :class="[$style.attributeValues, interfaceStyles.thinScroll]"
-            placeholder="Enter attribute value(s)"
-          />
-        </div>
+            type="text"
+            placeholder="Enter attribute name…"
+          >
+        </label>
+        <button
+          v-if="canPickColor && ['color', 'stroke', 'fill'].includes(newAttributeName)"
+          type="button"
+          :class="[$style.pickColorButton, interfaceStyles.iconButton, interfaceStyles.iconButtonColor]"
+          title="Add color value…"
+          @click="openColorPicker(-1)"
+        />
+        <button
+          type="button"
+          :class="[$style.addAttributeButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd]"
+          title="Add a new attribute"
+          :disabled="!newAttributeName"
+          @click="addNewAttribute"
+        />
+        <textarea
+          id="path-attr-new"
+          v-model="newAttributeValue"
+          autocapitalize="off"
+          spellcheck="false"
+          :class="[$style.attributeValues, interfaceStyles.thinScroll]"
+          placeholder="Enter attribute value(s)"
+        />
       </div>
 
       <div :class="$style.formButtons">
@@ -165,23 +218,36 @@ function plot() {
           Plot
         </button>
       </div>
+      <input
+        ref="colorPicker"
+        type="color"
+        hidden
+        @change="colorPickerChangeHandler"
+      >
     </form>
   </section>
 </template>
 
 <style module>
   .attributeRow {
-    position: relative;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr auto;
 
-    + .attributeRow {
+    &:has(.pickColorButton) {
+      grid-template-columns: 1fr auto auto;
+    }
+
+    + & {
       margin-top: 10px;
     }
   }
 
-  .attributeItem {
-    display: flex;
-    flex-direction: column;
+  .attributeName {
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .attributeValues {
@@ -192,48 +258,28 @@ function plot() {
     background-size: 2.5em 2.5em;
     border: none;
     box-sizing: border-box;
+    grid-column: 1 / -1;
     line-height: 1.25em;
     height: 5lh;
-    margin: 10px 0;
+    margin: 10px 0 10px 10px;
     padding: 0 10px;
     resize: vertical;
-    width: calc(100% - 10px);
 
     @media (prefers-color-scheme: dark) {
       --color-zebra: #0000001a;
     }
   }
 
-  .unsetAttributeButton {
-    position: absolute;
-    right: 0;
-    top: 0.5em;
-    translate: 0 -50%;
-
-    &:not(:hover) {
-      opacity: 0.5;
-    }
+  :is(.pickColorButton, .unsetAttributeButton):not(:hover) {
+    opacity: 0.5;
   }
 
-  .newAttributeName {
-    display: flex;
-
-    .labeledField {
-      flex-grow: 1;
-      min-width: 0;
-    }
-
-    input[type="text"] {
-      text-align: left;
-    }
+  .labeledField input[type="text"] {
+    text-align: start;
   }
   
-  .addAttributeButton {
-    flex-shrink: 0;
-
-    &:disabled {
-      opacity: 0.5;
-    }
+  .addAttributeButton:disabled {
+    opacity: 0.5;
   }
 
   .formButtons {
