@@ -276,6 +276,7 @@ function plot() {
 
   .labeledField input[type="text"] {
     text-align: start;
+    width: 100%;
   }
   
   .addAttributeButton:disabled {
