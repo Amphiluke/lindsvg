@@ -39,9 +39,9 @@ let {popover} = storeToRefs(useInterfaceStore());
   display: grid;
   gap: 5px 20px;
   grid-template-columns: 1fr auto;
+  inset-inline-end: 15px;
   max-width: 500px;
   padding: 5px 20px;
-  right: 15px;
   position: fixed;
   width: calc(100% - 30px - var(--size-sidebar-button));
 }

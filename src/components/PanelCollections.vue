@@ -174,8 +174,7 @@ async function copyPermalink(target, cid, lid) {
     box-sizing: border-box;
     flex-grow: 1;
     min-width: 0;
-    padding-left: 0;
-    padding-right: 0;
+    padding-inline: 0;
   }
 
   .collections {
@@ -189,7 +188,7 @@ async function copyPermalink(target, cid, lid) {
   }
 
   .addLSystemButton {
-    float: right;
+    float: inline-end;
     margin-top: 12px;
     position: sticky;
     top: 12px;

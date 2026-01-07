@@ -100,7 +100,7 @@ let selectedIndex = computed({
     gap: 5px;
     justify-content: center;
     min-width: 0;
-    padding-left: var(--size-sidebar-button);
+    padding-inline-start: var(--size-sidebar-button);
     padding-top: 0.6rem;
     position: relative;
   }

@@ -2,7 +2,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  margin-left: var(--size-sidebar-button);
+  margin-inline-start: var(--size-sidebar-button);
   max-height: 100%;
   padding: 0 10px 10px;
   width: var(--size-sidebar-panel);
@@ -16,5 +16,5 @@
   flex-grow: 1;
   margin: 0;
   overflow: auto;
-  padding-right: 4px; /* increase the distance from a scrollbar */
+  padding-inline-end: 4px; /* increase the distance from a scrollbar */
 }

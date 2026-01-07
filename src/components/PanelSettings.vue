@@ -69,7 +69,7 @@ function plot() {
             type="text"
             :class="$style.uppercase"
             :value="lSystemStore.axiom"
-            @change="lSystemStore.axiom = toLSFormat($event.target.value)"
+            @change="({target}) => lSystemStore.axiom = toLSFormat(target.value)"
           >
         </label>
         <button
@@ -93,7 +93,7 @@ function plot() {
             type="text"
             :class="$style.uppercase"
             :value="rule"
-            @change="lSystemStore.rules[letter] = toLSFormat($event.target.value)"
+            @change="({target}) => lSystemStore.rules[letter] = toLSFormat(target.value)"
           >
         </label>
         <button
@@ -149,7 +149,7 @@ function plot() {
             type="text"
             inputmode="decimal"
             :value="lSystemStore.alpha"
-            @change="lSystemStore.alpha = toNumber($event.target.value)"
+            @change="({target}) => lSystemStore.alpha = toNumber(target.value)"
           >
         </label>
       </div>
@@ -163,7 +163,7 @@ function plot() {
             type="text"
             inputmode="decimal"
             :value="lSystemStore.theta"
-            @change="lSystemStore.theta = toNumber($event.target.value)"
+            @change="({target}) => lSystemStore.theta = toNumber(target.value)"
           >
         </label>
       </div>
@@ -177,7 +177,7 @@ function plot() {
             type="text"
             inputmode="decimal"
             :value="lSystemStore.step"
-            @change="lSystemStore.step = toNumber($event.target.value)"
+            @change="({target}) => lSystemStore.step = toNumber(target.value)"
           >
         </label>
       </div>
@@ -191,7 +191,7 @@ function plot() {
             type="text"
             inputmode="numeric"
             :value="lSystemStore.iterations"
-            @change="lSystemStore.iterations = toNumber($event.target.value)"
+            @change="({target}) => lSystemStore.iterations = toNumber(target.value)"
           >
         </label>
       </div>
@@ -250,7 +250,7 @@ function plot() {
       background-color: var(--color-accent);
       content: "";
       height: 25px;
-      left: 20px;
+      inset-inline-start: 20px;
       -webkit-mask: url(../assets/icons.svg) -75px 0 no-repeat;
       mask: url(../assets/icons.svg) -75px 0 no-repeat;
       pointer-events: none;
@@ -270,7 +270,7 @@ function plot() {
     box-sizing: border-box;
     color: var(--color-on-surface-mid);
     flex-shrink: 0;
-    padding-right: 25px;
+    padding-inline-end: 25px;
     width: 45px;
   }
   

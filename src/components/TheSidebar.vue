@@ -52,7 +52,7 @@ let interfaceStore = useInterfaceStore();
   box-shadow: 1px 0 3px 0 var(--color-surface-shadow);
   color: var(--color-on-surface-high);
   height: 100dvh;
-  left: 0;
+  inset-inline-start: 0;
   min-width: var(--size-sidebar-button);
   position: fixed;
   top: 0;
@@ -62,7 +62,7 @@ let interfaceStore = useInterfaceStore();
   display: flex;
   gap: 10px;
   position: absolute;
-  right: 10px;
+  inset-inline-end: 10px;
   top: 10px;
 }
 
@@ -94,7 +94,7 @@ let interfaceStore = useInterfaceStore();
 .buttons {
   display: flex;
   height: var(--size-sidebar-button);
-  left: 0;
+  inset-inline-start: 0;
   outline: 1px solid var(--color-on-surface-mid);
   position: fixed;
   top: 0;
