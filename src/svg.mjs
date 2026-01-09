@@ -1,6 +1,8 @@
 import {generateCodeword, tokenizeCodeword} from "./generator.mjs";
 import {Turtle} from "./turtle.mjs";
 
+/** @import {LSParams, SVGParams} from "./lindsvg.mjs" */
+
 function formatCoordinates(x, y) {
   // Unary plus is used to remove insignificant trailing zeros
   return `${+x.toFixed(4)} ${+y.toFixed(4)}`;
@@ -8,8 +10,8 @@ function formatCoordinates(x, y) {
 
 /**
  * Delete useless M commands which are followed by other M commands, and those in the end of path data
- * @param {String} pathData - SVG path data
- * @return {String}
+ * @param {string} pathData - SVG path data
+ * @returns {string}
  */
 function dropUselessMoves(pathData) {
   return pathData.replace(/(?:M-?\d+(?:\.\d+)? -?\d+(?:\.\d+)?)+(?=M|$)/g, "");
@@ -17,9 +19,9 @@ function dropUselessMoves(pathData) {
 
 /**
  * Get the value of the d attribute
- * @param {String[]} tokens - Tokenized codeword
- * @param {Object} turtle - Turtle object to work with
- * @return {String}
+ * @param {string[]} tokens - Tokenized codeword
+ * @param {Turtle} turtle - Turtle object to work with
+ * @returns {string}
  */
 function getPathData(tokens, turtle) {
   let prevCommand; // used to avoid unnecessary repeating of the commands L and M
@@ -70,9 +72,9 @@ function getPathData(tokens, turtle) {
 
 /**
  * Get the values of the d attribute for each path element
- * @param {String[]} tokens - Tokenized codeword
- * @param {Object} turtle - Turtle object to work with
- * @return {String[]}
+ * @param {string[]} tokens - Tokenized codeword
+ * @param {Turtle} turtle - Turtle object to work with
+ * @returns {string[]}
  */
 function getMultiPathData(tokens, turtle) {
   let prevCommand; // used to avoid unnecessary repeating of the commands L and M
@@ -137,7 +139,7 @@ function getMultiPathData(tokens, turtle) {
 /**
  * Get raw data required for SVG rendering
  * @param {LSParams} lsParams - L-system parameters
- * @return {{pathData: String, minX: Number, minY: Number, width: Number, height: Number}}
+ * @returns {{pathData: string, minX: number, minY: number, width: number, height: number}}
  */
 export function getSVGData(lsParams) {
   let codeword = generateCodeword(lsParams);
@@ -152,7 +154,7 @@ export function getSVGData(lsParams) {
 /**
  * Get raw data required for rendering of a multi-path SVG
  * @param {LSParams} lsParams - L-system parameters
- * @return {{multiPathData: String[], minX: Number, minY: Number, width: Number, height: Number}}
+ * @returns {{multiPathData: string[], minX: number, minY: number, width: number, height: number}}
  */
 export function getMultiPathSVGData(lsParams) {
   let codeword = generateCodeword(lsParams);
@@ -170,9 +172,8 @@ function makeSVGConfig(svgParams, naturalWidth, naturalHeight) {
     height: svgParams.height || naturalHeight,
     padding: svgParams.padding || 0,
     pathAttributes: {
-      // for backward compatibility with v1.1.0, also check fill and stroke as direct props of svgParams
-      fill: svgParams.fill || "none",
-      stroke: svgParams.stroke || "#000",
+      fill: "none",
+      stroke: "#000",
       ...svgParams.pathAttributes,
     },
   };
@@ -199,7 +200,7 @@ function makeAttrString(attrs, index) {
  * Get ready-to-render L-system’s SVG code
  * @param {LSParams} lsParams - L-system parameters
  * @param {SVGParams} svgParams - Output SVG parameters
- * @return {String}
+ * @returns {string}
  */
 export function getSVGCode(lsParams, svgParams) {
   let {pathData, minX, minY, width: naturalWidth, height: naturalHeight} = getSVGData(lsParams);
@@ -217,7 +218,7 @@ export function getSVGCode(lsParams, svgParams) {
  * Get ready-to-render multi-path SVG code for an L-system
  * @param {LSParams} lsParams - L-system parameters
  * @param {SVGParams} svgParams - Output SVG parameters
- * @return {String}
+ * @returns {string}
  */
 export function getMultiPathSVGCode(lsParams, svgParams) {
   let {multiPathData, minX, minY, width: naturalWidth, height: naturalHeight} = getMultiPathSVGData(lsParams);

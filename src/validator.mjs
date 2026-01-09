@@ -1,3 +1,5 @@
+/** @import {LSParams} from "./lindsvg.mjs" */
+
 let messages = {
   AXIOM: "Axiom may only contain the following characters: A..Z,+,-,|,!,[,]",
   RULE: "Production rules may only contain the following characters: A..Z,+,-,|,!,[,]",
@@ -45,7 +47,7 @@ export function checkAngle(angle, msg = messages.NUMBER) {
   return Number.isFinite(angle) || msg;
 }
 
-export function validate(lsParams) {
+export function validate(/** @type {LSParams} */lsParams) {
   let errors = Object.create(null);
   Object.entries(lsParams).forEach(([param, value]) => {
     let result = true;

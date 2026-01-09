@@ -1,22 +1,23 @@
-class LSError extends Error {
+export class LSError extends Error {
+  #lsErrors;
+
   /**
    * LSError constructor
-   * @param {Object} errors - Error map “parameter->message(s)”
+   * @param {object} errors - Error map “parameter->message(s)”
    * @constructor
    */
   constructor(errors) {
     let message = JSON.stringify(errors, null, 2);
     super(message);
-    // Using JSON.parse for deep cloning
-    Object.defineProperty(this, "lsErrors", {value: JSON.parse(message)});
+    this.#lsErrors = structuredClone(errors);
   }
 
   /**
    * Get raw object representation of the errors
-   * @return {Object}
+   * @returns {object}
    */
   toJSON() {
-    return JSON.parse(JSON.stringify(this.lsErrors));
+    return structuredClone(this.#lsErrors);
   }
 }
 
@@ -27,5 +28,3 @@ Object.defineProperty(LSError.prototype, "name", {
   writable: true,
   value: "LSError",
 });
-
-export {LSError};

@@ -20,25 +20,11 @@ ${pkg.homepage}
 
 export default [
   {
-    input: config.input,
-    output: {file: "dist/lindsvg.esm.js", format: "esm", ...config.output},
-  },
-  {
-    input: config.input,
+    ...config,
     output: {file: "dist/lindsvg.esm.min.js", format: "esm", ...config.output},
-    plugins: config.plugins,
   },
   {
-    input: config.input,
-    output: {file: "dist/lindsvg.js", format: "umd", ...config.output},
-  },
-  {
-    input: config.input,
+    ...config,
     output: {file: "dist/lindsvg.min.js", format: "umd", ...config.output},
-    plugins: config.plugins,
-  },
-  {
-    input: config.input,
-    output: {file: "dist/lindsvg.cjs", format: "cjs", ...config.output},
   },
 ];

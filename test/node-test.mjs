@@ -1,8 +1,8 @@
-import {getSVGCode, getMultiPathSVGCode} from "../src/lindsvg.mjs";
 import {writeFile, unlink} from "node:fs/promises";
 import {join, dirname} from "node:path";
 import {fileURLToPath} from "node:url";
 import {dump} from "js-yaml";
+import {getSVGCode, getMultiPathSVGCode} from "../dist/lindsvg.esm.min.js";
 
 let __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -20,14 +20,14 @@ let multiPathSVGCode = getMultiPathSVGCode(multiPathLSParams, multiPathSVGParams
 await writeFile(multiPathSVG, multiPathSVGCode);
 
 try {
-    console.log("Below, an exception is expected");
-    console.log(getMultiPathSVGCode(lsInvalidParams, multiPathSVGParams));
+  console.log("Below, an exception is expected");
+  console.log(getMultiPathSVGCode(lsInvalidParams, multiPathSVGParams));
 } catch (error) {
-    // Log the original message
-    console.error(error);
-    if (error.name === "LSError") {
-        // Get a JSON representation of the error list and format it as YAML
-        let errorJSON = error.toJSON();
-        console.log(dump(errorJSON, {indent: 4}));
-    }
+  // Log the original message
+  console.error(error);
+  if (error.name === "LSError") {
+    // Get a JSON representation of the error list and format it as YAML
+    let errorJSON = error.toJSON();
+    console.log(dump(errorJSON, {indent: 4}));
+  }
 }

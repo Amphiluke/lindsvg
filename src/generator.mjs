@@ -1,6 +1,8 @@
 import {validate} from "./validator.mjs";
 import {LSError} from "./ls-error.mjs";
 
+/** @import {Rules, LSParams} from "./lindsvg.mjs" */
+
 /** @type {Rules} */
 let ctrlRules = {
   F: "",
@@ -23,8 +25,8 @@ let defaults = {
 
 /**
  * Remove all the stuff which doesn’t affect the drawing process from the raw generated codeword
- * @param {String} codeword - Raw L-system code
- * @return {String} - Clean L-system code
+ * @param {string} codeword - Raw L-system code
+ * @returns {string} - Clean L-system code
  */
 function cleanCodeword(codeword) {
   // Remove auxiliary drawing-indifferent letters
@@ -40,7 +42,7 @@ function cleanCodeword(codeword) {
 /**
  * Generate L-system code
  * @param {LSParams} lsParams - L-system parameters
- * @return {String} - Clean L-system code
+ * @returns {string} - Clean L-system code
  */
 export function generateCodeword(lsParams) {
   let validity = validate(lsParams);
@@ -57,8 +59,8 @@ export function generateCodeword(lsParams) {
 
 /**
  * Split a codeword into “tokens” (group equal adjacent commands)
- * @param {String} codeword - L-system code
- * @return {String[]}
+ * @param {string} codeword - L-system code
+ * @returns {string[]}
  */
 export function tokenizeCodeword(codeword) {
   return codeword.match(/([FB[\]+-|!])\1*/g); // tokenize
