@@ -2,7 +2,7 @@ import {writeFile, unlink} from "node:fs/promises";
 import {join, dirname} from "node:path";
 import {fileURLToPath} from "node:url";
 import {dump} from "js-yaml";
-import {getSVGCode, getMultiPathSVGCode} from "../dist/lindsvg.esm.min.js";
+import {getSVGCode, getMultiPathSVGCode} from "../dist/lindsvg.mjs";
 
 let __dirname = dirname(fileURLToPath(import.meta.url));
 

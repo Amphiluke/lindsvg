@@ -20,7 +20,7 @@
 <body>
   <script src="../node_modules/js-yaml/dist/js-yaml.min.js"></script>
   <script type="module">
-    import {getSVGCode, getMultiPathSVGCode} from "../dist/lindsvg.esm.min.js";
+    import {getSVGCode, getMultiPathSVGCode} from "../dist/lindsvg.mjs";
     // import {getSVGCode, getMultiPathSVGCode} from "../src/lindsvg.mjs";
     import {singlePathLSParams, multiPathLSParams, lsInvalidParams, singlePathSVGParams, multiPathSVGParams} from "./params.mjs";
     document.body.insertAdjacentHTML("beforeend", getSVGCode(singlePathLSParams, singlePathSVGParams));

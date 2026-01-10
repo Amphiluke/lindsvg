@@ -21,10 +21,10 @@ ${pkg.homepage}
 export default [
   {
     ...config,
-    output: {file: "dist/lindsvg.esm.min.js", format: "esm", ...config.output},
+    output: {file: "dist/lindsvg.mjs", format: "esm", ...config.output},
   },
   {
     ...config,
-    output: {file: "dist/lindsvg.min.js", format: "umd", ...config.output},
+    output: {file: "dist/lindsvg.js", format: "umd", ...config.output},
   },
 ];

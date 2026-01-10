@@ -1,7 +1,7 @@
 let {writeFile, unlink} = require("node:fs/promises");
 let {join} = require("node:path");
 let {dump} = require("js-yaml");
-let {getSVGCode, getMultiPathSVGCode} = require("../dist/lindsvg.esm.min.js");
+let {getSVGCode, getMultiPathSVGCode} = require("../dist/lindsvg.mjs");
 
 async function runTest() {
   let {singlePathLSParams, multiPathLSParams, lsInvalidParams, singlePathSVGParams, multiPathSVGParams} = await import("./params.mjs");

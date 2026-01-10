@@ -2,11 +2,16 @@
   "name": "lindsvg",
   "version": "2.0.0",
   "description": "Lindenmayer System [Scalable] Vector Graphics",
-  "main": "./dist/lindsvg.min.js",
-  "module": "./dist/lindsvg.esm.min.js",
-  "unpkg": "./dist/lindsvg.min.js",
-  "exports": "./dist/lindsvg.esm.min.js",
   "type": "module",
+  "main": "./dist/lindsvg.js",
+  "module": "./dist/lindsvg.mjs",
+  "unpkg": "./dist/lindsvg.js",
+  "exports": {
+    ".": {
+      "types": "./dist/lindsvg.d.ts",
+      "default": "./dist/lindsvg.mjs"
+    }
+  },
   "files": [
     "dist",
     "src"
