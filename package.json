@@ -36,12 +36,12 @@
   },
   "homepage": "https://amphiluke.github.io/lindsvg/",
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@stylistic/eslint-plugin": "^5.6.1",
-    "eslint": "^9.39.1",
-    "globals": "^16.5.0",
-    "rollup": "^4.53.3"
+    "@eslint/js": "^10.0.1",
+    "@rollup/plugin-terser": "^1.0.0",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^10.1.0",
+    "globals": "^17.4.0",
+    "rollup": "^4.60.0"
   },
   "engines": {
     "node": ">=8.3.0"
