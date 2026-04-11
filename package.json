@@ -39,9 +39,9 @@
     "@eslint/js": "^10.0.1",
     "@rollup/plugin-terser": "^1.0.0",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "eslint": "^10.1.0",
+    "eslint": "^10.2.0",
     "globals": "^17.4.0",
-    "rollup": "^4.60.0"
+    "rollup": "^4.60.1"
   },
   "engines": {
     "node": ">=8.3.0"
