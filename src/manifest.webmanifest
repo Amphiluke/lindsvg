@@ -67,6 +67,10 @@
   ],
   "background_color": "#ffffff",
   "theme_color": "#f5f5f5",
+  "color_scheme_dark": {
+    "background_color": "#121212",
+    "theme_color": "#262626"
+  },
   "display": "standalone",
   "file_handlers": [
     {

@@ -69,6 +69,7 @@ function plot() {
             type="text"
             :class="$style.uppercase"
             :value="lSystemStore.axiom"
+            spellcheck="false"
             @change="({target}) => lSystemStore.axiom = toLSFormat(target.value)"
           >
         </label>
@@ -93,6 +94,7 @@ function plot() {
             type="text"
             :class="$style.uppercase"
             :value="rule"
+            spellcheck="false"
             @change="({target}) => lSystemStore.rules[letter] = toLSFormat(target.value)"
           >
         </label>
@@ -128,6 +130,7 @@ function plot() {
             v-model.trim="newRuleValue"
             type="text"
             :class="[$style.newRuleValue, $style.uppercase]"
+            spellcheck="false"
             placeholder="Add a new rule…"
           >
         </label>
