@@ -8,6 +8,10 @@ export interface LSParams {
   };
   alpha: number;
   theta: number;
+  origin?: {
+    x?: number;
+    y?: number;
+  };
   step: number;
   iterations: number;
 }
@@ -32,6 +36,6 @@ export function getSVGData(lsParams: LSParams): {pathData: string} & LSVGData;
 
 export function getMultiPathSVGData(lsParams: LSParams): {multiPathData: string[]} & LSVGData;
 
-export function getSVGCode(lsParams: LSParams, svgParams: LSVGParams): string;
+export function getSVGCode(lsParams: LSParams, svgParams?: LSVGParams): string;
 
-export function getMultiPathSVGCode(lsParams: LSParams, svgParams: LSVGParams): string;
+export function getMultiPathSVGCode(lsParams: LSParams, svgParams?: LSVGParams): string;

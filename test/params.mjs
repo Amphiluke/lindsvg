@@ -23,6 +23,37 @@ export let multiPathLSParams = {
   step: 5,
 };
 
+export let comboLSParams = {
+  yellowGreen: {
+    axiom: "FX",
+    rules: {
+      F: "F",
+      X: "X+YF+",
+      Y: "-FX-Y",
+    },
+    alpha: 0,
+    theta: Math.PI / 2,
+    iterations: 14,
+    step: 3.5,
+  },
+  forestGreen: {
+    axiom: "FX",
+    rules: {
+      F: "F",
+      X: "X+YF+",
+      Y: "-FX-Y",
+    },
+    alpha: Math.PI,
+    theta: Math.PI / 2,
+    iterations: 14,
+    origin: {
+      x: 0,
+      y: -448,
+    },
+    step: 3.5,
+  },
+};
+
 export let lsInvalidParams = {
   axiom: "X F",
   rules: {
@@ -55,5 +86,16 @@ export let multiPathSVGParams = {
     "stroke-width": ["11", "5", "3", "1"],
     "stroke-linecap": ["square", "square", "round"],
     transform: ["skewY(-35)", "n/a"],
+  },
+};
+
+export let comboSVGParams = {
+  pathAttributes: {
+    yellowGreen: {
+      stroke: "YellowGreen",
+    },
+    forestGreen: {
+      stroke: "ForestGreen",
+    },
   },
 };

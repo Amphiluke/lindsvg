@@ -5,37 +5,39 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <title>lindsvg</title>
   <style>
-    svg {
+    .demos {
+      display: flex;
+      inset: 0;
       position: fixed;
-      left: 0;
-      top: 0;
-      width: 50vw;
-      height: 100vh;
-    }
-    svg + svg {
-      left: 50vw;
+
+      svg {
+        flex: 1 1 0;
+        height: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <script src="../node_modules/js-yaml/dist/js-yaml.min.js"></script>
+  <div class="demos"></div>
   <script type="module">
-    import {getSVGCode, getMultiPathSVGCode} from "../dist/lindsvg.mjs";
-    // import {getSVGCode, getMultiPathSVGCode} from "../src/lindsvg.mjs";
-    import {singlePathLSParams, multiPathLSParams, lsInvalidParams, singlePathSVGParams, multiPathSVGParams} from "./params.mjs";
-    document.body.insertAdjacentHTML("beforeend", getSVGCode(singlePathLSParams, singlePathSVGParams));
-    document.body.insertAdjacentHTML("beforeend", getMultiPathSVGCode(multiPathLSParams, multiPathSVGParams));
+    import * as params from "./params.mjs";
+    import {getSVGCode, getMultiPathSVGCode, getComboSVGCode} from "../dist/lindsvg.mjs";
+    import {dump} from "https://unpkg.com/js-yaml@4.1.1/dist/js-yaml.mjs";
+    let demos = document.body.querySelector(".demos");
+    demos.insertAdjacentHTML("beforeend", getSVGCode(params.singlePathLSParams, params.singlePathSVGParams));
+    demos.insertAdjacentHTML("beforeend", getMultiPathSVGCode(params.multiPathLSParams, params.multiPathSVGParams));
+    demos.insertAdjacentHTML("beforeend", getComboSVGCode(params.comboLSParams, params.comboSVGParams));
 
     try {
       console.log("Below, an exception is expected");
-      console.log(getMultiPathSVGCode(lsInvalidParams, multiPathSVGParams));
+      console.log(getMultiPathSVGCode(params.lsInvalidParams, params.multiPathSVGParams));
     } catch (error) {
       // Log the original message
       console.error(error);
       if (error.name === "LSError") {
         // Get a JSON representation of the error list and format it as YAML
         let errorJSON = error.toJSON();
-        console.log(window.jsyaml.dump(errorJSON, {indent: 4}));
+        console.log(dump(errorJSON, {indent: 4}));
       }
     }
   </script>

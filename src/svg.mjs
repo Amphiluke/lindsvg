@@ -1,7 +1,7 @@
 import {generateCodeword, tokenizeCodeword} from "./generator.mjs";
 import {Turtle} from "./turtle.mjs";
 
-/** @import {LSParams, SVGParams} from "./lindsvg.mjs" */
+/** @import {LSParams, SVGParams, ComboSVGPathAttributes} from "./lindsvg.mjs" */
 
 function formatCoordinates(x, y) {
   // Unary plus is used to remove insignificant trailing zeros
@@ -143,7 +143,13 @@ function getMultiPathData(tokens, turtle) {
  */
 export function getSVGData(lsParams) {
   let codeword = generateCodeword(lsParams);
-  let turtle = new Turtle({x: 0, y: 0, ...lsParams});
+  let turtle = new Turtle({
+    x: lsParams.origin?.x ?? 0,
+    y: lsParams.origin?.y ?? 0,
+    step: lsParams.step,
+    alpha: lsParams.alpha,
+    theta: lsParams.theta,
+  });
   let pathData = getPathData(tokenizeCodeword(codeword), turtle);
   return {
     pathData,
@@ -158,7 +164,13 @@ export function getSVGData(lsParams) {
  */
 export function getMultiPathSVGData(lsParams) {
   let codeword = generateCodeword(lsParams);
-  let turtle = new Turtle({x: 0, y: 0, ...lsParams});
+  let turtle = new Turtle({
+    x: lsParams.origin?.x ?? 0,
+    y: lsParams.origin?.y ?? 0,
+    step: lsParams.step,
+    alpha: lsParams.alpha,
+    theta: lsParams.theta,
+  });
   let multiPathData = getMultiPathData(tokenizeCodeword(codeword), turtle);
   return {
     multiPathData,
@@ -166,16 +178,14 @@ export function getMultiPathSVGData(lsParams) {
   };
 }
 
+const DEFAULT_PATH_ATTRIBUTES = Object.freeze({fill: "none", stroke: "#000"});
+
 function makeSVGConfig(svgParams, naturalWidth, naturalHeight) {
   return {
-    width: svgParams.width || naturalWidth,
-    height: svgParams.height || naturalHeight,
-    padding: svgParams.padding || 0,
-    pathAttributes: {
-      fill: "none",
-      stroke: "#000",
-      ...svgParams.pathAttributes,
-    },
+    width: svgParams?.width || naturalWidth,
+    height: svgParams?.height || naturalHeight,
+    padding: svgParams?.padding || 0,
+    pathAttributes: {...DEFAULT_PATH_ATTRIBUTES, ...svgParams?.pathAttributes},
   };
 }
 
@@ -199,7 +209,7 @@ function makeAttrString(attrs, index) {
 /**
  * Get ready-to-render L-system’s SVG code
  * @param {LSParams} lsParams - L-system parameters
- * @param {SVGParams} svgParams - Output SVG parameters
+ * @param {SVGParams} [svgParams] - Output SVG parameters
  * @returns {string}
  */
 export function getSVGCode(lsParams, svgParams) {
@@ -217,7 +227,7 @@ export function getSVGCode(lsParams, svgParams) {
 /**
  * Get ready-to-render multi-path SVG code for an L-system
  * @param {LSParams} lsParams - L-system parameters
- * @param {SVGParams} svgParams - Output SVG parameters
+ * @param {SVGParams} [svgParams] - Output SVG parameters
  * @returns {string}
  */
 export function getMultiPathSVGCode(lsParams, svgParams) {
@@ -231,6 +241,47 @@ export function getMultiPathSVGCode(lsParams, svgParams) {
     viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
     width,
     height,
+    content,
+  });
+}
+
+/**
+ * Get ready-to-render SVG code for several L-systems combined in a single image
+ * @param {{[key: string]: LSParams}} lsParamsMap - L-system key to L-system parameters mapping
+ * @param {SVGParams<ComboSVGPathAttributes>} [svgParams] - Output SVG parameters
+ * @returns {string}
+ */
+export function getComboSVGCode(lsParamsMap, svgParams) {
+  let minX = Number.MAX_SAFE_INTEGER;
+  let minY = Number.MAX_SAFE_INTEGER;
+  let maxX = -Number.MAX_SAFE_INTEGER;
+  let maxY = -Number.MAX_SAFE_INTEGER;
+  let content = "";
+  Object.entries(lsParamsMap).forEach(([key, lsParams]) => {
+    let pathAttributes = {...DEFAULT_PATH_ATTRIBUTES, ...svgParams?.pathAttributes?.[key]};
+    let isMultiPath = Object.values(pathAttributes).some((value) => Array.isArray(value));
+    let data = isMultiPath ? getMultiPathSVGData(lsParams) : getSVGData(lsParams);
+    minX = Math.min(minX, data.minX);
+    minY = Math.min(minY, data.minY);
+    maxX = Math.max(maxX, data.minX + data.width);
+    maxY = Math.max(maxY, data.minY + data.height);
+    if (isMultiPath) {
+      content += data.multiPathData.reduce((accumulator, pathData, index) => {
+        let pathAttrStr = makeAttrString(pathAttributes, index);
+        return `${accumulator}<path d="${pathData}"${pathAttrStr}></path>`;
+      }, "");
+    } else {
+      let pathAttrStr = makeAttrString(pathAttributes, 0);
+      content += `<path d="${data.pathData}"${pathAttrStr}></path>`;
+    }
+  });
+  let padding = svgParams.padding || 0;
+  let naturalWidth = maxX - minX;
+  let naturalHeight = maxY - minY;
+  return makeSVGCode({
+    viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
+    width: svgParams.width || naturalWidth,
+    height: svgParams.height || naturalHeight,
     content,
   });
 }
