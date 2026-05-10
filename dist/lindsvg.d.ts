@@ -4,7 +4,7 @@ type LSLetter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" 
 export interface LSParams {
   axiom: string;
   rules: {
-    [letter: LSLetter]: string;
+    [letter in LSLetter]?: string;
   };
   alpha: number;
   theta: number;
