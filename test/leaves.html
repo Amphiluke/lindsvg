@@ -59,9 +59,8 @@
   </svg>
 
   <script type="module">
-    import {getMultiPathSVGCode} from "../dist/lindsvg.mjs";
-    // import {getSVGCode, getMultiPathSVGCode} from "../src/lindsvg.mjs";
-    document.body.insertAdjacentHTML("beforeend", getMultiPathSVGCode({
+    import {getSVGCode} from "../dist/lindsvg.mjs";
+    document.body.insertAdjacentHTML("beforeend", getSVGCode({
       axiom: "F-FFF-F+F+X",
       rules: {
         F: "F",

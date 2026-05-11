@@ -139,9 +139,11 @@ function getMultiPathData(tokens, turtle) {
 /**
  * Get raw data required for SVG rendering
  * @param {LSParams} lsParams - L-system parameters
- * @returns {{pathData: string, minX: number, minY: number, width: number, height: number}}
+ * @param {object} [options]
+ * @param {boolean} [options.isMultiPath=false] - Use separate paths for each branching level or a single joint path (default)
+ * @returns {{pathData: string[], minX: number, minY: number, width: number, height: number}}
  */
-export function getSVGData(lsParams) {
+export function getSVGData(lsParams, {isMultiPath = false} = {}) {
   let codeword = generateCodeword(lsParams);
   let turtle = new Turtle({
     x: lsParams.origin?.x ?? 0,
@@ -150,44 +152,14 @@ export function getSVGData(lsParams) {
     alpha: lsParams.alpha,
     theta: lsParams.theta,
   });
-  let pathData = getPathData(tokenizeCodeword(codeword), turtle);
+  let tokens = tokenizeCodeword(codeword);
   return {
-    pathData,
-    ...turtle.getDrawingRect(),
-  };
-}
-
-/**
- * Get raw data required for rendering of a multi-path SVG
- * @param {LSParams} lsParams - L-system parameters
- * @returns {{multiPathData: string[], minX: number, minY: number, width: number, height: number}}
- */
-export function getMultiPathSVGData(lsParams) {
-  let codeword = generateCodeword(lsParams);
-  let turtle = new Turtle({
-    x: lsParams.origin?.x ?? 0,
-    y: lsParams.origin?.y ?? 0,
-    step: lsParams.step,
-    alpha: lsParams.alpha,
-    theta: lsParams.theta,
-  });
-  let multiPathData = getMultiPathData(tokenizeCodeword(codeword), turtle);
-  return {
-    multiPathData,
+    pathData: isMultiPath ? getMultiPathData(tokens, turtle) : [getPathData(tokens, turtle)],
     ...turtle.getDrawingRect(),
   };
 }
 
 const DEFAULT_PATH_ATTRIBUTES = Object.freeze({fill: "none", stroke: "#000"});
-
-function makeSVGConfig(svgParams, naturalWidth, naturalHeight) {
-  return {
-    width: svgParams?.width || naturalWidth,
-    height: svgParams?.height || naturalHeight,
-    padding: svgParams?.padding || 0,
-    pathAttributes: {...DEFAULT_PATH_ATTRIBUTES, ...svgParams?.pathAttributes},
-  };
-}
 
 function makeSVGCode({viewBox, width, height, content}) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox.join(" ")}" height="${height}" width="${width}">${content}</svg>`;
@@ -213,41 +185,25 @@ function makeAttrString(attrs, index) {
  * @returns {string}
  */
 export function getSVGCode(lsParams, svgParams) {
-  let {pathData, minX, minY, width: naturalWidth, height: naturalHeight} = getSVGData(lsParams);
-  let {padding, width, height, pathAttributes} = makeSVGConfig(svgParams, naturalWidth, naturalHeight);
-  let pathAttrStr = makeAttrString(pathAttributes, 0);
-  return makeSVGCode({
-    viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
-    width,
-    height,
-    content: `<path d="${pathData}"${pathAttrStr}></path>`,
-  });
-}
-
-/**
- * Get ready-to-render multi-path SVG code for an L-system
- * @param {LSParams} lsParams - L-system parameters
- * @param {SVGParams} [svgParams] - Output SVG parameters
- * @returns {string}
- */
-export function getMultiPathSVGCode(lsParams, svgParams) {
-  let {multiPathData, minX, minY, width: naturalWidth, height: naturalHeight} = getMultiPathSVGData(lsParams);
-  let {padding, width, height, pathAttributes} = makeSVGConfig(svgParams, naturalWidth, naturalHeight);
-  let content = multiPathData.reduce((accumulator, pathData, index) => {
+  let isMultiPath = Object.values(svgParams?.pathAttributes || {}).some((value) => Array.isArray(value));
+  let {pathData, minX, minY, width: naturalWidth, height: naturalHeight} = getSVGData(lsParams, {isMultiPath});
+  let pathAttributes = {...DEFAULT_PATH_ATTRIBUTES, ...svgParams?.pathAttributes};
+  let content = pathData.reduce((accumulator, pathData, index) => {
     let pathAttrStr = makeAttrString(pathAttributes, index);
     return `${accumulator}<path d="${pathData}"${pathAttrStr}></path>`;
   }, "");
+  let padding = svgParams?.padding || 0;
   return makeSVGCode({
     viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
-    width,
-    height,
+    width: svgParams?.width || naturalWidth,
+    height: svgParams?.height || naturalHeight,
     content,
   });
 }
 
 /**
  * Get ready-to-render SVG code for several L-systems combined in a single image
- * @param {{[key: string]: LSParams}} lsParamsMap - L-system key to L-system parameters mapping
+ * @param {{[key: string]: LSParams}} lsParamsMap - L-system key to parameters mapping
  * @param {SVGParams<ComboSVGPathAttributes>} [svgParams] - Output SVG parameters
  * @returns {string}
  */
@@ -260,28 +216,23 @@ export function getComboSVGCode(lsParamsMap, svgParams) {
   Object.entries(lsParamsMap).forEach(([key, lsParams]) => {
     let pathAttributes = {...DEFAULT_PATH_ATTRIBUTES, ...svgParams?.pathAttributes?.[key]};
     let isMultiPath = Object.values(pathAttributes).some((value) => Array.isArray(value));
-    let data = isMultiPath ? getMultiPathSVGData(lsParams) : getSVGData(lsParams);
+    let data = getSVGData(lsParams, {isMultiPath});
     minX = Math.min(minX, data.minX);
     minY = Math.min(minY, data.minY);
     maxX = Math.max(maxX, data.minX + data.width);
     maxY = Math.max(maxY, data.minY + data.height);
-    if (isMultiPath) {
-      content += data.multiPathData.reduce((accumulator, pathData, index) => {
-        let pathAttrStr = makeAttrString(pathAttributes, index);
-        return `${accumulator}<path d="${pathData}"${pathAttrStr}></path>`;
-      }, "");
-    } else {
-      let pathAttrStr = makeAttrString(pathAttributes, 0);
-      content += `<path d="${data.pathData}"${pathAttrStr}></path>`;
-    }
+    content += data.pathData.reduce((accumulator, pathData, index) => {
+      let pathAttrStr = makeAttrString(pathAttributes, index);
+      return `${accumulator}<path d="${pathData}"${pathAttrStr}></path>`;
+    }, "");
   });
-  let padding = svgParams.padding || 0;
+  let padding = svgParams?.padding || 0;
   let naturalWidth = maxX - minX;
   let naturalHeight = maxY - minY;
   return makeSVGCode({
     viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
-    width: svgParams.width || naturalWidth,
-    height: svgParams.height || naturalHeight,
+    width: svgParams?.width || naturalWidth,
+    height: svgParams?.height || naturalHeight,
     content,
   });
 }

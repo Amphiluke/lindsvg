@@ -1,9 +1,11 @@
 import pkg from "./package.json" with {type: "json"};
 import terser from "@rollup/plugin-terser";
 
-let config = {
+export default {
   input: "src/lindsvg.mjs",
   output: {
+    file: "dist/lindsvg.mjs",
+    format: "esm",
     name: "lindsvg",
     banner: `/*!
 ${pkg.name} v${pkg.version}
@@ -17,14 +19,3 @@ ${pkg.homepage}
     }),
   ],
 };
-
-export default [
-  {
-    ...config,
-    output: {file: "dist/lindsvg.mjs", format: "esm", ...config.output},
-  },
-  {
-    ...config,
-    output: {file: "dist/lindsvg.js", format: "umd", ...config.output},
-  },
-];

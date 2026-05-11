@@ -3,12 +3,11 @@
   "version": "2.0.0",
   "description": "Lindenmayer System [Scalable] Vector Graphics",
   "type": "module",
-  "main": "./dist/lindsvg.js",
-  "module": "./dist/lindsvg.mjs",
-  "unpkg": "./dist/lindsvg.js",
+  "main": "./dist/lindsvg.mjs",
   "exports": {
     ".": {
-      "types": "./dist/lindsvg.d.ts",
+      "types": "./dist/lindsvg.d.mts",
+      "browser": "./dist/lindsvg.mjs",
       "default": "./dist/lindsvg.mjs"
     }
   },
@@ -18,7 +17,7 @@
   ],
   "scripts": {
     "lint": "eslint",
-    "test": "node test/node-test.mjs && echo \"Check *.svg files located in the test/svg directory\"",
+    "test": "node test/node-test.mjs",
     "build": "rollup -c"
   },
   "repository": {

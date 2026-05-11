@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>lindsvg</title>
+  <style>
+    .demos {
+      display: flex;
+      inset: 0;
+      position: fixed;
+
+      svg {
+        flex: 1 1 0;
+        height: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demos"></div>
+  <script type="module">
+    import {getSVGCode, getComboSVGCode} from "../dist/lindsvg.mjs";
+    import * as params from "./params.mjs";
+    import {dump} from "https://unpkg.com/js-yaml@4.1.1/dist/js-yaml.mjs";
+
+    let verifyChecksum = async (content, checksum) => {
+      let contentUint8 = new TextEncoder().encode(content);
+      let hashBuffer = await window.crypto.subtle.digest("SHA-256", contentUint8);
+      let hashHex = new Uint8Array(hashBuffer).toHex();
+      console.assert(hashHex === checksum);
+    };
+
+    let demos = document.body.querySelector(".demos");
+
+    let singlePathSVGCode = getSVGCode(params.singlePathLSParams, params.singlePathSVGParams);
+    verifyChecksum(singlePathSVGCode, "747008aea80649853b59a297694e7f3cba104d960c8e83ef03f6aea1e0641436");
+    demos.insertAdjacentHTML("beforeend", singlePathSVGCode);
+
+    let multiPathSVGCode = getSVGCode(params.multiPathLSParams, params.multiPathSVGParams);
+    verifyChecksum(multiPathSVGCode, "91e44f29e91b1b6e2d31323489a95b4e2e681586cdcb305665cbf5cde6f3e750");
+    demos.insertAdjacentHTML("beforeend", multiPathSVGCode);
+
+    let comboSVGCode = getComboSVGCode(params.comboLSParams, params.comboSVGParams);
+    verifyChecksum(comboSVGCode, "aec90fe9d863cf90b0bb23631adf4bb083dac1b5f7416f2c2d9115ec2340fa83");
+    demos.insertAdjacentHTML("beforeend", comboSVGCode);
+
+    try {
+      console.log("Below, an exception is expected");
+      console.log(getSVGCode(params.lsInvalidParams, params.multiPathSVGParams));
+    } catch (error) {
+      // Log the original message
+      console.error(error);
+      if (error.name === "LSError") {
+        // Get a JSON representation of the error list and format it as YAML
+        let errorJSON = error.toJSON();
+        console.log(dump(errorJSON, {indent: 4}));
+      }
+    }
+  </script>
+</body>
+</html>

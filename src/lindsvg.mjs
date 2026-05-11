@@ -25,7 +25,7 @@
  * @property {Rules} rules - Productions map
  * @property {number} alpha - Initial angle in radians
  * @property {number} theta - Angle increment in radians
- * @property {{x?: number, y?: number}} [origin] - Turtle’s starting point coordinates
+ * @property {{x?: number, y?: number}} [origin] - Turtle’s initial coordinates
  * @property {number} step - Turtle’s step length
  * @property {number} iterations - Total number of iterations used to generate the resulting L-system
  */
