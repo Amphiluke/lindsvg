@@ -90,6 +90,7 @@ export let multiPathSVGParams = {
 };
 
 export let comboSVGParams = {
+  padding: 15,
   pathAttributes: {
     yellowGreen: {
       stroke: "YellowGreen",
