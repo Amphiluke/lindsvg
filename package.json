@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "lint": "eslint",
-    "test": "node test/node-test.mjs",
+    "test": "node --test \"test/node.test.mjs\"",
     "build": "rollup -c"
   },
   "repository": {

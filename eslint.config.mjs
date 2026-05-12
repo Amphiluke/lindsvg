@@ -4,7 +4,7 @@ import globals from "globals";
 
 export default [
   {
-    ignores: ["dist/*", "test/*"],
+    ignores: ["dist/*"],
   },
   {
     files: ["src/**/*.mjs", "eslint.config.mjs", "rollup.config.mjs"],

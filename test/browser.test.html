@@ -21,7 +21,7 @@
   <div class="demos"></div>
   <script type="module">
     import {getSVGCode, getComboSVGCode} from "../dist/lindsvg.mjs";
-    import * as params from "./params.mjs";
+    import * as testData from "./test-data.mjs";
     import {dump} from "https://unpkg.com/js-yaml@4.1.1/dist/js-yaml.mjs";
 
     let verifyChecksum = async (content, checksum) => {
@@ -33,21 +33,21 @@
 
     let demos = document.body.querySelector(".demos");
 
-    let singlePathSVGCode = getSVGCode(params.singlePathLSParams, params.singlePathSVGParams);
-    verifyChecksum(singlePathSVGCode, "747008aea80649853b59a297694e7f3cba104d960c8e83ef03f6aea1e0641436");
+    let singlePathSVGCode = getSVGCode(testData.singlePathData.lsParams, testData.singlePathData.svgParams);
+    verifyChecksum(singlePathSVGCode, testData.singlePathData.checksum);
     demos.insertAdjacentHTML("beforeend", singlePathSVGCode);
 
-    let multiPathSVGCode = getSVGCode(params.multiPathLSParams, params.multiPathSVGParams);
-    verifyChecksum(multiPathSVGCode, "91e44f29e91b1b6e2d31323489a95b4e2e681586cdcb305665cbf5cde6f3e750");
+    let multiPathSVGCode = getSVGCode(testData.multiPathData.lsParams, testData.multiPathData.svgParams);
+    verifyChecksum(multiPathSVGCode, testData.multiPathData.checksum);
     demos.insertAdjacentHTML("beforeend", multiPathSVGCode);
 
-    let comboSVGCode = getComboSVGCode(params.comboLSParams, params.comboSVGParams);
-    verifyChecksum(comboSVGCode, "aec90fe9d863cf90b0bb23631adf4bb083dac1b5f7416f2c2d9115ec2340fa83");
+    let comboSVGCode = getComboSVGCode(testData.comboData.lsParamsMap, testData.comboData.svgParams);
+    verifyChecksum(comboSVGCode, testData.comboData.checksum);
     demos.insertAdjacentHTML("beforeend", comboSVGCode);
 
     try {
       console.log("Below, an exception is expected");
-      console.log(getSVGCode(params.lsInvalidParams, params.multiPathSVGParams));
+      console.log(getSVGCode(testData.invalidData.lsParams, testData.multiPathData.svgParams));
     } catch (error) {
       // Log the original message
       console.error(error);
