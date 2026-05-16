@@ -114,7 +114,7 @@ getSVGCode(lsParams, svgParams)
 
   - `pathAttributes` *(optional)*
 
-    Name to value map for the `<path>` element attributes. You can use it to change such things as stroke color, line width, etc. If not specified, defaults to `{fill: "none", stroke: "#000"}`.
+    Name to value map for the `<path>` element attributes. You can use it to change such things as stroke color, line width, etc. If not specified, defaults to `{fill: "none", stroke: "#000"}`. For branched L-systems, attribute values can be specified as arrays, so that different values will be applied at different branching levels.
 
 #### Return value
 
@@ -210,7 +210,7 @@ let lsParamsMap = {
   forestGreenDragon: {
     ...lsParams,
     alpha: Math.PI,
-    origin: {
+    origin: { // adjust position of the 2nd dragon
       x: 0,
       y: -448,
     },
@@ -284,7 +284,29 @@ An object which contains the following fields:
 
 #### Example
 
+The method can be used to generate path data that is fed to the [`path()` CSS function](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/path) for obtaining interesting visual effects. This example demonstrates the use of `getSVGData()` for clipping an image with the Koch snowflake boundary.
 
+```javascript
+import {getSVGData} from "lindsvg";
+
+let lsParams = {
+  axiom: "F++F++F",
+  rules: {
+    F: "F-F++F-F",
+  },
+  alpha: 0,
+  theta: Math.PI / 3,
+  iterations: 4,
+  origin: {x: 0, y: 117},
+  step: 5,
+};
+let {pathData, width, height} = getSVGData(lsParams);
+let img = new Image(width, height);
+img.src = "./winter-night.jpg";
+img.style.objectFit = "cover";
+img.style.clipPath = `path("${pathData[0]}")`;
+document.body.appendChild(img);
+```
 
 ----
 
