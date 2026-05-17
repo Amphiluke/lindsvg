@@ -10,13 +10,13 @@ Simple dependency-free module used to generate SVG images of deterministic L-sys
 
 ### In Node.js environment
 
-Installing the module is as simple as:
+Installing the package:
 
 ```shell
 npm install lindsvg
 ```
 
-Then, you may get it in your scripts as usual:
+Once installed, it can be imported as an ES module:
 
 ```javascript
 import * as lindsvg from "lindsvg";
@@ -66,7 +66,7 @@ getSVGCode(lsParams, svgParams)
 
 * `lsParams`
 
-  An object which contains L-system parameters. These parameters are:
+  An object which contains L-system parameters:
 
   - `axiom`
 
@@ -177,7 +177,7 @@ getComboSVGCode(lsParamsMap, svgParams)
 
 * `svgParams` *(optional)*
 
-  An object which contains parameters that can be used to modify the appearance of the resulting SVG image. It is similar to `svgParams` in [`getSVGCode()`](#parameters) with one difference: `pathAttributes` here represents a mapping of user-defined identifiers (same as in `lsParamsMap`) to the `<path>` element attributes map. This allows for independent styling of every L-system in the image.
+  An object which contains parameters that can be used to modify the appearance of the resulting SVG image. It is similar to `svgParams` in [`getSVGCode()`](#parameters) with one difference: `pathAttributes` here represents a mapping of user-defined identifiers (same as in `lsParamsMap`) to the `<path>` element attributes maps. This allows for independent styling of every L-system in the image.
 
 #### Return value
 
@@ -284,7 +284,7 @@ An object which contains the following fields:
 
 #### Example
 
-The method can be used to generate path data that is fed to the [`path()` CSS function](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/path) for obtaining interesting visual effects. This example demonstrates the use of `getSVGData()` for clipping an image with the Koch snowflake boundary.
+The method can be used to generate path data that is passed to the [`path()` CSS function](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/path) to achieve interesting visual effects. This example demonstrates the using `getSVGData()` for clipping an image to the Koch snowflake boundary.
 
 ```javascript
 import {getSVGData} from "lindsvg";
@@ -308,75 +308,15 @@ img.style.clipPath = `path("${pathData[0]}")`;
 document.body.appendChild(img);
 ```
 
-----
+### Advanced styling of branched L-systems
 
-
-
-
-
-The module exports two pairs of methods.
-
-1. The methods returning ready-to-render L-system’s SVG code as a string:
-    * `getSVGCode(lsParams[, svgParams])`;
-    * `getMultiPathSVGCode(lsParams[, svgParams])`;
-2. The methods returning raw data that you may use to construct the SVG code yourself:
-    * `getSVGData(lsParams)`;
-    * `getMultiPathSVGData(lsParams)`.
-
-The “multi-path” methods (`getMultiPathSVGCode` and `getMultiPathSVGData`) differ from the “normal” methods (`getSVGCode` and `getSVGData`) in that they provide the ability for advanced stylisation of _branched_ L-systems. SVG images created using these “multi-path” methods contain several `<path>` elements, each one for a specific branching level, so they can be stylised differently (color, line width, etc.)
-
-All methods expect L-system parameters object as their first argument. These parameters are explained through the comments in the snippet below. Additionally, the methods `getSVGCode` and `getMultiPathSVGCode` may be passed an _optional_ parameter to alter the output SVG settings (refer the comments in the snippet below).
-
-### Using “single-path” methods
-
-```javascript
-import {getSVGCode, getSVGData} from "lindsvg";
-
-// L-system parameters
-let lsParams = {
-  axiom: "A---A",    // The initial codeword (axiom)
-  rules: {           // L-system production rules
-    F: "F",          // Move forward a step with drawing a line
-    B: "B",          // Move forward a step without drawing a line
-    A: "B-F+Z+F-BA", // Auxiliary rules...
-    Z: "F-FF-F--[--Z]F-FF-F--F-FF-F--",
-  },
-  alpha: 0,           // Initial angle in radians
-  theta: Math.PI / 3, // Angle increment in radians
-  step: 15,           // The length of a “turtle” step
-  iterations: 7,      // Total number of iterations
-};
-
-// Output SVG parameters (all of them are optional)
-let svgParams = {
-  width: 600,       // Desired SVG element width
-  height: 600,      // Desired SVG element height
-  padding: 5,       // Additional space to extend the viewBox
-  pathAttributes: { // Name to value map for the <path> element attributes
-    stroke: "green",
-    "stroke-width": "2",
-  },
-};
-
-// Get ready-to-render L-system’s SVG code as a string...
-let svgCode = getSVGCode(lsParams, svgParams);
-
-// ...or get raw data required for manual SVG assemblage
-let {pathData, minX, minY, width, height} = getSVGData(lsParams);
-```
-
-An object returned by `getSVGData` contains [path data](https://www.w3.org/TR/SVG11/paths.html#PathData) needed to draw the L-system, as well as the drawing boundaries that are essential for the `viewBox` attribute.
-
-### Using “multi-path” methods
-
-Using “multi-path” methods (`getMultiPathSVGCode` and `getMultiPathSVGData`) allows you to specify different path attributes for every `<path>` element separately, which may make branched L-systems (like plants) look “more naturally”.
+As mentioned earlier, the property `pathAttributes` of the `svgParams` option may accept attribute values in form of arrays. This allows you to specify different attribute values for each `<path>` element, which may make branched L-systems (like plants) look “more naturally”.
 
 For example, to generate the tree [demonstrated above](#lindsvg) (all but foliage) the following options were used:
 
 ```javascript
-import {getMultiPathSVGCode, getMultiPathSVGData} from "lindsvg";
+import {getSVGCode} from "lindsvg";
 
-// L-system parameters
 let lsParams = {
   axiom: "F-FFF-F+F+X",
   rules: {
@@ -390,7 +330,6 @@ let lsParams = {
   step: 12,
 };
 
-// Output SVG parameters
 let svgParams = {
   width: 565,
   height: 445,
@@ -398,22 +337,17 @@ let svgParams = {
   pathAttributes: {
     stroke: "#514d3a",
     "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "1"],
-    "stroke-linecap": ["square", "round" /* the rest items are equal to the last one */],
+    "stroke-linecap": ["square", "round" /* all remaining items use the last specified value */],
   },
 };
 
-// Get ready-to-render L-system’s SVG code as a string...
-let svgCode = getMultiPathSVGCode(lsParams, svgParams);
-
-// ...or get raw data required for manual SVG assemblage
-let {multiPathData, minX, minY, width, height} = getMultiPathSVGData(lsParams);
+let svgCode = getSVGCode(lsParams, svgParams);
+document.body.insertAdjacentHTML("beforeend", svgCode);
 ```
 
-If an attribute array contains fewer elements than the maximum branching depth (e.g. see `stroke-linecap` in the example above), the missing items are implicitly made equal to the last one. So you don’t need to repeat the same value in the end of the list.
+If an attribute array contains fewer elements than the maximum branching depth (see `stroke-linecap` in the example above), the missing items are implicitly made equal to the last specified one. So you don’t need to repeat the same value in the end of the list.
 
 You may also use the special value `"n/a"` which prevents an attribute from being added on the corresponding `<path>` element (e.g. when you need to add an attribute only to one or to a few `<path>`s: `{pathAttributes: {transform: ["skewY(-35)", "n/a"]}}`).
-
-The property `multiPathData` in the object returned by `getMultiPathSVGData` is a _list_ of path data for every `<path>` element. The list is sorted in the order of increasing branch level (the deeper the branch the higher the index in the array).
 
 ### Error handling
 
