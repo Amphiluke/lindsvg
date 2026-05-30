@@ -23,9 +23,10 @@
  * @typedef {object} LSParams
  * @property {string} axiom - The initial code
  * @property {Rules} rules - Productions map
- * @property {number} alpha - Initial angle in radians
+ * @property {number} [x] - Turtle’s initial horizontal coordinate
+ * @property {number} [y] - Turtle’s initial vertical coordinate
+ * @property {number} [alpha] - Initial angle in radians
  * @property {number} theta - Angle increment in radians
- * @property {{x?: number, y?: number}} [origin] - Turtle’s initial coordinates
  * @property {number} step - Turtle’s step length
  * @property {number} iterations - Total number of iterations used to generate the resulting L-system
  */

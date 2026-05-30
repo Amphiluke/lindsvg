@@ -6,12 +6,10 @@ export interface LSParams {
   rules: {
     [letter in LSLetter]?: string;
   };
-  alpha: number;
+  x?: number;
+  y?: number;
+  alpha?: number;
   theta: number;
-  origin?: {
-    x?: number;
-    y?: number;
-  };
   step: number;
   iterations: number;
 }

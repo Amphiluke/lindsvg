@@ -1,51 +1,12 @@
 /** @import {LSParams} from "./lindsvg.mjs" */
 
-let messages = {
-  AXIOM: "Axiom may only contain the following characters: A..Z,+,-,|,!,[,]",
-  RULE: "Production rules may only contain the following characters: A..Z,+,-,|,!,[,]",
-  LETTER: "Allowed alphabet letters are: A..Z",
-  ALPHA: "The “alpha” parameter must be a finite number",
-  THETA: "The “theta” parameter must be a finite number",
-  STEP: "The “step” parameter must be a positive finite number",
-  COUNT: "The number of iterations must be integer and finite",
-  NUMBER: "A valid finite number expected",
-};
+const ERROR_ILLEGAL_CHAR = "ERROR_ILLEGAL_CHAR";
+const ERROR_NUMBER = "ERROR_NUMBER";
+const ERROR_POSITIVE_NUMBER = "ERROR_POSITIVE_NUMBER";
+const ERROR_POSITIVE_INTEGER = "ERROR_POSITIVE_INTEGER";
 
 let letterRE = /^[A-Z]$/;
-export function checkLetter(letter, msg = messages.LETTER) {
-  return letterRE.test(letter) || msg;
-}
-
 let ruleRE = /^[A-Z+\-|![\]]*$/;
-export function checkRule(rule, msg = messages.RULE) {
-  return ruleRE.test(rule) || msg;
-}
-
-export function checkRules(rules, letterMsg, ruleMsg) {
-  let errors = Object.create(null);
-  Object.entries(rules).forEach(([letter, rule]) => {
-    let result = checkLetter(letter, letterMsg);
-    if (result === true) {
-      result = checkRule(rule, ruleMsg);
-    }
-    if (result !== true) {
-      errors[letter] = result;
-    }
-  });
-  return Object.keys(errors).length ? errors : true;
-}
-
-export function checkStep(step, msg = messages.STEP) {
-  return (Number.isFinite(step) && step > 0) || msg;
-}
-
-export function checkIterations(iterations, msg = messages.COUNT) {
-  return (Number.isInteger(iterations) && iterations > 0) || msg;
-}
-
-export function checkAngle(angle, msg = messages.NUMBER) {
-  return Number.isFinite(angle) || msg;
-}
 
 export function validate(/** @type {LSParams} */lsParams) {
   let errors = Object.create(null);
@@ -53,20 +14,33 @@ export function validate(/** @type {LSParams} */lsParams) {
     let result = true;
     switch (param) {
       case "axiom":
-        result = checkRule(value, messages.AXIOM);
+        result = ruleRE.test(value) || ERROR_ILLEGAL_CHAR;
         break;
-      case "rules":
-        result = checkRules(value);
+      case "rules": {
+        let errors = Object.create(null);
+        Object.entries(value).forEach(([letter, rule]) => {
+          let result = letterRE.test(letter) || ERROR_ILLEGAL_CHAR;
+          if (result === true) {
+            result = ruleRE.test(rule) || ERROR_ILLEGAL_CHAR;
+          }
+          if (result !== true) {
+            errors[letter] = result;
+          }
+        });
+        result = Object.keys(errors).length ? errors : true;
         break;
+      }
+      case "x":
+      case "y":
       case "alpha":
       case "theta":
-        result = checkAngle(value, messages[param.toUpperCase()]);
+        result = Number.isFinite(value) || ERROR_NUMBER;
         break;
       case "step":
-        result = checkStep(value);
+        result = (Number.isFinite(value) && value > 0) || ERROR_POSITIVE_NUMBER;
         break;
       case "iterations":
-        result = checkIterations(value);
+        result = (Number.isInteger(value) && value > 0) || ERROR_POSITIVE_INTEGER;
         break;
     }
     if (result !== true) {

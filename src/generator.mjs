@@ -1,9 +1,8 @@
 import {validate} from "./validator.mjs";
 import {LSError} from "./ls-error.mjs";
 
-/** @import {Rules, LSParams} from "./lindsvg.mjs" */
+/** @import {LSParams} from "./lindsvg.mjs" */
 
-/** @type {Rules} */
 let ctrlRules = {
   F: "",
   B: "",
@@ -15,7 +14,6 @@ let ctrlRules = {
   "]": "]",
 };
 
-/** @type {LSParams} */
 let defaults = {
   alpha: 0,
   theta: 0,

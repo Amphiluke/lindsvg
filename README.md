@@ -76,17 +76,21 @@ getSVGCode(lsParams, svgParams)
 
     An object representing L-system production rules. The keys are the alphabet letters `A`–`Z`, and corresponding values are the production successors (rewriting rules). Two symbols of the alphabet (`F` and `B`) have special meaning as explained in the [“Supported commands” section](#supported-commands).
 
-  - `alpha`
+  - `x` *(optional)*
 
-    Initial angle in radians.
+    Turtle’s initial horizontal coordinate. Its default value is `0`.
+
+  - `y` *(optional)*
+
+    Turtle’s initial vertical coordinate. Its default value is `0`.
+
+  - `alpha` *(optional)*
+
+    Initial angle in radians. Its default value is `0`.
 
   - `theta`
 
     Angle increment in radians.
-
-  - `origin` *(optional)*
-
-    An object containing the turtle’s initial coordinates. Its default value is `{x: 0, y: 0}`.
 
   - `step`
 
@@ -197,7 +201,6 @@ let lsParams = {
     X: "X+YF+",
     Y: "-FX-Y",
   },
-  alpha: 0,
   theta: Math.PI / 2,
   iterations: 14,
   step: 3.5,
@@ -209,11 +212,8 @@ let lsParamsMap = {
   },
   forestGreenDragon: {
     ...lsParams,
+    y: -448, // adjust vertical position of the 2nd dragon
     alpha: Math.PI,
-    origin: { // adjust position of the 2nd dragon
-      x: 0,
-      y: -448,
-    },
   },
 };
 
@@ -294,10 +294,9 @@ let lsParams = {
   rules: {
     F: "F-F++F-F",
   },
-  alpha: 0,
+  y: 117,
   theta: Math.PI / 3,
   iterations: 4,
-  origin: {x: 0, y: 117},
   step: 5,
 };
 let {pathData, width, height} = getSVGData(lsParams);

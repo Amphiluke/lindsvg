@@ -1,9 +1,10 @@
 export class LSError extends Error {
+  /** @type {{[param: string]: string}} */
   #lsErrors;
 
   /**
    * LSError constructor
-   * @param {object} errors - Error map “parameter->message(s)”
+   * @param {{[param: string]: string}} errors - Error map “parameter->message(s)”
    * @constructor
    */
   constructor(errors) {

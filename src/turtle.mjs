@@ -12,11 +12,11 @@ export class Turtle {
   /** @type {number} */
   #maxY;
   /** @type {number} */
-  #step;
-  /** @type {number} */
   #alpha;
   /** @type {number} */
   #theta;
+  /** @type {number} */
+  #step;
   /** @type {{x: number, y: number, alpha: number}[]} */
   #stack = [];
 
@@ -28,12 +28,12 @@ export class Turtle {
     return this.#y;
   }
 
-  constructor({x, y, step, alpha, theta}) {
+  constructor({x, y, alpha, theta, step}) {
     this.#x = this.#minX = this.#maxX = x;
     this.#y = this.#minY = this.#maxY = y;
-    this.#step = step;
     this.#alpha = -alpha; // negate since Y axis is inverted
     this.#theta = theta;
+    this.#step = step;
   }
 
   translate(stepCount = 1) {

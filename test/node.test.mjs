@@ -29,15 +29,17 @@ test("L-system params validation", () => {
   assert.throws(() => getSVGCode(testData.invalidData.lsParams, testData.multiPathData.svgParams), (error) => {
     assert.strictEqual(error.name, "LSError");
     assert.deepStrictEqual(error.toJSON(), {
-      axiom: "Axiom may only contain the following characters: A..Z,+,-,|,!,[,]",
+      axiom: "ERROR_ILLEGAL_CHAR",
       rules: {
-        F: "Production rules may only contain the following characters: A..Z,+,-,|,!,[,]",
-        X: "Production rules may only contain the following characters: A..Z,+,-,|,!,[,]"
+        F: "ERROR_ILLEGAL_CHAR",
+        X: "ERROR_ILLEGAL_CHAR"
       },
-      alpha: "The “alpha” parameter must be a finite number",
-      theta: "The “theta” parameter must be a finite number",
-      iterations: "The number of iterations must be integer and finite",
-      step: "The “step” parameter must be a positive finite number",
+      x: "ERROR_NUMBER",
+      y: "ERROR_NUMBER",
+      alpha: "ERROR_NUMBER",
+      theta: "ERROR_NUMBER",
+      step: "ERROR_POSITIVE_NUMBER",
+      iterations: "ERROR_POSITIVE_INTEGER",
     });
     return true;
   });

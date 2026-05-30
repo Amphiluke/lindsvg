@@ -146,11 +146,11 @@ function getMultiPathData(tokens, turtle) {
 export function getSVGData(lsParams, {isMultiPath = false} = {}) {
   let codeword = generateCodeword(lsParams);
   let turtle = new Turtle({
-    x: lsParams.origin?.x ?? 0,
-    y: lsParams.origin?.y ?? 0,
-    step: lsParams.step,
-    alpha: lsParams.alpha,
+    x: lsParams.x ?? 0,
+    y: lsParams.y ?? 0,
+    alpha: lsParams.alpha ?? 0,
     theta: lsParams.theta,
+    step: lsParams.step,
   });
   let tokens = tokenizeCodeword(codeword);
   return {
