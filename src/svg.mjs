@@ -1,7 +1,7 @@
 import {generateCodeword, tokenizeCodeword} from "./generator.mjs";
 import {Turtle} from "./turtle.mjs";
 
-/** @import {LSParams, SVGParams, ComboSVGPathAttributes} from "./lindsvg.mjs" */
+/** @import {LSParams, LSParamsMap, LSVGParams} from "./lindsvg.mjs" */
 
 function formatCoordinates(x, y) {
   // Unary plus is used to remove insignificant trailing zeros
@@ -179,42 +179,19 @@ function makeAttrString(attrs, index) {
 }
 
 /**
- * Get ready-to-render L-system’s SVG code
- * @param {LSParams} lsParams - L-system parameters
- * @param {SVGParams} [svgParams] - Output SVG parameters
+ * Get ready-to-render SVG code for one or few L-systems combined in a single image
+ * @param {LSParamsMap} lsParamsMap - L-system key to parameters mapping
+ * @param {LSVGParams} [svgParams] - Output SVG parameters
  * @returns {string}
  */
-export function getSVGCode(lsParams, svgParams) {
-  let isMultiPath = Object.values(svgParams?.pathAttributes || {}).some((value) => Array.isArray(value));
-  let {pathData, minX, minY, width: naturalWidth, height: naturalHeight} = getSVGData(lsParams, {isMultiPath});
-  let pathAttributes = {...DEFAULT_PATH_ATTRIBUTES, ...svgParams?.pathAttributes};
-  let content = pathData.reduce((accumulator, pathData, index) => {
-    let pathAttrStr = makeAttrString(pathAttributes, index);
-    return `${accumulator}<path d="${pathData}"${pathAttrStr}></path>`;
-  }, "");
-  let padding = svgParams?.padding || 0;
-  return makeSVGCode({
-    viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
-    width: svgParams?.width || naturalWidth,
-    height: svgParams?.height || naturalHeight,
-    content,
-  });
-}
-
-/**
- * Get ready-to-render SVG code for several L-systems combined in a single image
- * @param {{[key: string]: LSParams}} lsParamsMap - L-system key to parameters mapping
- * @param {SVGParams<ComboSVGPathAttributes>} [svgParams] - Output SVG parameters
- * @returns {string}
- */
-export function getComboSVGCode(lsParamsMap, svgParams) {
+export function getSVGCode(lsParamsMap, svgParams) {
   let minX = Number.MAX_SAFE_INTEGER;
   let minY = Number.MAX_SAFE_INTEGER;
   let maxX = -Number.MAX_SAFE_INTEGER;
   let maxY = -Number.MAX_SAFE_INTEGER;
   let content = "";
   Object.entries(lsParamsMap).forEach(([key, lsParams]) => {
-    let pathAttributes = {...DEFAULT_PATH_ATTRIBUTES, ...svgParams?.pathAttributes?.[key]};
+    let pathAttributes = {...DEFAULT_PATH_ATTRIBUTES, ...svgParams?.pathAttributesMap?.[key]};
     let isMultiPath = Object.values(pathAttributes).some((value) => Array.isArray(value));
     let data = getSVGData(lsParams, {isMultiPath});
     minX = Math.min(minX, data.minX);

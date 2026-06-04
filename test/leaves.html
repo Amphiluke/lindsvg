@@ -60,7 +60,7 @@
 
   <script type="module">
     import {getSVGCode} from "../dist/lindsvg.mjs";
-    document.body.insertAdjacentHTML("beforeend", getSVGCode({
+    document.body.insertAdjacentHTML("beforeend", getSVGCode([{
       axiom: "F-FFF-F+F+X",
       rules: {
         F: "F",
@@ -71,15 +71,15 @@
       theta: 14 * Math.PI / 180,
       iterations: 6,
       step: 12
-    }, {
+    }], {
       width: 565,
       height: 445,
       padding: 10,
-      pathAttributes: {
+      pathAttributesMap: [{
         stroke: "#514d3a",
         "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "1"],
         "stroke-linecap": ["square", "round"]
-      }
+      }],
     }));
 
     function addLeaves() {

@@ -5,24 +5,14 @@
 
 /**
  * L-system production rule map Letter -> Rule
- * @typedef {{[letter in LSLetter]?: string}} Rules
- */
-
-/**
- * Name to value map for the <path> element attributes
- * @typedef {{[attr: string]: string | string[]}} SVGPathAttributes
- */
-
-/**
- * Name to value map for the <path> element attributes in an SVG with multiple L-systems combined
- * @typedef {{[key: string]: SVGPathAttributes}} ComboSVGPathAttributes
+ * @typedef {{[letter in LSLetter]?: string}} LSRules
  */
 
 /**
  * L-system parameters
  * @typedef {object} LSParams
  * @property {string} axiom - The initial code
- * @property {Rules} rules - Productions map
+ * @property {LSRules} rules - Productions map
  * @property {number} [x] - Turtle’s initial horizontal coordinate
  * @property {number} [y] - Turtle’s initial vertical coordinate
  * @property {number} [alpha] - Initial angle in radians
@@ -32,13 +22,27 @@
  */
 
 /**
+ * Mapping of L-system key (name or identifier) to the L-system parameters
+ * @typedef {{[key: string]: LSParams}} LSParamsMap
+ */
+
+/**
+ * Name to value map for the <path> element attributes
+ * @typedef {{[attr: string]: string | string[]}} LSVGPathAttributes
+ */
+
+/**
+ * Mapping of L-system key (name or identifier) to the <path> element attributes for the L-system’s SVG
+ * @typedef {{[key: string]: LSVGPathAttributes}} LSVGPathAttributesMap
+ */
+
+/**
  * Output SVG parameters
- * @template {SVGPathAttributes | ComboSVGPathAttributes} [P=SVGPathAttributes]
- * @typedef {object} SVGParams
+ * @typedef {object} LSVGParams
  * @property {number} [width] - Desired SVG width
  * @property {number} [height] - Desired SVG height
  * @property {number} [padding] - Additional space to extend the viewBox
- * @property {P} [pathAttributes] - Name to value map for the <path> element attributes
+ * @property {LSVGPathAttributesMap} [pathAttributesMap] - Mapping of L-system key to the <path> element attributes
  */
 
 

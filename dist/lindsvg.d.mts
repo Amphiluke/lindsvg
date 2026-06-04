@@ -14,19 +14,23 @@ export interface LSParams {
   iterations: number;
 }
 
+export type LSParamsMap = {
+  [key: string]: LSParams;
+}
+
 export type LSVGPathAttributes = {
   [attr: string]: string | string[];
 }
 
-export type ComboLSVGPathAttributes = {
+export type LSVGPathAttributesMap = {
   [key: string]: LSVGPathAttributes;
 }
 
-export interface LSVGParams<P extends LSVGPathAttributes | ComboLSVGPathAttributes = LSVGPathAttributes> {
+export interface LSVGParams {
   width?: number;
   height?: number;
   padding?: number;
-  pathAttributes?: P;
+  pathAttributesMap?: LSVGPathAttributesMap;
 }
 
 export interface LSVGData {
@@ -43,6 +47,4 @@ export interface LSVGDataOptions {
 
 export function getSVGData(lsParams: LSParams, options?: LSVGDataOptions): LSVGData;
 
-export function getSVGCode(lsParams: LSParams, svgParams?: LSVGParams): string;
-
-export function getComboSVGCode(lsParamsMap: {[key: string]: LSParams}, svgParams?: LSVGParams<ComboLSVGPathAttributes>): string;
+export function getSVGCode(lsParamsMap: LSParamsMap, svgParams?: LSVGParams): string;
