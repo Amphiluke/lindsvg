@@ -1,7 +1,7 @@
 import {generateCodeword, tokenizeCodeword} from "./generator.mjs";
 import {Turtle} from "./turtle.mjs";
 
-/** @import {LSParams, LSParamsMap, LSVGParams} from "./lindsvg.mjs" */
+/** @import {LSParams, LSParamsMap, LSVGTemplateFn, LSVGParams} from "./lindsvg.mjs" */
 
 function formatCoordinates(x, y) {
   // Unary plus is used to remove insignificant trailing zeros
@@ -161,6 +161,7 @@ export function getSVGData(lsParams, {isMultiPath = false} = {}) {
 
 const DEFAULT_PATH_ATTRIBUTES = Object.freeze({fill: "none", stroke: "#000"});
 
+/** @type {LSVGTemplateFn} */
 function makeSVGCode({viewBox, width, height, content}) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox.join(" ")}" height="${height}" width="${width}">${content}</svg>`;
 }
@@ -206,7 +207,7 @@ export function getSVGCode(lsParamsMap, svgParams) {
   let padding = svgParams?.padding || 0;
   let naturalWidth = maxX - minX;
   let naturalHeight = maxY - minY;
-  return makeSVGCode({
+  return (svgParams.templateFn ?? makeSVGCode)({
     viewBox: [minX - padding, minY - padding, naturalWidth + 2 * padding, naturalHeight + 2 * padding],
     width: svgParams?.width || naturalWidth,
     height: svgParams?.height || naturalHeight,

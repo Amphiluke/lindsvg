@@ -118,7 +118,11 @@ getSVGCode(lsParamsMap, svgParams)
 
   - `pathAttributesMap` *(optional)*
 
-    Mapping of L-system key to the `<path>` element attributes. Keys in this mapping are the same as in the `lsParamsMap` argument. Values are objects mapping attribute names to attribute values. You can use this option to change such things as stroke color, line width, etc. The default attribute mapping is `{fill: "none", stroke: "#000"}`. For branched L-systems, attribute values can be specified as arrays, so that different values will be applied at different branching levels.
+    Mapping of L-system key to the `<path>` element attributes. Keys in this mapping are the same as in the `lsParamsMap` argument. Values are objects mapping attribute names to attribute values. You can use this option to change such things as stroke color, line width, etc. The default attribute mapping is `{fill: "none", stroke: "#000"}`. For branched L-systems, attribute values can be specified as arrays, so that different values will be applied at different branching levels (see the [dedicated section on advanced styling of branched L-systems](#branched-l-systems)).
+
+  - `templateFn` *(optional)*
+
+    Function producing the resulting SVG code from raw data. You can provide your own template with additional markup to customize the appearance of the final image. Using this option is explained in the [dedicated section on SVG template customization](#svg-template-customization).
 
 #### Return value
 
@@ -181,15 +185,15 @@ let lsParams = {
     Y: "-FX-Y",
   },
   theta: Math.PI / 2,
-  iterations: 14,
   step: 3.5,
+  iterations: 14,
 };
 
 let lsParamsMap = {
-  yellowGreenDragon: {
+  "Yellow-green Dragon": {
     ...lsParams,
   },
-  forestGreenDragon: {
+  "Forest-green Dragon": {
     ...lsParams,
     y: -448, // adjust vertical position of the 2nd dragon
     alpha: Math.PI,
@@ -199,10 +203,10 @@ let lsParamsMap = {
 let svgParams = {
   padding: 15,
   pathAttributesMap: {
-    yellowGreenDragon: {
+    "Yellow-green Dragon": {
       stroke: "YellowGreen",
     },
-    forestGreenDragon: {
+    "Forest-green Dragon": {
       stroke: "ForestGreen",
     },
   },
@@ -214,7 +218,7 @@ document.body.insertAdjacentHTML("beforeend", svgCode);
 
 ### `getSVGData()`
 
-This method returns raw data that you can use to assemble the SVG code yourself. It may be handy in cases where the standard configuration is not enough, and you need to fine-tune SVG parameters and content.
+This method returns raw data that you can use to assemble the SVG code yourself. It may be handy in cases where full access to path data is required, or you need to fine-tune SVG parameters and content.
 
 #### Syntax
 
@@ -275,8 +279,8 @@ let lsParams = {
   },
   y: 117,
   theta: Math.PI / 3,
-  iterations: 4,
   step: 5,
+  iterations: 4,
 };
 let {pathData, width, height} = getSVGData(lsParams);
 let img = new Image(width, height);
@@ -286,7 +290,9 @@ img.style.clipPath = `path("${pathData[0]}")`;
 document.body.appendChild(img);
 ```
 
-### Advanced styling of branched L-systems
+### Advanced styling
+
+#### Branched L-systems
 
 As mentioned earlier, the property `pathAttributesMap` of the `svgParams` option allows specifying attribute values in form of arrays. This allows you to provide different attribute values for each `<path>` element, which may make branched L-systems (like plants) look “more naturally”.
 
@@ -305,8 +311,8 @@ let lsParamsMap = {
     },
     alpha: 90 * Math.PI / 180,
     theta: 14 * Math.PI / 180,
-    iterations: 6,
     step: 12,
+    iterations: 6,
   },
 };
 
@@ -331,9 +337,56 @@ If an attribute array contains fewer elements than the maximum branching depth (
 
 You may also use the special value `"n/a"` which prevents an attribute from being added on the corresponding `<path>` element (e.g. when you need to add an attribute only to one or to a few `<path>`s: `{pathAttributes: {transform: ["skewY(-35)", "n/a"]}}`).
 
+#### SVG template customization
+
+In normal cases, SVG image appearance is customized by providing presentation attributes via the `pathAttributesMap` option. However, there may be cases where attributes alone are not enough. For example, if you want to apply gradient stroke to your L-system, there will be need in extra-markup with the gradient definition. In such cases the special option `templateFn` can be handy. By redefining the SVG template, you may add whatever you need in the resulting code.
+
+The example below demonstrates how gradient stroke style can be applied by providing a custom template function.
+
+```javascript
+import {getSVGCode} from "lindsvg";
+
+let lsParamsMap = {
+  "L-system “Square”": {
+    axiom: "F+F+F+F",
+    rules: {
+      F: "FF+F+F+F+FF",
+    },
+    theta: Math.PI / 2,
+    step: 5,
+    iterations: 4,
+  },
+};
+
+let svgParams = {
+  width: 407,
+  height: 407,
+  padding: 2,
+  pathAttributesMap: {
+    "L-system “Square”": {
+      stroke: "url(#diagonal-gradient)",
+    },
+  },
+  templateFn: ({viewBox, width, height, content}) => `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox.join(" ")}" height="${height}" width="${width}">
+      <defs>
+        <linearGradient id="diagonal-gradient" gradientTransform="rotate(45 0.5 0.5)">
+          <stop offset="0%" stop-color="red" />
+          <stop offset="50%" stop-color="gold" />
+          <stop offset="100%" stop-color="red" />
+        </linearGradient>
+      </defs>
+      ${content}
+    </svg>`,
+};
+
+let svgCode = getSVGCode(lsParamsMap, svgParams);
+document.body.insertAdjacentHTML("beforeend", svgCode);
+```
+
 ### Error handling
 
-In case of invalid input L-system parameters, the methods throw a custom exception. You may use it to get a detailed explanation of which parameter(s) failed to pass validation, and format the message as you wish.
+In case of invalid input L-system parameters, the methods throw a custom exception. You may use it to analyze which parameter(s) failed to pass validation, and format the error message as you wish.
 
 ```javascript
 import {getSVGCode} from "lindsvg";

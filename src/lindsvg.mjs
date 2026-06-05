@@ -37,12 +37,24 @@
  */
 
 /**
+ * Function producing the resulting SVG code from raw data
+ * @callback LSVGTemplateFn
+ * @param {object} options
+ * @param {number[]} options.viewBox - Values for constructing the viewBox attribute (min-x, min-y, width, and height)
+ * @param {number} options.width - Value for the `width` attribute
+ * @param {number} options.height - Value for the `height` attribute
+ * @param {string} options.content - `<path>` elements code
+ * @returns {string}
+ */
+
+/**
  * Output SVG parameters
  * @typedef {object} LSVGParams
  * @property {number} [width] - Desired SVG width
  * @property {number} [height] - Desired SVG height
  * @property {number} [padding] - Additional space to extend the viewBox
  * @property {LSVGPathAttributesMap} [pathAttributesMap] - Mapping of L-system key to the <path> element attributes
+ * @property {LSVGTemplateFn} [templateFn] - Function producing the resulting SVG code from raw data
  */
 
 

@@ -45,6 +45,10 @@
     verifyChecksum(comboSVGCode, testData.comboData.checksum);
     demos.insertAdjacentHTML("beforeend", comboSVGCode);
 
+    let customTplSVGCode = getSVGCode(testData.customTplData.lsParamsMap, testData.customTplData.svgParams);
+    verifyChecksum(customTplSVGCode, testData.customTplData.checksum);
+    demos.insertAdjacentHTML("beforeend", customTplSVGCode);
+
     try {
       console.log("Below, an exception is expected");
       console.log(getSVGCode(testData.invalidData.lsParamsMap, testData.multiPathData.svgParams));

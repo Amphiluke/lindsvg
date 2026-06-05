@@ -25,6 +25,11 @@ test("Combo mode", () => {
   assert.strictEqual(getChecksum(svgCode), testData.comboData.checksum);
 });
 
+test("Custom template mode", () => {
+  let svgCode = getSVGCode(testData.customTplData.lsParamsMap, testData.customTplData.svgParams);
+  assert.strictEqual(getChecksum(svgCode), testData.customTplData.checksum);
+});
+
 test("L-system params validation", () => {
   assert.throws(() => getSVGCode(testData.invalidData.lsParamsMap, testData.multiPathData.svgParams), (error) => {
     assert.strictEqual(error.name, "LSError");

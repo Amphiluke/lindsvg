@@ -98,6 +98,42 @@ export let comboData = {
   checksum: "aec90fe9d863cf90b0bb23631adf4bb083dac1b5f7416f2c2d9115ec2340fa83",
 };
 
+export let customTplData = {
+  lsParamsMap: {
+    "L-system “Square”": {
+      axiom: "F+F+F+F",
+      rules: {
+        F: "FF+F+F+F+FF",
+      },
+      theta: Math.PI / 2,
+      step: 5,
+      iterations: 4,
+    },
+  },
+  svgParams: {
+    width: 407,
+    height: 407,
+    padding: 2,
+    pathAttributesMap: {
+      "L-system “Square”": {
+        stroke: "url(#diagonal-gradient)",
+      },
+    },
+    templateFn: ({viewBox, width, height, content}) => `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox.join(" ")}" height="${height}" width="${width}">
+        <defs>
+          <linearGradient id="diagonal-gradient" gradientTransform="rotate(45 0.5 0.5)">
+            <stop offset="0%" stop-color="red" />
+            <stop offset="50%" stop-color="gold" />
+            <stop offset="100%" stop-color="red" />
+          </linearGradient>
+        </defs>
+        ${content}
+      </svg>`,
+  },
+  checksum: "91fa1266aa78c90f6392beb147c46c6baadef746abee2946999bf5c329a7a1dd",
+};
+
 export let invalidData = {
   lsParamsMap: [
     {

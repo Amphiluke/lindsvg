@@ -26,11 +26,19 @@ export type LSVGPathAttributesMap = {
   [key: string]: LSVGPathAttributes;
 }
 
+export type LSVGTemplateFn = (options: {
+  viewBox: [number, number, number, number];
+  width: number;
+  height: number;
+  content: string;
+}) => string;
+
 export interface LSVGParams {
   width?: number;
   height?: number;
   padding?: number;
   pathAttributesMap?: LSVGPathAttributesMap;
+  templateFn?: LSVGTemplateFn;
 }
 
 export interface LSVGData {
