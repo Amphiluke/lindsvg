@@ -44,12 +44,12 @@ let appVersion = __PACKAGE_VERSION__;
 </template>
 
 <style module>
-  .metadata {
-    display: flex;
-    justify-content: space-between;
-  }
+.metadata {
+  display: flex;
+  justify-content: space-between;
+}
 
-  .pretty {
-    text-wrap: pretty;
-  }
+.pretty {
+  text-wrap: pretty;
+}
 </style>

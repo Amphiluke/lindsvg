@@ -15,7 +15,7 @@ export let useInterfaceStore = defineStore("interface", () => {
 
   /**
    * Toggle panel’s state
-   * @param {String} panelId - Panel identifier
+   * @param {string} panelId - Panel identifier
    */
   function togglePanel(panelId) {
     openedPanel.value = (panelId === openedPanel.value) ? "" : panelId;
@@ -43,10 +43,10 @@ export let useInterfaceStore = defineStore("interface", () => {
 
   /**
    * Show a popover and wait for the user decision (either accept or dismiss)
-   * @param {Object} options - Popover configuration options
-   * @param {String} options.text - Popover text
-   * @param {String} options.button - Popover accept button
-   * @returns {Promise<POPOVER_ACCEPT | POPOVER_DISMISS>} Promise that resolves with an identifier of the user action
+   * @param {object} options - Popover configuration options
+   * @param {string} options.text - Popover text
+   * @param {string} options.button - Popover accept button
+   * @returns {Promise<"accept" | "dismiss">} Promise that resolves with an identifier of the user action
    */
   function requestPopover({text, button}) {
     if (popoverData.resolve) { // dismiss the previous popover if still displayed

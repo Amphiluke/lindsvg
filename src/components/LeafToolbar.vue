@@ -94,29 +94,29 @@ let selectedIndex = computed({
 </template>
 
 <style module>
-  .leafToolbar {
-    align-items: center;
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-    min-width: 0;
-    padding-inline-start: var(--size-sidebar-button);
-    padding-top: 0.6rem;
-    position: relative;
-  }
+.leafToolbar {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  min-width: 0;
+  padding-inline-start: var(--size-sidebar-button);
+  padding-top: 0.6rem;
+  position: relative;
+}
 
-  .lSystems {
-    color: var(--color-on-surface-high);
-    flex: 1 1 0;
-    max-width: max-content;
-    min-width: 0;
-  }
+.lSystems {
+  color: var(--color-on-surface-high);
+  flex: 1 1 0;
+  max-width: max-content;
+  min-width: 0;
+}
 
-  .button[disabled] {
-    opacity: 0.5;
-  }
+.button[disabled] {
+  opacity: 0.5;
+}
 
-  .hidden {
-    visibility: hidden;
-  }
+.hidden {
+  visibility: hidden;
+}
 </style>

@@ -1,67 +1,87 @@
-import {defineStore} from "pinia";
 import {ref, computed, reactive} from "vue";
-import {getSVGCode, getMultiPathSVGCode} from "lindsvg";
+import {defineStore} from "pinia";
+import {getSVGCode} from "lindsvg";
+
+/** @import {LSParams, LSParamsMap, LSVGPathAttributes, LSVGPathAttributesMap} from "lindsvg" */
+/** @import {LSystem} from "./bank.mjs" */
+
+/** @type {LSParams} */
+const DEFAULT_PARAMS = Object.freeze({
+  axiom: "F",
+  rules: {F: "F"},
+  x: 0,
+  y: 0,
+  alpha: 0,
+  theta: 0,
+  step: 10,
+  iterations: 3,
+});
+
+/** @type {LSVGPathAttributes} */
+const DEFAULT_ATTRS = Object.freeze({
+  stroke: "forestgreen",
+});
 
 export let useLSystemStore = defineStore("lSystem", () => {
   let lid = ref("");
-  let axiom = ref("F");
-  let alpha = ref(0);
-  let theta = ref(0);
-  let step = ref(10);
-  let iterations = ref(3);
-  let rules = reactive({F: "F"});
-  let attributes = reactive({stroke: "forestgreen"});
+
+  /** @type {LSParams[]} */
+  let params = reactive([structuredClone(DEFAULT_PARAMS)]);
+
+  /** @type {LSVGPathAttributes[]} */
+  let attributes = reactive([structuredClone(DEFAULT_ATTRS)]);
+
   let svgCode = ref("");
 
   let letters = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
-  let vacantLetters = computed(() => {
+  let vacantLetters = computed(() => params.map(({rules}) => {
     let usedLetters = Object.keys(rules);
     return letters.filter((letter) => !usedLetters.includes(letter));
-  });
+  }));
 
   /**
    * Configure L-system parameters
-   * @param {import("./bank.mjs").LSystem} config - L-system configuration
+   * @param {LSystem | null} config - L-system configuration
    */
   function setup(config) {
-    lid.value = config.lid ?? "";
-    axiom.value = config.axiom ?? "F";
-    alpha.value = config.alpha ?? 0;
-    theta.value = config.theta ?? 0;
-    step.value = config.step ?? 10;
-    iterations.value = config.iterations ?? 3;
-    Object.keys(rules).forEach(letter => delete rules[letter]);
-    Object.assign(rules, config.rules ?? {F: "F"});
-    Object.keys(attributes).forEach(attribute => delete attributes[attribute]);
-    Object.assign(attributes, config.attributes ?? {stroke: "forestgreen"});
+    lid.value = config?.lid ?? "";
+    params.length = attributes.length = 0;
+    if (!config) {
+      params.push(structuredClone(DEFAULT_PARAMS));
+      attributes.push(structuredClone(DEFAULT_ATTRS));
+      return;
+    }
+    config.params.forEach((lsParams, index) => {
+      params.push({...structuredClone(DEFAULT_PARAMS), ...lsParams});
+      attributes.push({...structuredClone(DEFAULT_ATTRS), ...config.attributes?.[index]});
+    });
   }
 
   /**
    * Regenerate SVG code for the L-system using current parameter values
    */
   function buildSVG() {
-    let method = Object.values(attributes).some((attr) => Array.isArray(attr)) ? getMultiPathSVGCode : getSVGCode;
-    svgCode.value = method({
-      axiom: axiom.value,
-      rules,
-      alpha: alpha.value * Math.PI / 180,
-      theta: theta.value * Math.PI / 180,
-      iterations: iterations.value,
-      step: step.value,
-    }, {
+    /** @type {LSParamsMap} */
+    let lsParamsMap = {};
+    /** @type {LSVGPathAttributesMap} */
+    let pathAttributesMap = {};
+    params.forEach((lsParams, index) => {
+      lsParamsMap[index] = {
+        ...lsParams,
+        alpha: lsParams.alpha * Math.PI / 180,
+        theta: lsParams.theta * Math.PI / 180,
+      };
+      pathAttributesMap[index] = {...attributes[index]};
+    });
+    svgCode.value = getSVGCode(lsParamsMap, {
       padding: 2,
-      pathAttributes: attributes,
+      pathAttributesMap,
     });
   }
 
   return {
     lid,
-    axiom,
-    alpha,
-    theta,
-    step,
-    iterations,
-    rules,
+    params,
     attributes,
     svgCode,
     vacantLetters,

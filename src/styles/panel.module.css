@@ -18,3 +18,18 @@
   overflow: auto;
   padding-inline-end: 4px; /* increase the distance from a scrollbar */
 }
+
+.formSlider {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.sheet {
+  border: none;
+  flex: 0 0 100%;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+  scroll-snap-align: start;
+}

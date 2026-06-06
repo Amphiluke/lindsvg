@@ -144,101 +144,101 @@ async function copyPermalink(target, cid, lid) {
 </template>
 
 <style module>
-  .filterForm {
+.filterForm {
+  flex-shrink: 0;
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+
+.filterLabel {
+  align-items: center;
+  display: flex;
+
+  &::after {
+    background-color: var(--color-accent);
+    content: "";
     flex-shrink: 0;
-    margin-bottom: 15px;
-    padding: 0 10px;
+    height: 25px;
+    -webkit-mask: url(../assets/icons.svg) -100px 0 no-repeat;
+    mask: url(../assets/icons.svg) -100px 0 no-repeat;
+    width: 25px;
   }
 
-  .filterLabel {
-    align-items: center;
-    display: flex;
-
-    &::after {
-      background-color: var(--color-accent);
-      content: "";
-      flex-shrink: 0;
-      height: 25px;
-      -webkit-mask: url(../assets/icons.svg) -100px 0 no-repeat;
-      mask: url(../assets/icons.svg) -100px 0 no-repeat;
-      width: 25px;
-    }
-
-    &:not(:focus-within):not(.filterApplied)::after {
-      opacity: 0.5;
-    }
+  &:not(:focus-within):not(.filterApplied)::after {
+    opacity: 0.5;
   }
+}
 
-  .filterField {
-    -webkit-appearance: none; /* fixes border-radius issue in Safari */
-    box-sizing: border-box;
-    flex-grow: 1;
-    min-width: 0;
-    padding-inline: 0;
+.filterField {
+  -webkit-appearance: none; /* fixes border-radius issue in Safari */
+  box-sizing: border-box;
+  flex-grow: 1;
+  min-width: 0;
+  padding-inline: 0;
+}
+
+.collections {
+  list-style: none;
+  padding: 0 4px 0 0;
+}
+
+.collectionItems {
+  list-style: none;
+  padding: 0;
+}
+
+.addLSystemButton {
+  float: inline-end;
+  margin-top: 12px;
+  position: sticky;
+  top: 12px;
+  z-index: 2;
+}
+
+.collectionName {
+  background: var(--color-surface);
+  box-shadow: 0 4px 7px 2px var(--color-surface), 0 -1px 0 0 var(--color-surface);
+  margin-block: 0 8px;
+  padding-block: 13px 5px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.collectionItems li {
+  align-items: center;
+  display: flex;
+
+  &:hover,
+  &.active {
+    background: var(--color-on-surface-low);
   }
+}
 
-  .collections {
-    list-style: none;
-    padding: 0 4px 0 0;
+.collectionItemName {
+  cursor: default;
+  flex-grow: 1;
+  overflow: hidden;
+  padding: 5px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.permalinkButton,
+.exploreButton,
+.deleteLSystemButton {
+  flex-shrink: 0;
+}
+
+.collectionItems li:not(:hover, .active) :where(.permalinkButton, .exploreButton, .deleteLSystemButton):not(:focus) {
+  opacity: 0.01;
+}
+
+.copied {
+  pointer-events: none;
+
+  &::before {
+    --mask-pos: -200px 0;
   }
-
-  .collectionItems {
-    list-style: none;
-    padding: 0;
-  }
-
-  .addLSystemButton {
-    float: inline-end;
-    margin-top: 12px;
-    position: sticky;
-    top: 12px;
-    z-index: 2;
-  }
-
-  .collectionName {
-    background: var(--color-surface);
-    box-shadow: 0 4px 7px 2px var(--color-surface), 0 -1px 0 0 var(--color-surface);
-    margin-block: 0 8px;
-    padding-block: 13px 5px;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-
-  .collectionItems li {
-    align-items: center;
-    display: flex;
-
-    &:hover,
-    &.active {
-      background: var(--color-on-surface-low);
-    }
-  }
-
-  .collectionItemName {
-    cursor: default;
-    flex-grow: 1;
-    overflow: hidden;
-    padding: 5px 10px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .permalinkButton,
-  .exploreButton,
-  .deleteLSystemButton {
-    flex-shrink: 0;
-  }
-
-  .collectionItems li:not(:hover, .active) :where(.permalinkButton, .exploreButton, .deleteLSystemButton):not(:focus) {
-    opacity: 0.01;
-  }
-
-  .copied {
-    pointer-events: none;
-
-    &::before {
-      --mask-pos: -200px 0;
-    }
-  }
+}
 </style>
