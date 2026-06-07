@@ -134,6 +134,38 @@ export let customTplData = {
   checksum: "91fa1266aa78c90f6392beb147c46c6baadef746abee2946999bf5c329a7a1dd",
 };
 
+export let tplReuseData = {
+  lsParamsMap: {
+    Terdragon: {
+      axiom: "F",
+      rules: {
+        F: "F+F-F",
+      },
+      alpha: Math.PI / 2,
+      theta: Math.PI * 2 / 3,
+      step: 5,
+      iterations: 8,
+    },
+  },
+  svgParams: {
+    padding: 2,
+    pathAttributesMap: {
+      Terdragon: {
+        id: "terdragon",
+        stroke: "n/a", // allows defining stroke on <use>
+      },
+    },
+    templateFn: ({viewBox, width, height, content}) => `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox[0]} ${viewBox[1] - 170} ${viewBox[2]} ${viewBox[3] + 340}" height="${height + 170 * 3}" width="${width}">
+        <defs>${content}</defs>
+        <use href="#terdragon" stroke="maroon" transform="rotate(60)" x="350.65" y="202.5" />
+        <use href="#terdragon" stroke="red" />
+        <use href="#terdragon" stroke="gold" transform="rotate(60)" />
+      </svg>`,
+  },
+  checksum: "2ec7ff074677cfd08105d16ac0b6e7f158ba9ad9d484d724e03b93087b7c742f",
+};
+
 export let invalidData = {
   lsParamsMap: [
     {

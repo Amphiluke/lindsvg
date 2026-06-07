@@ -5,14 +5,17 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <title>lindsvg</title>
   <style>
+    html {
+      color-scheme: dark;
+    }
     .demos {
-      display: flex;
-      inset: 0;
-      position: fixed;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      inset: 0 0 auto;
 
       svg {
-        flex: 1 1 0;
-        height: 100%;
+        height: auto;
+        width: 100%;
       }
     }
   </style>
@@ -33,21 +36,11 @@
 
     let demos = document.body.querySelector(".demos");
 
-    let singlePathSVGCode = getSVGCode(testData.singlePathData.lsParamsMap, testData.singlePathData.svgParams);
-    verifyChecksum(singlePathSVGCode, testData.singlePathData.checksum);
-    demos.insertAdjacentHTML("beforeend", singlePathSVGCode);
-
-    let multiPathSVGCode = getSVGCode(testData.multiPathData.lsParamsMap, testData.multiPathData.svgParams);
-    verifyChecksum(multiPathSVGCode, testData.multiPathData.checksum);
-    demos.insertAdjacentHTML("beforeend", multiPathSVGCode);
-
-    let comboSVGCode = getSVGCode(testData.comboData.lsParamsMap, testData.comboData.svgParams);
-    verifyChecksum(comboSVGCode, testData.comboData.checksum);
-    demos.insertAdjacentHTML("beforeend", comboSVGCode);
-
-    let customTplSVGCode = getSVGCode(testData.customTplData.lsParamsMap, testData.customTplData.svgParams);
-    verifyChecksum(customTplSVGCode, testData.customTplData.checksum);
-    demos.insertAdjacentHTML("beforeend", customTplSVGCode);
+    ["singlePathData", "multiPathData", "comboData", "customTplData", "tplReuseData"].forEach((key) => {
+      let svgCode = getSVGCode(testData[key].lsParamsMap, testData[key].svgParams);
+      verifyChecksum(svgCode, testData[key].checksum);
+      demos.insertAdjacentHTML("beforeend", svgCode);
+    });
 
     try {
       console.log("Below, an exception is expected");

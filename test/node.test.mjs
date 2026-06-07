@@ -30,6 +30,11 @@ test("Custom template mode", () => {
   assert.strictEqual(getChecksum(svgCode), testData.customTplData.checksum);
 });
 
+test("Template with reusing", () => {
+  let svgCode = getSVGCode(testData.tplReuseData.lsParamsMap, testData.tplReuseData.svgParams);
+  assert.strictEqual(getChecksum(svgCode), testData.tplReuseData.checksum);
+});
+
 test("L-system params validation", () => {
   assert.throws(() => getSVGCode(testData.invalidData.lsParamsMap, testData.multiPathData.svgParams), (error) => {
     assert.strictEqual(error.name, "LSError");
