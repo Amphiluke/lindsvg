@@ -152,7 +152,6 @@ function copy(target, type) {
       --border-alpha: 0.6;
     }
 
-    &:disabled,
     &[aria-disabled="true"] {
       cursor: not-allowed;
       opacity: 0.5;

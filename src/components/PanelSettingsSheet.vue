@@ -68,15 +68,12 @@ function addNewRule() {
     <div
       v-for="(rule, letter) of lSystemStore.params[lsIndex].rules"
       :key="letter"
-      :class="$style.parameterRow"
+      :class="[$style.parameterRow, {[$style.reservedRule]: letter === 'B' || letter === 'F'}]"
     >
       <label
         :class="[interfaceStyles.labeledField, $style.labeledField]"
-        :data-label="letter"
-        :title="{
-          F: 'Move forward one step with drawing a line',
-          B: 'Move forward one step without drawing a line',
-        }[letter] ?? null"
+        :data-label="letter + ' \u2A74'"
+        :title="`Production rule for ${letter}`"
       >
         <input
           type="text"
@@ -110,7 +107,7 @@ function addNewRule() {
           :key="vacantLetter"
           :value="vacantLetter"
         >
-          {{ vacantLetter }}
+          {{ vacantLetter + " \u2A74" }}
         </option>
       </select>
       <label :class="[interfaceStyles.labeledField, $style.labeledField]">
@@ -124,7 +121,7 @@ function addNewRule() {
       </label>
       <button
         type="button"
-        :class="[$style.addRuleButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd]"
+        :class="[$style.addRuleButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd, interfaceStyles.iconButtonBreath]"
         title="Add a new rule"
         :disabled="!newRuleLetter || !newRuleValue"
         @click="addNewRule"
@@ -156,11 +153,16 @@ function addNewRule() {
 .parameterRow {
   border-bottom: 1px solid var(--color-on-surface-mid);
   display: flex;
+}
 
-  &:has([data-label="B"]),
-  &:has([data-label="F"]) {
-    background: linear-gradient(90deg, rgb(from var(--color-accent) r g b / 0), rgb(from var(--color-accent) r g b / 0.08) 15%, rgb(from var(--color-accent) r g b / 0.08) 85%, rgb(from var(--color-accent) r g b / 0));
-  }
+.reservedRule {
+  background: linear-gradient(
+    90deg,
+    rgb(from var(--color-accent) r g b / 0),
+    rgb(from var(--color-accent) r g b / 0.08) 15%,
+    rgb(from var(--color-accent) r g b / 0.08) 85%,
+    rgb(from var(--color-accent) r g b / 0)
+  );
 }
 
 .labeledField {
@@ -187,7 +189,7 @@ function addNewRule() {
     background-color: var(--color-accent);
     content: "";
     height: 25px;
-    inset-inline-start: 20px;
+    inset-inline-start: 30px;
     -webkit-mask: url(../assets/icons.svg) -75px 0 no-repeat;
     mask: url(../assets/icons.svg) -75px 0 no-repeat;
     pointer-events: none;
@@ -207,8 +209,8 @@ function addNewRule() {
   box-sizing: border-box;
   color: var(--color-on-surface-mid);
   flex-shrink: 0;
-  padding-inline-end: 25px;
-  width: 45px;
+  padding-inline: 0 25px;
+  width: 60px;
 }
 
 .newRuleValue {

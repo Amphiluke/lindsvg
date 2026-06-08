@@ -94,7 +94,7 @@ async function copyPermalink(target, cid, lid) {
         <button
           v-if="isUserDefined(cid)"
           type="button"
-          :class="[$style.addLSystemButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd]"
+          :class="[$style.addLSystemButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd, interfaceStyles.iconButtonBreath]"
           title="Add a new L-system…"
           @click="addLSystem"
         />

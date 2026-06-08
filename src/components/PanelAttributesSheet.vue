@@ -172,7 +172,7 @@ function addNewAttribute() {
       />
       <button
         type="button"
-        :class="[$style.addAttributeButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd]"
+        :class="[interfaceStyles.iconButton, interfaceStyles.iconButtonAdd, interfaceStyles.iconButtonBreath]"
         title="Add a new attribute"
         :disabled="!newAttributeName"
         @click="addNewAttribute()"
@@ -238,9 +238,5 @@ function addNewAttribute() {
 .labeledField input[type="text"] {
   text-align: start;
   width: 100%;
-}
-
-.addAttributeButton:disabled {
-  opacity: 0.5;
 }
 </style>

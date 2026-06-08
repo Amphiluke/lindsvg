@@ -85,8 +85,7 @@
   --mask-pos: 0 0;
 }
 
-.iconButtonErase::before,
-.iconButtonAdd::before {
+:is(.iconButtonErase, .iconButtonAdd)::before {
   --mask-pos: -25px 0;
 }
 
@@ -106,17 +105,28 @@
   --mask-pos: -200px 0;
 }
 
-.iconButtonDown::before,
-.iconButtonUp::before {
+:is(.iconButtonUp, .iconButtonDown, .iconButtonRight, .iconButtonLeft)::before {
   --mask-pos: -225px 0;
+}
+
+.iconButtonColor::before {
+  --mask-pos: -275px 0;
+}
+
+.iconButtonAdd::before {
+  rotate: 45deg;
 }
 
 .iconButtonUp::before {
   scale: 1 -1;
 }
 
-.iconButtonColor::before {
-  --mask-pos: -275px 0;
+.iconButtonLeft::before {
+  rotate: 90deg;
+}
+
+.iconButtonRight::before {
+  rotate: -90deg;
 }
 
 @keyframes add-breath {
@@ -128,12 +138,8 @@
   }
 }
 
-.iconButtonAdd {
-  overflow: hidden;
-
-  &::before {
-    rotate: 45deg;
-  }
+.iconButtonBreath {
+  overflow: clip;
 
   &:not(:disabled)::before {
     animation: add-breath 1.2s ease-in-out infinite alternate;

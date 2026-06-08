@@ -533,6 +533,34 @@ export default [
         }],
       },
       {
+        lid: "triple terdragon",
+        params: ((lsParams) => [
+          Object.assign(structuredClone(lsParams), {y: 405, alpha: 30}),
+          structuredClone(lsParams),
+          Object.assign(structuredClone(lsParams), {alpha: 30}),
+        ])({
+          axiom: "F",
+          rules: {
+            F: "F+F-F",
+          },
+          alpha: 90,
+          theta: 120,
+          step: 5,
+          iterations: 8,
+        }),
+        attributes: [
+          {
+            stroke: "darkred",
+          },
+          {
+            stroke: "red",
+          },
+          {
+            stroke: "tomato",
+          },
+        ],
+      },
+      {
         lid: "twindragon",
         params: ((lsParams) => [
           structuredClone(lsParams),

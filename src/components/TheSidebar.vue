@@ -38,11 +38,11 @@ let interfaceStore = useInterfaceStore();
         {{ name }}
       </button>
     </div>
-    <PanelCollections v-show="interfaceStore.openedPanel === 'collections'" />
-    <PanelSettings v-show="interfaceStore.openedPanel === 'settings'" />
-    <PanelAttributes v-show="interfaceStore.openedPanel === 'attributes'" />
-    <PanelSharing v-show="interfaceStore.openedPanel === 'sharing'" />
-    <PanelAbout v-show="interfaceStore.openedPanel === 'about'" />
+    <PanelCollections :class="{[$style.collapsed]: interfaceStore.openedPanel !== 'collections'}" />
+    <PanelSettings :class="{[$style.collapsed]: interfaceStore.openedPanel !== 'settings'}" />
+    <PanelAttributes :class="{[$style.collapsed]: interfaceStore.openedPanel !== 'attributes'}" />
+    <PanelSharing :class="{[$style.collapsed]: interfaceStore.openedPanel !== 'sharing'}" />
+    <PanelAbout :class="{[$style.collapsed]: interfaceStore.openedPanel !== 'about'}" />
   </div>
 </template>
 
@@ -119,5 +119,10 @@ let interfaceStore = useInterfaceStore();
 .button:hover,
 .active {
   background: var(--color-on-surface-low);
+}
+
+.collapsed {
+  position: absolute;
+  visibility: hidden;
 }
 </style>

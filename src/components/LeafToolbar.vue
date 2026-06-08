@@ -46,7 +46,6 @@ let selectedIndex = computed({
   >
     <button
       :class="[
-        $style.button,
         interfaceStyles.iconButton,
         interfaceStyles.iconButtonConfig,
         {[$style.hidden]: !selectedLS.lid || interfaceStore.openedPanel === 'settings'}
@@ -78,14 +77,14 @@ let selectedIndex = computed({
     </select>
     <button
       type="button"
-      :class="[$style.button, interfaceStyles.iconButton, interfaceStyles.iconButtonUp]"
+      :class="[interfaceStyles.iconButton, interfaceStyles.iconButtonUp]"
       :disabled="selectedIndex <= 0"
       title="Previous L-system"
       @click="selectedIndex -= 1"
     />
     <button
       type="button"
-      :class="[$style.button, interfaceStyles.iconButton, interfaceStyles.iconButtonDown]"
+      :class="[interfaceStyles.iconButton, interfaceStyles.iconButtonDown]"
       :disabled="selectedIndex >= lsList.length - 1"
       title="Next L-system"
       @click="selectedIndex += 1"
@@ -110,10 +109,6 @@ let selectedIndex = computed({
   flex: 1 1 0;
   max-width: max-content;
   min-width: 0;
-}
-
-.button[disabled] {
-  opacity: 0.5;
 }
 
 .hidden {

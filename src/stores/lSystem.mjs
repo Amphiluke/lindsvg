@@ -1,4 +1,4 @@
-import {ref, computed, reactive} from "vue";
+import {ref, computed, reactive, toRaw} from "vue";
 import {defineStore} from "pinia";
 import {getSVGCode} from "lindsvg";
 
@@ -52,9 +52,50 @@ export let useLSystemStore = defineStore("lSystem", () => {
       return;
     }
     config.params.forEach((lsParams, index) => {
-      params.push({...structuredClone(DEFAULT_PARAMS), ...lsParams});
-      attributes.push({...structuredClone(DEFAULT_ATTRS), ...config.attributes?.[index]});
+      params.push({
+        ...structuredClone(DEFAULT_PARAMS),
+        ...structuredClone(toRaw(lsParams)),
+      });
+      attributes.push({
+        ...structuredClone(DEFAULT_ATTRS),
+        ...structuredClone(toRaw(config.attributes?.[index])),
+      });
     });
+  }
+
+  /**
+   * Add a new slot to the current L-system
+   */
+  function addSubLSystem() {
+    params.push(structuredClone(DEFAULT_PARAMS));
+    attributes.push(structuredClone(DEFAULT_ATTRS));
+  }
+
+  /**
+   * Create a clone of a sub-L-system
+   * @param {number} index - Index of the sub-L-system to clone
+   */
+  function cloneSubLSystem(index) {
+    if (index < 0 || index > params.length - 1) {
+      throw new RangeError("Invalid sub-L-system index");
+    }
+    params.push(structuredClone(toRaw(params[index])));
+    attributes.push(structuredClone(toRaw(attributes[index])));
+  }
+
+  /**
+   * Delete a sub-L-system at the given position
+   * @param {number} index - Index of the sub-L-system to delete
+   */
+  function deleteSubLSystem(index) {
+    if (index < 0 || index > params.length - 1) {
+      throw new RangeError("Invalid sub-L-system index");
+    }
+    if (params.length < 2) {
+      throw new Error("Cannot delete the only existing sub-L-system");
+    }
+    params.splice(index, 1);
+    attributes.splice(index, 1);
   }
 
   /**
@@ -86,6 +127,9 @@ export let useLSystemStore = defineStore("lSystem", () => {
     svgCode,
     vacantLetters,
     setup,
+    addSubLSystem,
+    cloneSubLSystem,
+    deleteSubLSystem,
     buildSVG,
   };
 });
