@@ -113,6 +113,10 @@
   --mask-pos: -275px 0;
 }
 
+.iconButtonMore::before {
+  --mask-pos: -300px 0;
+}
+
 .iconButtonAdd::before {
   rotate: 45deg;
 }
@@ -141,8 +145,10 @@
 .iconButtonBreath {
   overflow: clip;
 
-  &:not(:disabled)::before {
-    animation: add-breath 1.2s ease-in-out infinite alternate;
+  @media (prefers-reduced-motion: no-preference) {
+    &:not(:disabled)::before {
+      animation: add-breath 1.2s ease-in-out infinite alternate;
+    }
   }
 }
 

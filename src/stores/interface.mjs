@@ -6,6 +6,8 @@ import {defineStore} from "pinia";
 export const POPOVER_ACCEPT = "accept";
 export const POPOVER_DISMISS = "dismiss";
 
+export const SCROLL_BEHAVIOR = window.matchMedia("prefers-reduced-motion: reduce").matches ? "instant" : "smooth";
+
 export let useInterfaceStore = defineStore("interface", () => {
   /**
    * Currently opened sidebar panel

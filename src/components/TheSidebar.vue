@@ -1,5 +1,6 @@
 <script setup>
 import {useInterfaceStore} from "../stores/interface.mjs";
+import SidebarMenu from "./SidebarMenu.vue";
 import PanelCollections from "./PanelCollections.vue";
 import PanelSettings from "./PanelSettings.vue";
 import PanelAttributes from "./PanelAttributes.vue";
@@ -11,22 +12,7 @@ let interfaceStore = useInterfaceStore();
 
 <template>
   <div :class="$style.sidebar">
-    <div :class="$style.ctrlButtons">
-      <button
-        v-show="interfaceStore.openedPanel === 'collections'"
-        type="button"
-        :class="$style.toolbarButton"
-        title="Detach panel to a toolbar"
-        @click="interfaceStore.isLeafToolbarOpen = true"
-      />
-      <button
-        v-show="interfaceStore.openedPanel !== ''"
-        type="button"
-        :class="$style.collapseButton"
-        title="Hide sidebar"
-        @click="interfaceStore.openedPanel = ''"
-      />
-    </div>
+    <SidebarMenu :class="$style.menu" />
     <div :class="$style.buttons">
       <button
         v-for="name of ['collections', 'settings', 'attributes', 'sharing', 'about']"
@@ -58,37 +44,9 @@ let interfaceStore = useInterfaceStore();
   top: 0;
 }
 
-.ctrlButtons {
-  display: flex;
-  gap: 10px;
+.menu {
+  inset: 24px 10px auto auto;
   position: absolute;
-  inset-inline-end: 10px;
-  top: 10px;
-}
-
-.toolbarButton,
-.collapseButton {
-  background-color: var(--color-accent);
-  border: none;
-  height: 25px;
-  -webkit-mask: url(../assets/icons.svg) var(--mask-pos) no-repeat;
-  mask: url(../assets/icons.svg) var(--mask-pos) no-repeat;
-  padding: 0;
-  width: 25px;
-
-  @media (hover) {
-    &:not(:hover) {
-      opacity: 0.7;
-    }
-  }
-}
-
-.toolbarButton {
-  --mask-pos: -250px 0;
-}
-
-.collapseButton {
-  --mask-pos: -150px 0;
 }
 
 .buttons {

@@ -1,4 +1,4 @@
-import {ref, computed, reactive, toRaw} from "vue";
+import {ref, computed, reactive, readonly, toRaw} from "vue";
 import {defineStore} from "pinia";
 import {getSVGCode} from "lindsvg";
 
@@ -24,6 +24,7 @@ const DEFAULT_ATTRS = Object.freeze({
 
 export let useLSystemStore = defineStore("lSystem", () => {
   let lid = ref("");
+  let subLSystemIndex = ref(0);
 
   /** @type {LSParams[]} */
   let params = reactive([structuredClone(DEFAULT_PARAMS)]);
@@ -61,41 +62,62 @@ export let useLSystemStore = defineStore("lSystem", () => {
         ...structuredClone(toRaw(config.attributes?.[index])),
       });
     });
+    subLSystemIndex.value = 0;
+  }
+
+  let hasPrevSubLSystem = computed(() => subLSystemIndex.value > 0);
+  let hasNextSubLSystem = computed(() => subLSystemIndex.value < params.length - 1);
+
+  /**
+   * Activate previous sub-L-system
+   */
+  function selectPrevSubLSystem() {
+    subLSystemIndex.value = Math.max(subLSystemIndex.value - 1, 0);
   }
 
   /**
-   * Add a new slot to the current L-system
+   * Activate next sub-L-system
+   */
+  function selectNextSubLSystem() {
+    subLSystemIndex.value = Math.min(subLSystemIndex.value + 1, params.length - 1);
+  }
+
+  /**
+   * Activate sub-L-system at the given index
+   * @param {number} index - Index of the sub-L-system to activate
+   */
+  function selectNthSubLSystem(index) {
+    subLSystemIndex.value = Math.min(Math.max(index, 0), params.length - 1);
+  }
+
+  /**
+   * Append a new slot to the current L-system
    */
   function addSubLSystem() {
     params.push(structuredClone(DEFAULT_PARAMS));
     attributes.push(structuredClone(DEFAULT_ATTRS));
+    subLSystemIndex.value = params.length - 1;
   }
 
   /**
-   * Create a clone of a sub-L-system
-   * @param {number} index - Index of the sub-L-system to clone
+   * Create a clone of the active sub-L-system
    */
-  function cloneSubLSystem(index) {
-    if (index < 0 || index > params.length - 1) {
-      throw new RangeError("Invalid sub-L-system index");
-    }
-    params.push(structuredClone(toRaw(params[index])));
-    attributes.push(structuredClone(toRaw(attributes[index])));
+  function cloneSubLSystem() {
+    params.splice(subLSystemIndex.value, 0, structuredClone(toRaw(params[subLSystemIndex.value])));
+    attributes.splice(subLSystemIndex.value, 0, structuredClone(toRaw(attributes[subLSystemIndex.value])));
+    subLSystemIndex.value++;
   }
 
   /**
-   * Delete a sub-L-system at the given position
-   * @param {number} index - Index of the sub-L-system to delete
+   * Delete active sub-L-system
    */
-  function deleteSubLSystem(index) {
-    if (index < 0 || index > params.length - 1) {
-      throw new RangeError("Invalid sub-L-system index");
-    }
+  function deleteSubLSystem() {
     if (params.length < 2) {
       throw new Error("Cannot delete the only existing sub-L-system");
     }
-    params.splice(index, 1);
-    attributes.splice(index, 1);
+    params.splice(subLSystemIndex.value, 1);
+    attributes.splice(subLSystemIndex.value, 1);
+    subLSystemIndex.value = Math.min(subLSystemIndex.value, params.length - 1);
   }
 
   /**
@@ -126,6 +148,14 @@ export let useLSystemStore = defineStore("lSystem", () => {
     attributes,
     svgCode,
     vacantLetters,
+
+    subLSystemIndex: readonly(subLSystemIndex),
+    hasPrevSubLSystem,
+    hasNextSubLSystem,
+    selectPrevSubLSystem,
+    selectNextSubLSystem,
+    selectNthSubLSystem,
+
     setup,
     addSubLSystem,
     cloneSubLSystem,
