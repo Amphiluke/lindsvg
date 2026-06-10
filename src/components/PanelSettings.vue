@@ -3,8 +3,8 @@ import {useTemplateRef} from "vue";
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
 import {useFormNavigator} from "../composables/form-navigator.mjs";
-import SheetSlider from "./SheetSlider.vue";
-import PanelSettingsSheet from "./PanelSettingsSheet.vue";
+import SheetsSlider from "./SheetsSlider.vue";
+import SheetSettings from "./SheetSettings.vue";
 import interfaceStyles from "../styles/interface.module.css";
 import panelStyles from "../styles/panel.module.css";
 
@@ -30,13 +30,13 @@ function plot() {
       :class="[panelStyles.body, interfaceStyles.thinScroll]"
       @submit.prevent="plot"
     >
-      <SheetSlider>
-        <PanelSettingsSheet
+      <SheetsSlider>
+        <SheetSettings
           v-for="index of lSystemStore.params.length"
           :key="index"
           :ls-index="index - 1"
         />
-      </SheetSlider>
+      </SheetsSlider>
 
       <div :class="$style.formButtons">
         <button

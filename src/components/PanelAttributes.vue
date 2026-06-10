@@ -1,8 +1,8 @@
 <script setup>
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
-import SheetSlider from "./SheetSlider.vue";
-import PanelAttributesSheet from "./PanelAttributesSheet.vue";
+import SheetsSlider from "./SheetsSlider.vue";
+import SheetAttributes from "./SheetAttributes.vue";
 import interfaceStyles from "../styles/interface.module.css";
 import panelStyles from "../styles/panel.module.css";
 
@@ -25,13 +25,13 @@ function plot() {
       :class="[panelStyles.body, interfaceStyles.thinScroll]"
       @submit.prevent="plot"
     >
-      <SheetSlider>
-        <PanelAttributesSheet
+      <SheetsSlider>
+        <SheetAttributes
           v-for="index of lSystemStore.attributes.length"
           :key="index"
           :ls-index="index - 1"
         />
-      </SheetSlider>
+      </SheetsSlider>
 
       <div :class="$style.formButtons">
         <button
