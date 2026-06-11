@@ -1,11 +1,13 @@
 <script setup>
-import {ref, computed, useCssModule} from "vue";
+import {ref, computed} from "vue";
 import {refDebounced} from "@vueuse/core";
 import {useCollectionsStore, isUserDefined, USER_DEFINED_COLLECTION_ID} from "../stores/collections.mjs";
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
+import DropdownButton from "./DropdownButton.vue";
 import interfaceStyles from "../styles/interface.module.css";
 import panelStyles from "../styles/panel.module.css";
+import menuStyles from "../styles/menu.module.css";
 
 let collectionsStore = useCollectionsStore();
 let lSystemStore = useLSystemStore();
@@ -33,11 +35,6 @@ function plot(cid, lid) {
   }
 }
 
-function explore(cid, lid) {
-  plot(cid, lid);
-  interfaceStore.openedPanel = "settings";
-}
-
 function addLSystem() {
   let lid = window.prompt("Enter the name of a new L-system");
   if (!lid) {
@@ -48,20 +45,11 @@ function addLSystem() {
   lSystemStore.lid = lid;
 }
 
-function deleteLSystem(lid) {
-  collectionsStore.deleteLSystem(lid);
-}
-
-let copiedClassName = useCssModule().copied;
-async function copyPermalink(target, cid, lid) {
+function copyPermalink(cid, lid) {
   let url = new URL(location.origin + location.pathname);
   url.searchParams.set("cid", cid);
   url.searchParams.set("lid", lid);
-  await navigator.clipboard.writeText(url.toString());
-  target.classList.add(copiedClassName);
-  setTimeout(() => {
-    target.classList.remove(copiedClassName);
-  }, 2000);
+  navigator.clipboard.writeText(url.toString());
 }
 </script>
 
@@ -113,29 +101,45 @@ async function copyPermalink(target, cid, lid) {
             >
               {{ lid }}
             </span>
-            <button
-              v-if="isUserDefined(cid)"
-              type="button"
-              tabindex="-1"
-              :class="[$style.deleteLSystemButton, interfaceStyles.iconButton, interfaceStyles.iconButtonDelete]"
-              title="Delete this L-system"
-              @click="deleteLSystem(lid)"
-            />
-            <button
-              v-else
-              type="button"
-              tabindex="-1"
-              :class="[$style.permalinkButton, interfaceStyles.iconButton, interfaceStyles.iconButtonLink]"
-              title="Copy L-system permalink"
-              @click="({target}) => copyPermalink(target, cid, lid)"
-            />
-            <button
-              type="button"
-              :class="[$style.exploreButton, interfaceStyles.iconButton, interfaceStyles.iconButtonConfig]"
-              title="Edit this L-system’s parameters"
+            <DropdownButton
+              :class="$style.menuBtn"
               @focus="plot(cid, lid)"
-              @click="explore(cid, lid)"
-            />
+            >
+              <menu :class="menuStyles.menu">
+                <li v-if="isUserDefined(cid)">
+                  <button
+                    type="button"
+                    @click="collectionsStore.deleteLSystem(lid)"
+                  >
+                    Delete L-system
+                  </button>
+                </li>
+                <li v-else>
+                  <button
+                    type="button"
+                    @click="copyPermalink(cid, lid)"
+                  >
+                    Copy L-system permalink
+                  </button>
+                </li>
+                <li :class="menuStyles.separatedItem">
+                  <button
+                    type="button"
+                    @click="interfaceStore.openedPanel = 'settings'"
+                  >
+                    Edit L-system parameters
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    @click="interfaceStore.openedPanel = 'attributes'"
+                  >
+                    Edit L-system styles
+                  </button>
+                </li>
+              </menu>
+            </DropdownButton>
           </li>
         </ul>
       </li>
@@ -205,7 +209,7 @@ async function copyPermalink(target, cid, lid) {
   z-index: 1;
 }
 
-.collectionItems li {
+.collectionItems li:not(menu li) {
   align-items: center;
   display: flex;
 
@@ -224,21 +228,11 @@ async function copyPermalink(target, cid, lid) {
   white-space: nowrap;
 }
 
-.permalinkButton,
-.exploreButton,
-.deleteLSystemButton {
+.menuBtn {
   flex-shrink: 0;
 }
 
-.collectionItems li:not(:hover, .active) :where(.permalinkButton, .exploreButton, .deleteLSystemButton):not(:focus) {
+.collectionItems li:not(:hover, .active) .menuBtn:not(:focus) {
   opacity: 0.01;
-}
-
-.copied {
-  pointer-events: none;
-
-  &::before {
-    --mask-pos: -200px 0;
-  }
 }
 </style>

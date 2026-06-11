@@ -1,5 +1,6 @@
 <script setup>
 import {useInterfaceStore} from "../stores/interface.mjs";
+import DropdownButton from "./DropdownButton.vue";
 import SidebarMenu from "./SidebarMenu.vue";
 import PanelCollections from "./PanelCollections.vue";
 import PanelSettings from "./PanelSettings.vue";
@@ -12,7 +13,9 @@ let interfaceStore = useInterfaceStore();
 
 <template>
   <div :class="$style.sidebar">
-    <SidebarMenu :class="$style.menu" />
+    <DropdownButton :class="$style.menuBtn">
+      <SidebarMenu />
+    </DropdownButton>
     <div :class="$style.buttons">
       <button
         v-for="name of ['collections', 'settings', 'attributes', 'sharing', 'about']"
@@ -44,7 +47,7 @@ let interfaceStore = useInterfaceStore();
   top: 0;
 }
 
-.menu {
+.menuBtn {
   inset: 24px 10px auto auto;
   position: absolute;
 }

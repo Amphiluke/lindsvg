@@ -1,0 +1,28 @@
+.menu {
+  list-style: none;
+  margin: 0;
+  padding: 2px;
+
+  button {
+    background: none;
+    border: none;
+    border-radius: 0;
+    display: block;
+    padding: 0.4em 0.6em;
+    text-align: start;
+    width: 100%;
+
+    &:hover,
+    &:focus-visible {
+      background: var(--color-on-surface-low);
+    }
+  }
+}
+
+:where(.menu li:not([hidden])) ~ .separatedItem::before {
+  background: var(--color-on-surface-mid);
+  content: "";
+  display: block;
+  height: 1px;
+  margin-block: 2px;
+}
