@@ -6,7 +6,7 @@ let openBtnRef = useTemplateRef("openBtn");
 let dropdownRef = useTemplateRef("dropdown");
 
 let isDropdownRequested = ref(false);
-let dropdownPos = ref({top: 0, right: 0});
+let dropdownPos = ref({top: -1000, right: -1000});
 
 async function requestDropdown() {
   isDropdownRequested.value = true;
@@ -33,10 +33,10 @@ function toggleHandler({newState}) {
 <template>
   <button
     ref="openBtn"
-    v-bind="$attrs"
     type="button"
     title="Click for more options"
     :class="[interfaceStyles.iconButton, interfaceStyles.iconButtonMore, $style.openBtn]"
+    v-bind="$attrs"
     @click="requestDropdown"
   />
   <dialog

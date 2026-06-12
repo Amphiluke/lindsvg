@@ -27,12 +27,13 @@ let filteredCollections = computed(() => {
 });
 
 function plot(cid, lid) {
-  if (cid !== collectionsStore.selectedCID || lid !== collectionsStore.selectedLID) {
-    collectionsStore.selectedCID = cid;
-    collectionsStore.selectedLID = lid;
-    lSystemStore.setup(collectionsStore.selectedLSystem);
-    lSystemStore.buildSVG();
+  if (cid === collectionsStore.selectedCID && lid === collectionsStore.selectedLID) {
+    return;
   }
+  collectionsStore.selectedCID = cid;
+  collectionsStore.selectedLID = lid;
+  lSystemStore.setup(collectionsStore.selectedLSystem);
+  lSystemStore.buildSVG();
 }
 
 function addLSystem() {
@@ -93,17 +94,18 @@ function copyPermalink(cid, lid) {
           <li
             v-for="{lid} of items"
             :key="lid"
+            tabindex="0"
             :class="{[$style.active]: cid === collectionsStore.selectedCID && lid === collectionsStore.selectedLID}"
+            @focusin="plot(cid, lid)"
+            @keyup.alt.down="({currentTarget}) => currentTarget.querySelector('button')?.click()"
           >
-            <span
-              :class="$style.collectionItemName"
-              @click="plot(cid, lid)"
-            >
+            <span :class="$style.collectionItemName">
               {{ lid }}
             </span>
             <DropdownButton
               :class="$style.menuBtn"
-              @focus="plot(cid, lid)"
+              tabindex="-1"
+              title="Click for more options (Alt+Down)"
             >
               <menu :class="menuStyles.menu">
                 <li v-if="isUserDefined(cid)">
@@ -209,11 +211,13 @@ function copyPermalink(cid, lid) {
   z-index: 1;
 }
 
-.collectionItems li:not(menu li) {
+.collectionItems > li {
   align-items: center;
   display: flex;
+  outline: none;
 
   &:hover,
+  &:focus-within,
   &.active {
     background: var(--color-on-surface-low);
   }
@@ -232,7 +236,7 @@ function copyPermalink(cid, lid) {
   flex-shrink: 0;
 }
 
-.collectionItems li:not(:hover, .active) .menuBtn:not(:focus) {
+.collectionItems li:not(:hover, :focus-within, .active) .menuBtn {
   opacity: 0.01;
 }
 </style>
