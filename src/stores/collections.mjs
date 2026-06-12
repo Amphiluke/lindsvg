@@ -3,6 +3,7 @@ import {ref, computed, readonly, toRaw} from "vue";
 import {useLocalStorage} from "@vueuse/core";
 import bank from "./bank.mjs";
 import {useLSystemStore} from "./lSystem.mjs";
+import "./user-collections-migration.mjs"; // TODO remove after a while
 
 /** @import {DeepReadonly} from "vue" */
 /** @import {RemovableRef} from "@vueuse/core" */

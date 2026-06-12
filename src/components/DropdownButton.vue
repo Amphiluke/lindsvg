@@ -45,7 +45,7 @@ function toggleHandler({newState}) {
     closedby="any"
     :class="$style.dropdown"
     @toggle="toggleHandler"
-    @click="dropdownRef.close()"
+    @click="dropdownRef?.close()"
   >
     <slot />
   </dialog>
