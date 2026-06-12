@@ -47,7 +47,7 @@ export let useLSystemStore = defineStore("lSystem", () => {
   function setup(config) {
     lid.value = config?.lid ?? "";
     params.length = attributes.length = 0;
-    if (!config) {
+    if (!config?.params?.length) {
       params.push(structuredClone(DEFAULT_PARAMS));
       attributes.push(structuredClone(DEFAULT_ATTRS));
       return;

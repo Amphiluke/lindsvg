@@ -1,6 +1,5 @@
 <script setup>
-import {ref, computed} from "vue";
-import {refDebounced} from "@vueuse/core";
+import {nextTick} from "vue";
 import {useCollectionsStore, isUserDefined, USER_DEFINED_COLLECTION_ID} from "../stores/collections.mjs";
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
@@ -13,19 +12,6 @@ let collectionsStore = useCollectionsStore();
 let lSystemStore = useLSystemStore();
 let interfaceStore = useInterfaceStore();
 
-let filter = ref("");
-let debouncedFilter = refDebounced(filter, 300);
-let filteredCollections = computed(() => {
-  let query = debouncedFilter.value.trim().toLowerCase();
-  if (!query) {
-    return collectionsStore.collections;
-  }
-  return collectionsStore.collections.map(({cid, items}) => ({
-    cid,
-    items: items.filter(({lid}) => lid.toLowerCase().includes(query)),
-  }));
-});
-
 function plot(cid, lid) {
   if (cid === collectionsStore.selectedCID && lid === collectionsStore.selectedLID) {
     return;
@@ -36,14 +22,20 @@ function plot(cid, lid) {
   lSystemStore.buildSVG();
 }
 
-function addLSystem() {
-  let lid = window.prompt("Enter the name of a new L-system");
+async function addLSystem(isCloning = false) {
+  let lid = window.prompt("Enter new L-system’s name");
   if (!lid) {
     return;
   }
+  // Wait for the focus to restore on the currently active item after dialog closing (avoid mess with rendering)
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  lSystemStore.setup(isCloning ? {...collectionsStore.selectedLSystem, lid} : {lid, params: []});
   collectionsStore.selectedCID = USER_DEFINED_COLLECTION_ID;
   collectionsStore.selectedLID = lid;
-  lSystemStore.lid = lid;
+  await nextTick();
+  let itemId = `${USER_DEFINED_COLLECTION_ID}::${lid}`;
+  document.body.querySelector(`[data-collection-item-id="${itemId.replaceAll("\"", "\\\"")}"]`)?.focus();
+  lSystemStore.buildSVG();
 }
 
 function copyPermalink(cid, lid) {
@@ -64,9 +56,9 @@ function copyPermalink(cid, lid) {
       :class="$style.filterForm"
       @submit.prevent
     >
-      <label :class="[$style.filterLabel, {[$style.filterApplied]: !!filter}]">
+      <label :class="[$style.filterLabel, {[$style.filterApplied]: !!collectionsStore.lsFilter}]">
         <input
-          v-model="filter"
+          v-model="collectionsStore.lsFilter"
           type="search"
           autocapitalize="off"
           :class="$style.filterField"
@@ -76,16 +68,16 @@ function copyPermalink(cid, lid) {
     </form>
     <ul :class="[panelStyles.body, $style.collections, interfaceStyles.thinScroll]">
       <li
-        v-for="{cid, items} of filteredCollections"
-        v-show="!filter || items.length > 0"
+        v-for="{cid, items} of collectionsStore.collections"
         :key="cid"
+        :hidden="!!collectionsStore.mismatchingIds.size && items.every(({lid}) => collectionsStore.mismatchingIds.has(`${cid}::${lid}`))"
       >
         <button
           v-if="isUserDefined(cid)"
           type="button"
           :class="[$style.addLSystemButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd, interfaceStyles.iconButtonBreath]"
           title="Add a new L-system…"
-          @click="addLSystem"
+          @click="addLSystem()"
         />
         <h3 :class="$style.collectionName">
           {{ cid }}
@@ -93,7 +85,9 @@ function copyPermalink(cid, lid) {
         <ul :class="$style.collectionItems">
           <li
             v-for="{lid} of items"
-            :key="lid"
+            :key="`${cid}::${lid}`"
+            :hidden="collectionsStore.mismatchingIds.has(`${cid}::${lid}`)"
+            :data-collection-item-id="`${cid}::${lid}`"
             tabindex="0"
             :class="{[$style.active]: cid === collectionsStore.selectedCID && lid === collectionsStore.selectedLID}"
             @focusin="plot(cid, lid)"
@@ -122,6 +116,14 @@ function copyPermalink(cid, lid) {
                     @click="copyPermalink(cid, lid)"
                   >
                     Copy L-system permalink
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    @click="addLSystem(true)"
+                  >
+                    Clone L-system
                   </button>
                 </li>
                 <li :class="menuStyles.separatedItem">

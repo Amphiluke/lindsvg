@@ -1,6 +1,6 @@
-import {defineStore} from "pinia";
 import {ref, computed, readonly, toRaw} from "vue";
-import {useLocalStorage} from "@vueuse/core";
+import {defineStore} from "pinia";
+import {refDebounced, useLocalStorage} from "@vueuse/core";
 import bank from "./bank.mjs";
 import {useLSystemStore} from "./lSystem.mjs";
 import "./user-collections-migration.mjs"; // TODO remove after a while
@@ -32,6 +32,25 @@ export let useCollectionsStore = defineStore("collections", () => {
   let selectedLSystem = computed(() => {
     let collection = collections.find(({cid}) => cid === selectedCID.value);
     return collection?.items.find(({lid}) => lid === selectedLID.value) ?? null;
+  });
+
+  let lsFilter = ref("");
+  let lsFilterDebounced = refDebounced(lsFilter, 300);
+  let mismatchingIds = computed(() => {
+    /** @type {Set<string>} */
+    let mismatches = new Set();
+    let query = lsFilterDebounced.value.trim().toLocaleLowerCase();
+    if (!query) {
+      return mismatches;
+    }
+    collections.forEach(({cid, items}) => {
+      items.forEach(({lid}) => {
+        if (!lid.toLocaleLowerCase().includes(query)) {
+          mismatches.add(`${cid}::${lid}`);
+        }
+      });
+    });
+    return mismatches;
   });
 
   /**
@@ -72,9 +91,14 @@ export let useCollectionsStore = defineStore("collections", () => {
 
   return {
     collections,
+
     selectedCID,
     selectedLID,
     selectedLSystem,
+
+    lsFilter,
+    mismatchingIds,
+
     deleteLSystem,
   };
 });
