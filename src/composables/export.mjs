@@ -11,12 +11,7 @@ export function useExport() {
 
   let lsvg = computed(() => ({
     _version: __PACKAGE_VERSION__,
-    axiom: lSystemStore.axiom,
-    alpha: lSystemStore.alpha,
-    theta: lSystemStore.theta,
-    step: lSystemStore.step,
-    iterations: lSystemStore.iterations,
-    rules: lSystemStore.rules,
+    params: lSystemStore.params,
     attributes: lSystemStore.attributes,
   }));
   let lsvgBlob = computed(() => canExport.value ? new Blob([JSON.stringify(lsvg.value)], {type: "application/json"}) : null);

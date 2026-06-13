@@ -19,6 +19,7 @@ function updateSheetIndex() {
 watch(() => lSystemStore.subLSystemIndex, async (subLSystemIndex) => {
   if (subLSystemIndex !== sheetIndex.value) {
     await nextTick();
+    sheetIndex.value = subLSystemIndex;
     sheetsRef.value?.children[subLSystemIndex]?.scrollIntoView({behavior: SCROLL_BEHAVIOR, container: "nearest"});
   }
 });

@@ -1240,6 +1240,46 @@ export default [
         }],
       },
       {
+        lid: "basket",
+        params: [
+          {
+            axiom: "S",
+            rules: {
+              F: "F",
+              S: "[[L]D[L]DD[L]D]-S",
+              D: "FF++++++++++++++++++",
+              L: "+++++++++F",
+            },
+            theta: 5,
+            step: 100,
+            iterations: 73,
+          },
+          {
+            axiom: "A",
+            rules: {
+              A: "F+A",
+              F: "F",
+            },
+            x: -20,
+            y: -285,
+            theta: 8,
+            step: 40,
+            iterations: 45,
+          },
+        ],
+        attributes: [
+          {
+            stroke: ["slateblue", "crimson"],
+            "stroke-width": ["1.5", "2"],
+            "stroke-dasharray": ["n/a", "10 3"],
+          },
+          {
+            stroke: "slateblue",
+            "stroke-width": "8",
+          },
+        ],
+      },
+      {
         lid: "carpet",
         params: [{
           axiom: "F-F-F-F",
@@ -1271,18 +1311,18 @@ export default [
             "stroke-opacity": "0.25",
           }),
           Object.assign(structuredClone(pathAttributes), {
-            transform: "scale(0.5) translate(412 265)",
+            transform: "scale(0.5) translate(410 265)",
             "stroke-opacity": "0.25",
           }),
           Object.assign(structuredClone(pathAttributes), {
-            transform: "scale(0.5 -0.18) translate(153 -3190) skewX(21.5)",
+            transform: "scale(0.5 -0.18) translate(152 -3190) skewX(21.5)",
             "stroke-opacity": "0.25",
           }),
           Object.assign(structuredClone(pathAttributes), {
             transform: "scale(0.5) translate(150 500)",
           }),
           Object.assign(structuredClone(pathAttributes), {
-            transform: "scale(-0.2 0.5) translate(-2650 265) skewY(20)",
+            transform: "scale(-0.2 0.5) translate(-2645 264) skewY(20)",
           }),
           Object.assign(structuredClone(pathAttributes), {
             transform: "scale(0.5 -0.18) translate(153 -1385) skewX(21.5)",
@@ -1560,46 +1600,6 @@ export default [
           step: 5,
           iterations: 4,
         }],
-      },
-      {
-        lid: "plate",
-        params: [
-          {
-            axiom: "S",
-            rules: {
-              F: "F",
-              S: "[[L]D[L]DD[L]D]-S",
-              D: "FF++++++++++++++++++",
-              L: "+++++++++F",
-            },
-            theta: 5,
-            step: 100,
-            iterations: 73,
-          },
-          {
-            axiom: "A",
-            rules: {
-              A: "F+A",
-              F: "F",
-            },
-            x: -20,
-            y: -285,
-            theta: 8,
-            step: 40,
-            iterations: 45,
-          },
-        ],
-        attributes: [
-          {
-            stroke: ["slateblue", "crimson"],
-            "stroke-width": ["1.5", "2"],
-            "stroke-dasharray": ["n/a", "10 3"],
-          },
-          {
-            stroke: "slateblue",
-            "stroke-width": "8",
-          },
-        ],
       },
       {
         lid: "rack-wheel",
