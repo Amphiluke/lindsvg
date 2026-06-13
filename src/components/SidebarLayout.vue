@@ -13,7 +13,10 @@ let interfaceStore = useInterfaceStore();
 
 <template>
   <div :class="$style.sidebar">
-    <DropdownButton :class="$style.menuBtn">
+    <DropdownButton
+      :hidden="!interfaceStore.openedPanel"
+      :class="$style.menuBtn"
+    >
       <SidebarMenu />
     </DropdownButton>
     <div :class="$style.buttons">
