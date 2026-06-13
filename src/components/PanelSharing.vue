@@ -30,7 +30,7 @@ fileDialog.onChange(async (files) => {
 let {canExport, canShare, copyToClipboard, launchShare, urls: exportURLs} = useExport();
 
 let copiedClassName = useCssModule().copied;
-async function copy(target, type) {
+function copy(target, type) {
   copyToClipboard(type);
   target.classList.add(copiedClassName);
   setTimeout(() => target.classList.remove(copiedClassName), 2000);
@@ -120,74 +120,73 @@ async function copy(target, type) {
 </template>
 
 <style module>
-  .fileControls {
-    align-items: center;
-    display: grid;
-    gap: 15px 8px;
-    grid-template-columns: 1fr 19% 19% 19%;
+.fileControls {
+  align-items: center;
+  display: grid;
+  gap: 15px 8px;
+  grid-template-columns: 1fr 19% 19% 19%;
 
-    h3 {
-      font: inherit;
-      grid-column: 1 / 2;
-      margin: 0;
-    }
-
-    .shareTitle {
-      grid-column: 1 / 3;
-    }
-
-    .fileButton {
-      --border-alpha: 0.3;
-      border-color: rgb(from var(--color-accent) r g b / var(--border-alpha));
-      border-radius: 5px;
-      font: inherit;
-      font-size: 0.9em;
-      
-      &:hover,
-      &:focus-visible {
-        background: none;
-      }
-
-      &:not(:disabled, [aria-disabled="true"]):is(:hover, :focus-visible) {
-        --border-alpha: 0.6;
-      }
-
-      &:disabled,
-      &[aria-disabled="true"] {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-    }
+  h3 {
+    font: inherit;
+    grid-column: 1 / 2;
+    margin: 0;
   }
 
-  .copyLabel {
-    cursor: pointer;
-    text-decoration: 1px underline dashed;
-    text-underline-offset: 0.25em;
+  .shareTitle {
+    grid-column: 1 / 3;
   }
 
-  .copied {
-    color: transparent;
-    pointer-events: none;
-    position: relative;
-    user-select: none;
+  .fileButton {
+    --border-alpha: 0.3;
+    border-color: rgb(from var(--color-accent) r g b / var(--border-alpha));
+    border-radius: 5px;
+    font: inherit;
+    font-size: 0.9em;
+    
+    &:hover,
+    &:focus-visible {
+      background: none;
+    }
 
-    &::before {
-      background-color: var(--color-accent);
-      content: "";
-      height: 18px;
-      left: 50%;
-      -webkit-mask: url(../assets/icons.svg) -204px -4px no-repeat;
-      mask: url(../assets/icons.svg) -204px -4px no-repeat;
-      position: absolute;
-      top: 50%;
-      translate: -50% -50%;
-      width: 18px;
+    &:not(:disabled, [aria-disabled="true"]):is(:hover, :focus-visible) {
+      --border-alpha: 0.6;
+    }
+
+    &[aria-disabled="true"] {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
   }
+}
 
-  .permalink {
-    color: var(--color-accent);
-    word-wrap: break-word;
+.copyLabel {
+  cursor: pointer;
+  text-decoration: 1px underline dashed;
+  text-underline-offset: 0.25em;
+}
+
+.copied {
+  color: transparent;
+  pointer-events: none;
+  position: relative;
+  user-select: none;
+
+  &::before {
+    background-color: var(--color-accent);
+    content: "";
+    height: 18px;
+    left: 50%;
+    -webkit-mask: url(../assets/icons.svg) -204px -4px no-repeat;
+    mask: url(../assets/icons.svg) -204px -4px no-repeat;
+    position: absolute;
+    top: 50%;
+    translate: -50% -50%;
+    width: 18px;
   }
+}
+
+.permalink {
+  color: var(--color-accent);
+  word-wrap: break-word;
+}
 </style>

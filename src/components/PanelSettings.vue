@@ -1,46 +1,17 @@
 <script setup>
-import {ref} from "vue";
+import {useTemplateRef} from "vue";
 import {useLSystemStore} from "../stores/lSystem.mjs";
 import {useInterfaceStore} from "../stores/interface.mjs";
+import {useFormNavigator} from "../composables/form-navigator.mjs";
+import SheetsSlider from "./SheetsSlider.vue";
+import SheetSettings from "./SheetSettings.vue";
 import interfaceStyles from "../styles/interface.module.css";
 import panelStyles from "../styles/panel.module.css";
 
 let lSystemStore = useLSystemStore();
 let interfaceStore = useInterfaceStore();
 
-let newRuleLetter = ref("");
-let newRuleValue = ref("");
-
-function toLSFormat(value) {
-  return value.trim().toUpperCase();
-}
-
-function toNumber(value) {
-  return Number(value.replace(",", "."));
-}
-
-function addNewRule() {
-  lSystemStore.rules[newRuleLetter.value] = toLSFormat(newRuleValue.value);
-  newRuleLetter.value = newRuleValue.value = "";
-}
-
-function moveFocus(delta) {
-  let {activeElement} = document;
-  if (activeElement.tagName !== "INPUT" || activeElement.type !== "text") {
-    return;
-  }
-  let focusTarget = [...activeElement.form.querySelectorAll("input[type='text']")]
-    .find((_input, index, inputs) => inputs[index - delta] === activeElement);
-  if (!focusTarget) {
-    return;
-  }
-  focusTarget.focus();
-  setTimeout(() => { // immediate selecting won’t work on keydown, so queueing
-    if (focusTarget === document.activeElement) {
-      focusTarget.select();
-    }
-  }, 0);
-}
+useFormNavigator(useTemplateRef("form"));
 
 function plot() {
   lSystemStore.buildSVG();
@@ -53,151 +24,19 @@ function plot() {
       Settings
     </h2>
     <form
+      ref="form"
       action="#"
       autocomplete="off"
       :class="[panelStyles.body, interfaceStyles.thinScroll]"
-      @keydown.down="moveFocus(1)"
-      @keydown.up="moveFocus(-1)"
       @submit.prevent="plot"
     >
-      <div :class="$style.parameterRow">
-        <label
-          :class="[interfaceStyles.labeledField, $style.labeledField]"
-          data-label="Axiom"
-        >
-          <input
-            type="text"
-            :class="$style.uppercase"
-            :value="lSystemStore.axiom"
-            spellcheck="false"
-            @change="({target}) => lSystemStore.axiom = toLSFormat(target.value)"
-          >
-        </label>
-        <button
-          type="button"
-          :class="[$style.eraseButton, interfaceStyles.iconButton, interfaceStyles.iconButtonErase]"
-          title="Erase"
-          @click="lSystemStore.axiom = ''"
+      <SheetsSlider>
+        <SheetSettings
+          v-for="index of lSystemStore.params.length"
+          :key="index"
+          :ls-index="index - 1"
         />
-      </div>
-
-      <div
-        v-for="(rule, letter) of lSystemStore.rules"
-        :key="letter"
-        :class="$style.parameterRow"
-      >
-        <label
-          :class="[interfaceStyles.labeledField, $style.labeledField]"
-          :data-label="letter"
-        >
-          <input
-            type="text"
-            :class="$style.uppercase"
-            :value="rule"
-            spellcheck="false"
-            @change="({target}) => lSystemStore.rules[letter] = toLSFormat(target.value)"
-          >
-        </label>
-        <button
-          type="button"
-          :class="[$style.unsetRuleButton, interfaceStyles.iconButton, interfaceStyles.iconButtonDelete]"
-          title="Delete this rule"
-          @click="() => delete lSystemStore.rules[letter]"
-        />
-      </div>
-
-      <div
-        v-show="lSystemStore.vacantLetters.length > 0"
-        :class="[$style.parameterRow, $style.addRuleRow]"
-      >
-        <select
-          v-model="newRuleLetter"
-          :class="$style.letterPicker"
-        >
-          <option value="">
-            &#x22EF;
-          </option>
-          <option
-            v-for="vacantLetter of lSystemStore.vacantLetters"
-            :key="vacantLetter"
-            :value="vacantLetter"
-          >
-            {{ vacantLetter }}
-          </option>
-        </select>
-        <label :class="[interfaceStyles.labeledField, $style.labeledField]">
-          <input
-            v-model.trim="newRuleValue"
-            type="text"
-            :class="[$style.newRuleValue, $style.uppercase]"
-            spellcheck="false"
-            placeholder="Add a new rule…"
-          >
-        </label>
-        <button
-          type="button"
-          :class="[$style.addRuleButton, interfaceStyles.iconButton, interfaceStyles.iconButtonAdd]"
-          title="Add a new rule"
-          :disabled="!newRuleLetter || !newRuleValue"
-          @click="addNewRule"
-        />
-      </div>
-
-      <div :class="$style.parameterRow">
-        <label
-          :class="[interfaceStyles.labeledField, $style.labeledField]"
-          data-label="Alpha, °"
-        >
-          <input
-            type="text"
-            inputmode="decimal"
-            :value="lSystemStore.alpha"
-            @change="({target}) => lSystemStore.alpha = toNumber(target.value)"
-          >
-        </label>
-      </div>
-
-      <div :class="$style.parameterRow">
-        <label
-          :class="[interfaceStyles.labeledField, $style.labeledField]"
-          data-label="Theta, °"
-        >
-          <input
-            type="text"
-            inputmode="decimal"
-            :value="lSystemStore.theta"
-            @change="({target}) => lSystemStore.theta = toNumber(target.value)"
-          >
-        </label>
-      </div>
-
-      <div :class="$style.parameterRow">
-        <label
-          :class="[interfaceStyles.labeledField, $style.labeledField]"
-          data-label="Step"
-        >
-          <input
-            type="text"
-            inputmode="decimal"
-            :value="lSystemStore.step"
-            @change="({target}) => lSystemStore.step = toNumber(target.value)"
-          >
-        </label>
-      </div>
-
-      <div :class="$style.parameterRow">
-        <label
-          :class="[interfaceStyles.labeledField, $style.labeledField]"
-          data-label="Iterations"
-        >
-          <input
-            type="text"
-            inputmode="numeric"
-            :value="lSystemStore.iterations"
-            @change="({target}) => lSystemStore.iterations = toNumber(target.value)"
-          >
-        </label>
-      </div>
+      </SheetsSlider>
 
       <div :class="$style.formButtons">
         <button
@@ -219,92 +58,22 @@ function plot() {
 </template>
 
 <style module>
-  .parameterRow {
-    border-bottom: 1px solid var(--color-on-surface-mid);
-    display: flex;
+.formButtons {
+  background: linear-gradient(0deg, var(--color-surface) 50%, rgb(from var(--color-surface) r g b / 0));
+  bottom: 0;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  padding-block: 15px 5px;
+  position: sticky;
 
-    &:has([data-label="B"]),
-    &:has([data-label="F"]) {
-      background: linear-gradient(90deg, rgb(from var(--color-accent) r g b / 0), rgb(from var(--color-accent) r g b / 0.08) 15%, rgb(from var(--color-accent) r g b / 0.08) 85%, rgb(from var(--color-accent) r g b / 0));
-    }
+  @supports not (color: rgb(from red r g b / 0)) {
+    background: var(--color-surface);
   }
+}
 
-  .labeledField {
-    flex-grow: 1;
-    min-width: 50px;
-  }
-
-  .unsetRuleButton,
-  .eraseButton,
-  .addRuleButton {
-    flex-shrink: 0;
-    opacity: 0.5;
-
-    .parameterRow:focus-within &:not(:disabled),
-    &:not(:disabled):hover {
-      opacity: 1;
-    }
-  }
-
-  .addRuleRow {
-    position: relative;
-
-    &::before {
-      background-color: var(--color-accent);
-      content: "";
-      height: 25px;
-      inset-inline-start: 20px;
-      -webkit-mask: url(../assets/icons.svg) -75px 0 no-repeat;
-      mask: url(../assets/icons.svg) -75px 0 no-repeat;
-      pointer-events: none;
-      position: absolute;
-      top: 50%;
-      translate: 0 -50%;
-      width: 25px;
-    }
-  }
-
-  .letterPicker {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background: none;
-    border: none;
-    box-sizing: border-box;
-    color: var(--color-on-surface-mid);
-    flex-shrink: 0;
-    padding-inline-end: 25px;
-    width: 45px;
-  }
-  
-  .newRuleValue {
-    text-transform: uppercase;
-
-    &::placeholder {
-      text-transform: none;
-    }
-  }
-
-  .formButtons {
-    background: linear-gradient(0deg, var(--color-surface) 50%, rgb(from var(--color-surface) r g b / 0));
-    bottom: 0;
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    padding-block: 15px 5px;
-    position: sticky;
-
-    @supports not (color: rgb(from red r g b / 0)) {
-      background: var(--color-surface);
-    }
-  }
-
-  .plotButton,
-  .styleButton {
-    flex: 1 0 0;
-  }
-
-  .uppercase {
-    text-transform: uppercase;
-  }
+.plotButton,
+.styleButton {
+  flex: 1 0 0;
+}
 </style>

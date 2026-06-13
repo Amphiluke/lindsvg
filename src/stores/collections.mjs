@@ -1,38 +1,61 @@
+import {ref, computed, readonly, toRaw} from "vue";
 import {defineStore} from "pinia";
-import {ref, computed, readonly, toValue, toRaw} from "vue";
-import {useLocalStorage} from "@vueuse/core";
+import {refDebounced, useLocalStorage} from "@vueuse/core";
 import bank from "./bank.mjs";
 import {useLSystemStore} from "./lSystem.mjs";
+import "./user-collections-migration.mjs"; // TODO remove after a while
+
+/** @import {DeepReadonly} from "vue" */
+/** @import {RemovableRef} from "@vueuse/core" */
+/** @import {LSystem, LSCollection} from "./bank.mjs" */
 
 export const USER_DEFINED_COLLECTION_ID = "User defined";
 
 /**
  * Determines whether the given collection is user-defined
- * @param {String} cid - Collection identifier
- * @returns {Boolean}
+ * @param {string} cid - Collection identifier
+ * @returns {boolean}
  */
 export function isUserDefined(cid) {
   return cid === USER_DEFINED_COLLECTION_ID;
 }
 
 export let useCollectionsStore = defineStore("collections", () => {
-  /** @type {import("./bank.mjs").LSystem[]} */
-  let userStorage = useLocalStorage("userCollection", []);
+  /** @type {RemovableRef<LSystem[]>} */
+  let userStorage = useLocalStorage("userCollectionV3", []);
 
-  /** @type {import("./bank.mjs").LSCollection[]} */
+  /** @type {DeepReadonly<LSCollection[]>} */
   let collections = readonly([...bank, {cid: USER_DEFINED_COLLECTION_ID, items: userStorage}]);
 
   let selectedCID = ref("");
   let selectedLID = ref("");
   let selectedLSystem = computed(() => {
     let collection = collections.find(({cid}) => cid === selectedCID.value);
-    let lSystem = collection?.items.find(({lid}) => lid === selectedLID.value);
-    return lSystem ?? readonly({});
+    return collection?.items.find(({lid}) => lid === selectedLID.value) ?? null;
+  });
+
+  let lsFilter = ref("");
+  let lsFilterDebounced = refDebounced(lsFilter, 300);
+  let mismatchingIds = computed(() => {
+    /** @type {Set<string>} */
+    let mismatches = new Set();
+    let query = lsFilterDebounced.value.trim().toLocaleLowerCase();
+    if (!query) {
+      return mismatches;
+    }
+    collections.forEach(({cid, items}) => {
+      items.forEach(({lid}) => {
+        if (!lid.toLocaleLowerCase().includes(query)) {
+          mismatches.add(`${cid}::${lid}`);
+        }
+      });
+    });
+    return mismatches;
   });
 
   /**
    * Store an L-system in the user-defined collection storage
-   * @param {import("./bank.mjs").LSystem} lSystemParams - L-system configuration
+   * @param {LSystem} lSystemParams - L-system configuration
    */
   function storeLSystem(lSystemParams) {
     let index = userStorage.value.findIndex(({lid}) => lid === lSystemParams.lid);
@@ -45,7 +68,7 @@ export let useCollectionsStore = defineStore("collections", () => {
 
   /**
    * Delete an L-system from the user-defined collection storage
-   * @param {String} lidToDelete - Unique identifier of the L-system
+   * @param {string} lidToDelete - Unique identifier of the L-system
    */
   function deleteLSystem(lidToDelete) {
     let index = userStorage.value.findIndex(({lid}) => lid === lidToDelete);
@@ -61,21 +84,21 @@ export let useCollectionsStore = defineStore("collections", () => {
     }
     storeLSystem({
       lid: selectedLID.value,
-      axiom: toValue(state.axiom),
-      alpha: toValue(state.alpha),
-      theta: toValue(state.theta),
-      step: toValue(state.step),
-      iterations: toValue(state.iterations),
-      rules: {...toRaw(state.rules)},
-      attributes: {...toRaw(state.attributes)},
+      params: structuredClone(toRaw(state.params)),
+      attributes: structuredClone(toRaw(state.attributes)),
     });
   });
 
   return {
     collections,
+
     selectedCID,
     selectedLID,
     selectedLSystem,
+
+    lsFilter,
+    mismatchingIds,
+
     deleteLSystem,
   };
 });

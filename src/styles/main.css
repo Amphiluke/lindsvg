@@ -59,6 +59,7 @@ button {
 
   &:disabled {
     cursor: not-allowed;
+    opacity: 0.5;
   }
 }
 
@@ -91,4 +92,8 @@ hr {
   margin: 15px auto;
   padding: 0;
   width: 100%;
+}
+
+[hidden] {
+  display: none !important;
 }
