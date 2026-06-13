@@ -45,7 +45,10 @@ export default [
     items: [
       { // [PP]
         lid: "anklets of Krishna",
-        params: [{
+        params: ((lsParams) => [
+          structuredClone(lsParams),
+          structuredClone(lsParams),
+        ])({
           axiom: "-X--X",
           rules: {
             F: "F",
@@ -54,7 +57,21 @@ export default [
           theta: 45,
           step: 10,
           iterations: 5,
-        }],
+        }),
+        attributes: [
+          {
+            stroke: "indianred",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "7",
+          },
+          {
+            stroke: "antiquewhite",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "1",
+          },
+        ],
       },
       { // [WM]
         lid: "border",
@@ -273,25 +290,61 @@ export default [
       },
       {
         lid: "meander",
-        params: [{
-          axiom: "A",
-          rules: {
-            A: "CCDEEGA",
-            C: "FF+++++++++++++++",
-            D: "F+++++++++++++++",
-            E: "F---------------",
-            F: "F",
-            G: "FF--------------",
+        params: [
+          {
+            axiom: "A",
+            rules: {
+              A: "CCDEEGA",
+              C: "FF+++++++++++++++",
+              D: "F+++++++++++++++",
+              E: "F---------------",
+              F: "F",
+              G: "FF--------------",
+            },
+            theta: 6,
+            step: 10,
+            iterations: 61,
           },
-          theta: 6,
-          step: 10,
-          iterations: 61,
-        }],
-        attributes: [{
-          stroke: "sienna",
-          "stroke-width": "4",
-          "stroke-linecap": "square",
-        }],
+          {
+            axiom: "A",
+            rules: {
+              A: "F+A",
+              F: "F",
+            },
+            x: -308,
+            y: -300,
+            theta: 8,
+            step: 44,
+            iterations: 45,
+          },
+          {
+            axiom: "A",
+            rules: {
+              A: "F+A",
+              F: "F",
+            },
+            x: -305.5,
+            y: -262.8,
+            theta: 8,
+            step: 38.8,
+            iterations: 45,
+          },
+        ],
+        attributes: [
+          {
+            stroke: "sienna",
+            "stroke-width": "4",
+            "stroke-linecap": "square",
+          },
+          {
+            stroke: "sienna",
+            "stroke-width": "4",
+          },
+          {
+            stroke: "sienna",
+            "stroke-width": "4",
+          },
+        ],
       },
       {
         lid: "Moore curve",
@@ -363,9 +416,42 @@ export default [
           },
           alpha: 36,
           theta: 36,
-          step: 15,
+          step: 25,
           iterations: 7,
         }],
+      },
+      {
+        lid: "pentive rectangle",
+        params: ((lsParams) => [
+          structuredClone(lsParams),
+          structuredClone(lsParams),
+        ])({
+          axiom: "Q",
+          rules: {
+            P: "--FR++++FS--FU",
+            Q: "FT++FR----FS++",
+            R: "++FP----FQ++FT",
+            S: "FU--FP++++FQ--",
+            T: "+FU--FP+",
+            U: "-FQ++FT-",
+          },
+          alpha: 36,
+          theta: 36,
+          step: 25,
+          iterations: 7,
+        }),
+        attributes: [
+          {
+            "stroke": "forestgreen",
+            "stroke-width": "2",
+            "transform": "skewX(-18)",
+          },
+          {
+            "stroke": "forestgreen",
+            "stroke-width": "2",
+            "transform": "translate(726 -427) scale(-1 -1) skewX(-18)",
+          },
+        ],
       },
       { // [AM]
         lid: "quartet",
@@ -806,24 +892,44 @@ export default [
       },
       {
         lid: "flower 2",
-        params: [{
-          axiom: "F-F+F[++X][F+X][F-X][--X]",
-          rules: {
-            F: "F",
-            W: "F-F+F[++X][F+X][F-X][--X]",
-            X: "F+FF-F[++Y][+Y][-Z][--Z]",
-            Y: "-[Z]F-FF-FF-FF-F[Z]",
-            Z: "+[Y]F+FF+FF+FF+F[Y]",
+        params: [
+          {
+            axiom: "X",
+            rules: {
+              F: "FF",
+              X: "F[+X][-X]FX",
+            },
+            y: 300,
+            alpha: 90,
+            theta: 25.71,
+            step: 6,
+            iterations: 5,
           },
-          alpha: 90,
-          theta: 10,
-          step: 4.5,
-          iterations: 9,
-        }],
-        attributes: [{
-          stroke: "#d50",
-          "stroke-width": "1.5",
-        }],
+          {
+            axiom: "F-F+F[++X][F+X][F-X][--X]",
+            rules: {
+              F: "F",
+              W: "F-F+F[++X][F+X][F-X][--X]",
+              X: "F+FF-F[++Y][+Y][-Z][--Z]",
+              Y: "-[Z]F-FF-FF-FF-F[Z]",
+              Z: "+[Y]F+FF+FF+FF+F[Y]",
+            },
+            alpha: 90,
+            theta: 10,
+            step: 4.5,
+            iterations: 9,
+          },
+        ],
+        attributes: [
+          {
+            stroke: "#160",
+            "stroke-width": ["5", "2"],
+          },
+          {
+            stroke: "#d50",
+            "stroke-width": "1.5",
+          },
+        ],
       },
       {
         lid: "grass",
@@ -994,7 +1100,7 @@ export default [
       {
         lid: "sapling",
         params: [{
-          axiom: "FFFFFFX",
+          axiom: "F-FFF-F+F+X",
           rules: {
             F: "F",
             X: "FFF-[-F+F[Y]-[X]]+[+F+F[X]-[X]]",
@@ -1006,7 +1112,7 @@ export default [
           iterations: 6,
         }],
         attributes: [{
-          stroke: "#6f4d35",
+          stroke: ["saddlebrown", "saddlebrown", "saddlebrown", "saddlebrown", "sienna", "sienna", "olive", "olive", "olivedrab"],
           "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "2", "1"],
           "stroke-linecap": ["square", "round"],
         }],
@@ -1150,19 +1256,41 @@ export default [
       },
       {
         lid: "crystal",
-        params: [{
+        params: ((lsParams) => Array.from({length: 6}, () => structuredClone(lsParams)))({
           axiom: "F+F+F+F",
           rules: {
             F: "FF+F++F+F",
           },
           theta: 90,
-          step: 5,
+          step: 8,
           iterations: 4,
-        }],
-        attributes: [{
+        }),
+        attributes: ((pathAttributes) => [
+          Object.assign(structuredClone(pathAttributes), {
+            transform: "scale(-0.2 0.5) translate(-1025 265) skewY(20)",
+            "stroke-opacity": "0.25",
+          }),
+          Object.assign(structuredClone(pathAttributes), {
+            transform: "scale(0.5) translate(412 265)",
+            "stroke-opacity": "0.25",
+          }),
+          Object.assign(structuredClone(pathAttributes), {
+            transform: "scale(0.5 -0.18) translate(153 -3190) skewX(21.5)",
+            "stroke-opacity": "0.25",
+          }),
+          Object.assign(structuredClone(pathAttributes), {
+            transform: "scale(0.5) translate(150 500)",
+          }),
+          Object.assign(structuredClone(pathAttributes), {
+            transform: "scale(-0.2 0.5) translate(-2650 265) skewY(20)",
+          }),
+          Object.assign(structuredClone(pathAttributes), {
+            transform: "scale(0.5 -0.18) translate(153 -1385) skewX(21.5)",
+          }),
+        ])({
           stroke: "mediumaquamarine",
           "stroke-width": "2",
-        }],
+        }),
       },
       { // [SF]
         lid: "Dekking’s church",
@@ -1435,23 +1563,43 @@ export default [
       },
       {
         lid: "plate",
-        params: [{
-          axiom: "S",
-          rules: {
-            F: "F",
-            S: "[[L]D[L]DD[L]D]-S",
-            D: "FF++++++++++++++++++",
-            L: "+++++++++F",
+        params: [
+          {
+            axiom: "S",
+            rules: {
+              F: "F",
+              S: "[[L]D[L]DD[L]D]-S",
+              D: "FF++++++++++++++++++",
+              L: "+++++++++F",
+            },
+            theta: 5,
+            step: 100,
+            iterations: 73,
           },
-          theta: 5,
-          step: 100,
-          iterations: 73,
-        }],
-        attributes: [{
-          stroke: ["slateblue", "crimson"],
-          "stroke-width": ["1.5", "2"],
-          "stroke-dasharray": ["n/a", "10 3"],
-        }],
+          {
+            axiom: "A",
+            rules: {
+              A: "F+A",
+              F: "F",
+            },
+            x: -20,
+            y: -285,
+            theta: 8,
+            step: 40,
+            iterations: 45,
+          },
+        ],
+        attributes: [
+          {
+            stroke: ["slateblue", "crimson"],
+            "stroke-width": ["1.5", "2"],
+            "stroke-dasharray": ["n/a", "10 3"],
+          },
+          {
+            stroke: "slateblue",
+            "stroke-width": "8",
+          },
+        ],
       },
       {
         lid: "rack-wheel",
@@ -1611,25 +1759,49 @@ export default [
       },
       { // [WM]
         lid: "Xmas tree",
-        params: [{
-          axiom: "W",
-          rules: {
-            W: "++FX--FW--FY++",
-            X: "-FZ++FY-",
-            Y: "--FZ++FY++FW--",
-            Z: "+FX--FW+",
+        params: [
+          {
+            axiom: "W",
+            rules: {
+              W: "++FX--FW--FY++",
+              X: "-FZ++FY-",
+              Y: "--FZ++FY++FW--",
+              Z: "+FX--FW+",
+            },
+            alpha: 180,
+            theta: 36,
+            step: 8,
+            iterations: 8,
           },
-          alpha: 180,
-          theta: 36,
-          step: 8,
-          iterations: 8,
-        }],
-        attributes: [{
-          stroke: "darkgreen",
-          "stroke-width": "6",
-          "stroke-dasharray": "5 2",
-          fill: "limegreen",
-        }],
+          {
+            axiom: "A",
+            rules: {
+              A: "F|+F++A",
+              F: "F",
+            },
+            x: -175,
+            y: -570,
+            alpha: 36,
+            theta: 36,
+            step: 25,
+            iterations: 5,
+          },
+        ],
+        attributes: [
+          {
+            fill: "limegreen",
+            stroke: "darkgreen",
+            "stroke-dasharray": "5 2",
+            "stroke-width": "6",
+          },
+          {
+            fill: "orange",
+            stroke: "orangered",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "7",
+          },
+        ],
       },
     ],
   },
