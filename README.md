@@ -8,29 +8,27 @@ Simple dependency-free module used to generate SVG images of deterministic L-sys
 
 ## Installation
 
-### In an npm project
+### In Node.js environment
 
-Installing the module is as simple as:
+Installing the package:
 
-```
+```shell
 npm install lindsvg
 ```
 
-Now you may get it in your scripts as usual: `require("lindsvg")`, or `import * as lindsvg from "lindsvg"`.
+Once installed, it can be imported as an ES module:
+
+```javascript
+import * as lindsvg from "lindsvg";
+```
 
 ### In a browser
 
-lindsvg is available in UMD format which allows you using it either with AMD/CJS compatible module loaders or in global namespace (`window.lindsvg`). You may get the module sources from such CDNs as jsDelivr or unpkg:
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/lindsvg/dist/lindsvg.min.js"></script>
-```
-
-If you rather prefer using ES modules in a browser, just choose the “esm” bundle:
+You may get the module sources from such CDNs as unpkg or jsDelivr:
 
 ```html
 <script type="module">
-  import * as lindsvg from "https://cdn.jsdelivr.net/npm/lindsvg/dist/lindsvg.esm.min.js";
+  import * as lindsvg from "https://unpkg.com/lindsvg@2/";
   // ...
 </script>
 ```
@@ -53,117 +51,349 @@ The following turtle commands are currently supported by lindsvg:
 
 ## API &amp; examples
 
-The module exports two pairs of methods.
+### `getSVGCode()`
 
-1. The methods returning ready-to-render L-system’s SVG code as a string:
-    * `getSVGCode(lsParams[, svgParams])`;
-    * `getMultiPathSVGCode(lsParams[, svgParams])`;
-2. The methods returning raw data that you may use to construct the SVG code yourself:
-    * `getSVGData(lsParams)`;
-    * `getMultiPathSVGData(lsParams)`.
+This method generates ready-to-render L-system’s SVG code as an HTML string.
 
-The “multi-path” methods (`getMultiPathSVGCode` and `getMultiPathSVGData`) differ from the “normal” methods (`getSVGCode` and `getSVGData`) in that they provide the ability for advanced stylisation of _branched_ L-systems. SVG images created using these “multi-path” methods contain several `<path>` elements, each one for a specific branching level, so they can be stylised differently (color, line width, etc.)
-
-All methods expect L-system parameters object as their first argument. These parameters are explained through the comments in the snippet below. Additionally, the methods `getSVGCode` and `getMultiPathSVGCode` may be passed an _optional_ parameter to alter the output SVG settings (refer the comments in the snippet below).
-
-### Using “single-path” methods
+#### Syntax
 
 ```javascript
-import {getSVGCode, getSVGData} from "lindsvg";
-
-// L-system parameters
-let lsParams = {
-  axiom: "A---A",    // The initial codeword (axiom)
-  rules: {           // L-system production rules
-    F: "F",          // Move forward a step with drawing a line
-    B: "B",          // Move forward a step without drawing a line
-    A: "B-F+Z+F-BA", // Auxiliary rules...
-    Z: "F-FF-F--[--Z]F-FF-F--F-FF-F--",
-  },
-  alpha: 0,           // Initial angle in radians
-  theta: Math.PI / 3, // Angle increment in radians
-  step: 15,           // The length of a “turtle” step
-  iterations: 7,      // Total number of iterations
-};
-
-// Output SVG parameters (all of them are optional)
-let svgParams = {
-  width: 600,       // Desired SVG element width
-  height: 600,      // Desired SVG element height
-  padding: 5,       // Additional space to extend the viewBox
-  pathAttributes: { // Name to value map for the <path> element attributes
-    stroke: "green",
-    "stroke-width": "2",
-  },
-};
-
-// Get ready-to-render L-system’s SVG code as a string...
-let svgCode = getSVGCode(lsParams, svgParams);
-
-// ...or get raw data required for manual SVG assemblage
-let {pathData, minX, minY, width, height} = getSVGData(lsParams);
+getSVGCode(lsParamsMap)
+getSVGCode(lsParamsMap, svgParams)
 ```
 
-An object returned by `getSVGData` contains [path data](https://www.w3.org/TR/SVG11/paths.html#PathData) needed to draw the L-system, as well as the drawing boundaries that are essential for the `viewBox` attribute.
+#### Parameters
 
-### Using “multi-path” methods
+* `lsParamsMap`
 
-Using “multi-path” methods (`getMultiPathSVGCode` and `getMultiPathSVGData`) allows you to specify different path attributes for every `<path>` element separately, which may make branched L-systems (like plants) look “more naturally”.
+  Mapping of L-system key (user-defined name or identifier) to the L-system parameters. You can either specify one key-value pair if you’re creating an image of a single L-system, or provide multiple key-value pairs if you want to combine several independent L-systems in a single image. The values in this mapping are objects, each containing the parameters of one L-system:
 
-For example, to generate the tree [demonstrated above](#lindsvg) (all but foliage) the following options were used:
+  - `axiom`
+
+    A string containing the initial codeword (axiom).
+
+  - `rules`
+
+    An object representing L-system production rules. The keys are the alphabet letters `A`–`Z`, and corresponding values are the production successors (rewriting rules). Two symbols of the alphabet (`F` and `B`) have special meaning as explained in the [“Supported commands” section](#supported-commands).
+
+  - `x` *(optional)*
+
+    Turtle’s initial horizontal coordinate. Its default value is `0`.
+
+  - `y` *(optional)*
+
+    Turtle’s initial vertical coordinate. Its default value is `0`.
+
+  - `alpha` *(optional)*
+
+    Initial angle in radians. Its default value is `0`.
+
+  - `theta`
+
+    Angle increment in radians.
+
+  - `step`
+
+    The length of the turtle’s step, a finite positive number.
+
+  - `iterations`
+
+    Total number of iterations used to generate the resulting L-system.
+
+* `svgParams` *(optional)*
+
+  An object containing parameters that can be used to modify the appearance of the resulting SVG image. All of these parameters are optional.
+
+  - `width` *(optional)*
+
+    Desired width of the SVG image. If not specified, defaults to the image’s intrinsic width.
+
+  - `height` *(optional)*
+
+    Desired height of the SVG image. If not specified, defaults to the image’s intrinsic height.
+
+  - `padding` *(optional)*
+
+    Additional space to extend the `viewBox`. If the image content is drawn too close to the edges, you can add padding by setting the desired numeric value to this property. Its default value is `0`.
+
+  - `pathAttributesMap` *(optional)*
+
+    Mapping of L-system key to the `<path>` element attributes. Keys in this mapping are the same as in the `lsParamsMap` argument. Values are objects mapping attribute names to attribute values. You can use this option to change such things as stroke color, line width, etc. The default attribute mapping is `{fill: "none", stroke: "#000"}`. For branched L-systems, attribute values can be specified as arrays, so that different values will be applied at different branching levels (see the [dedicated section on advanced styling of branched L-systems](#branched-l-systems)).
+
+  - `templateFn` *(optional)*
+
+    Function producing the resulting SVG code from raw data. You can provide your own template with additional markup to customize the appearance of the final image. Using this option is explained in the [dedicated section on SVG template customization](#svg-template-customization).
+
+#### Return value
+
+A string containing the complete HTML code for the resulting SVG image.
+
+#### Example: single L-system
+
+The following example demonstrates the use of the method `getSVGCode()` to generate the L-system [“Mango-tree foliage”](https://amphiluke.github.io/lindsvg/index.html?cid=Curves&lid=mango-tree+foliage).
 
 ```javascript
-import {getMultiPathSVGCode, getMultiPathSVGData} from "lindsvg";
+import {getSVGCode} from "lindsvg";
 
 // L-system parameters
-let lsParams = {
-  axiom: "F-FFF-F+F+X",
-  rules: {
-    F: "F",
-    X: "FFF-[-F+F[Y]-[X]]+[+F+F[X]-[X]]",
-    Y: "FF-[-F+F]+[+F+FY]",
+let lsParamsMap = {
+  "Mango-tree foliage": {
+    axiom: "A---A",    // The initial codeword (axiom)
+    rules: {           // L-system production rules
+      F: "F",          // Move forward a step with drawing a line
+      B: "B",          // Move forward a step without drawing a line
+      A: "B-F+Z+F-BA", // Auxiliary rules...
+      Z: "F-FF-F--[--Z]F-FF-F--F-FF-F--",
+    },
+    alpha: 0,           // Initial angle in radians
+    theta: Math.PI / 3, // Angle increment in radians
+    step: 15,           // The length of the turtle’s step
+    iterations: 7,      // Total number of iterations
   },
-  alpha: 90 * Math.PI / 180,
-  theta: 14 * Math.PI / 180,
-  iterations: 6,
-  step: 12,
 };
 
 // Output SVG parameters
 let svgParams = {
-  width: 565,
-  height: 445,
-  padding: 10,
-  pathAttributes: {
-    stroke: "#514d3a",
-    "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "1"],
-    "stroke-linecap": ["square", "round" /* the rest items are equal to the last one */],
+  width: 600,          // Desired width of the SVG image
+  height: 600,         // Desired height of the SVG image
+  padding: 5,          // Additional space to extend the viewBox
+  pathAttributesMap: { // Name to value maps for the <path> element attributes
+    "Mango-tree foliage": {
+      stroke: "green",
+      "stroke-width": "2",
+    },
   },
 };
 
-// Get ready-to-render L-system’s SVG code as a string...
-let svgCode = getMultiPathSVGCode(lsParams, svgParams);
-
-// ...or get raw data required for manual SVG assemblage
-let {multiPathData, minX, minY, width, height} = getMultiPathSVGData(lsParams);
+// Get L-system’s SVG code as a string and render the image
+let svgCode = getSVGCode(lsParamsMap, svgParams);
+document.body.insertAdjacentHTML("beforeend", svgCode);
 ```
 
-If an attribute array contains fewer elements than the maximum branching depth (e.g. see `stroke-linecap` in the example above), the missing items are implicitly made equal to the last one. So you don’t need to repeat the same value in the end of the list.
+#### Example: multiple L-systems
+
+The following example demonstrates the use of the method `getSVGCode()` to generate the [“Twindragon” curve](https://amphiluke.github.io/lindsvg/index.html?cid=Dragons&lid=twindragon) containing two Heighway dragon curves placed back to back.
+
+```javascript
+import {getSVGCode} from "lindsvg";
+
+let lsParams = {
+  axiom: "FX",
+  rules: {
+    F: "F",
+    X: "X+YF+",
+    Y: "-FX-Y",
+  },
+  theta: Math.PI / 2,
+  step: 3.5,
+  iterations: 14,
+};
+
+let lsParamsMap = {
+  "Yellow-green Dragon": {
+    ...lsParams,
+  },
+  "Forest-green Dragon": {
+    ...lsParams,
+    y: -448, // adjust vertical position of the 2nd dragon
+    alpha: Math.PI,
+  },
+};
+
+let svgParams = {
+  padding: 15,
+  pathAttributesMap: {
+    "Yellow-green Dragon": {
+      stroke: "YellowGreen",
+    },
+    "Forest-green Dragon": {
+      stroke: "ForestGreen",
+    },
+  },
+};
+
+let svgCode = getSVGCode(lsParamsMap, svgParams);
+document.body.insertAdjacentHTML("beforeend", svgCode);
+```
+
+### `getSVGData()`
+
+This method returns raw data that you can use to assemble the SVG code yourself. It may be handy in cases where full access to path data is required, or you need to fine-tune SVG parameters and content.
+
+#### Syntax
+
+```javascript
+getSVGData(lsParams)
+getSVGData(lsParams, options)
+```
+
+#### Parameters
+
+* `lsParams`
+
+  An object which contains L-system parameters. See [`getSVGCode()`](#parameters) for details.
+
+* `options` *(optional)*
+
+  An object for tuning the method’s behavior. Currently, one option is available:
+
+  - `isMultiPath` *(optional)*
+
+    This option is only effective for _branched_ L-systems. Its default value is `false` which means that the method will always construct path data for a single combined `<path>` element representing the complete L-system. If the option is set to `true`, the method provides separate path data for multiple `<path>` elements, each representing a specific branching level.
+
+#### Return value
+
+An object which contains the following fields:
+
+* `pathData`
+
+  An array of [path data](https://www.w3.org/TR/SVG11/paths.html#PathData) strings for each `<path>` element in the L-system SVG image. If the option `isMultiPath` is set to `false` or not specified, `pathData` contains only one element. L-systems without branching always produce `pathData` with a sole element.
+
+* `minX`
+
+  A number defining the left drawing boundary. Essential for assembling the `viewBox` attribute.
+
+* `minY`
+
+  A number defining the top drawing boundary. Essential for assembling the `viewBox` attribute.
+
+* `width`
+
+  A number defining the intrinsic width of the SVG image. Essential for assembling the `viewBox` attribute.
+
+* `height`
+
+  A number defining the intrinsic height of the SVG image. Essential for assembling the `viewBox` attribute.
+
+#### Example
+
+The method can be used to generate path data that is passed to the [`path()` CSS function](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/path) to achieve interesting visual effects. This example demonstrates the using `getSVGData()` for clipping an image to the Koch snowflake boundary.
+
+```javascript
+import {getSVGData} from "lindsvg";
+
+let lsParams = {
+  axiom: "F++F++F",
+  rules: {
+    F: "F-F++F-F",
+  },
+  y: 117,
+  theta: Math.PI / 3,
+  step: 5,
+  iterations: 4,
+};
+let {pathData, width, height} = getSVGData(lsParams);
+let img = new Image(width, height);
+img.src = "./winter-night.jpg";
+img.style.objectFit = "cover";
+img.style.clipPath = `path("${pathData[0]}")`;
+document.body.appendChild(img);
+```
+
+### Advanced styling
+
+#### Branched L-systems
+
+As mentioned earlier, the property `pathAttributesMap` of the `svgParams` option allows specifying attribute values in form of arrays. This allows you to provide different attribute values for each `<path>` element, which may make branched L-systems (like plants) look “more naturally”.
+
+For example, to generate the tree [demonstrated above](#lindsvg) (all but foliage) the following options were used:
+
+```javascript
+import {getSVGCode} from "lindsvg";
+
+let lsParamsMap = {
+  "Demo tree": {
+    axiom: "F-FFF-F+F+X",
+    rules: {
+      F: "F",
+      X: "FFF-[-F+F[Y]-[X]]+[+F+F[X]-[X]]",
+      Y: "FF-[-F+F]+[+F+FY]",
+    },
+    alpha: 90 * Math.PI / 180,
+    theta: 14 * Math.PI / 180,
+    step: 12,
+    iterations: 6,
+  },
+};
+
+let svgParams = {
+  width: 565,
+  height: 445,
+  padding: 10,
+  pathAttributesMap: {
+    "Demo tree": {
+      stroke: "#514d3a",
+      "stroke-width": ["16", "11", "9", "7", "6", "5", "3", "2", "1"],
+      "stroke-linecap": ["square", "round" /* all remaining items use the last specified value */],
+    },
+  },
+};
+
+let svgCode = getSVGCode(lsParamsMap, svgParams);
+document.body.insertAdjacentHTML("beforeend", svgCode);
+```
+
+If an attribute array contains fewer elements than the maximum branching depth (see `stroke-linecap` in the example above), the missing items are implicitly made equal to the last specified one. So you don’t need to repeat the same value in the end of the list.
 
 You may also use the special value `"n/a"` which prevents an attribute from being added on the corresponding `<path>` element (e.g. when you need to add an attribute only to one or to a few `<path>`s: `{pathAttributes: {transform: ["skewY(-35)", "n/a"]}}`).
 
-The property `multiPathData` in the object returned by `getMultiPathSVGData` is a _list_ of path data for every `<path>` element. The list is sorted in the order of increasing branch level (the deeper the branch the higher the index in the array).
+#### SVG template customization
+
+In normal cases, SVG image appearance is customized by providing presentation attributes via the `pathAttributesMap` option. However, there may be cases where attributes alone are not enough. For example, if you want to apply gradient stroke to your L-system, there will be need in extra-markup with the gradient definition. In such cases the special option `templateFn` can be handy. By redefining the SVG template, you may add whatever you need in the resulting code.
+
+The example below demonstrates how gradient stroke style can be applied by providing a custom template function.
+
+```javascript
+import {getSVGCode} from "lindsvg";
+
+let lsParamsMap = {
+  "L-system “Square”": {
+    axiom: "F+F+F+F",
+    rules: {
+      F: "FF+F+F+F+FF",
+    },
+    theta: Math.PI / 2,
+    step: 5,
+    iterations: 4,
+  },
+};
+
+let svgParams = {
+  width: 407,
+  height: 407,
+  padding: 2,
+  pathAttributesMap: {
+    "L-system “Square”": {
+      stroke: "url(#diagonal-gradient)",
+    },
+  },
+  templateFn: ({viewBox, width, height, content}) => `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox.join(" ")}" height="${height}" width="${width}">
+      <defs>
+        <linearGradient id="diagonal-gradient" gradientTransform="rotate(45 0.5 0.5)">
+          <stop offset="0%" stop-color="red" />
+          <stop offset="50%" stop-color="gold" />
+          <stop offset="100%" stop-color="red" />
+        </linearGradient>
+      </defs>
+      ${content}
+    </svg>`,
+};
+
+let svgCode = getSVGCode(lsParamsMap, svgParams);
+document.body.insertAdjacentHTML("beforeend", svgCode);
+```
 
 ### Error handling
 
-In case of invalid input L-system parameters, the methods throw a custom exception. You may use it to get a detailed explanation of which parameter(s) failed to pass validation, and format the message as you wish.
+In case of invalid input L-system parameters, the methods throw a custom exception. You may use it to analyze which parameter(s) failed to pass validation, and format the error message as you wish.
 
 ```javascript
 import {getSVGCode} from "lindsvg";
 import {dump} from "js-yaml";
 
 try {
-  console.log(getSVGCode(lsParams, svgParams));
+  console.log(getSVGCode(lsParamsMap, svgParams));
 } catch (error) {
   // Log the original message
   console.error(error);

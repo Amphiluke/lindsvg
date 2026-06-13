@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lindsvg</title>
+</head>
+<body>
+  <script type="module">
+    import {getSVGData} from "../dist/lindsvg.mjs";
+    let lsParams = {
+      axiom: "F++F++F",
+      rules: {
+        F: "F-F++F-F",
+      },
+      theta: Math.PI / 3,
+      iterations: 4,
+      y: 117,
+      step: 5,
+    };
+    let {pathData, width, height} = getSVGData(lsParams);
+    let img = new Image(width, height);
+    img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Winter_night_at_Pokljuka_forest.jpg/960px-Winter_night_at_Pokljuka_forest.jpg";
+    img.style.objectFit = "cover";
+    img.style.clipPath = `path("${pathData[0]}")`;
+    document.body.appendChild(img);
+  </script>
+</body>
+</html>

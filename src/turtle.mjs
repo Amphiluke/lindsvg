@@ -1,51 +1,79 @@
 export class Turtle {
-    constructor({x, y, step, alpha, theta}) {
-        this.stack = [];
-        this.x = this.minX = this.maxX = x;
-        this.y = this.minY = this.maxY = y;
-        this.step = step;
-        this.alpha = -alpha; // negate since Y axis is inverted
-        this.theta = theta;
-    }
+  /** @type {number} */
+  #x;
+  /** @type {number} */
+  #minX;
+  /** @type {number} */
+  #maxX;
+  /** @type {number} */
+  #y;
+  /** @type {number} */
+  #minY;
+  /** @type {number} */
+  #maxY;
+  /** @type {number} */
+  #alpha;
+  /** @type {number} */
+  #theta;
+  /** @type {number} */
+  #step;
+  /** @type {{x: number, y: number, alpha: number}[]} */
+  #stack = [];
 
-    translate(stepCount = 1) {
-        this.x += stepCount * this.step * Math.cos(this.alpha);
-        this.y += stepCount * this.step * Math.sin(this.alpha);
-        this.minX = Math.min(this.minX, this.x);
-        this.maxX = Math.max(this.maxX, this.x);
-        this.minY = Math.min(this.minY, this.y);
-        this.maxY = Math.max(this.maxY, this.y);
-    }
+  get x() {
+    return this.#x;
+  }
 
-    rotate(factor) {
-        this.alpha += factor * this.theta;
-    }
+  get y() {
+    return this.#y;
+  }
 
-    reverse(repeatCount = 1) {
-        this.alpha += (repeatCount % 2) * Math.PI;
-    }
+  constructor({x, y, alpha, theta, step}) {
+    this.#x = this.#minX = this.#maxX = x;
+    this.#y = this.#minY = this.#maxY = y;
+    this.#alpha = -alpha; // negate since Y axis is inverted
+    this.#theta = theta;
+    this.#step = step;
+  }
 
-    swapSigns(repeatCount = 1) {
-        this.theta *= (-1) ** repeatCount;
-    }
+  translate(stepCount = 1) {
+    this.#x += stepCount * this.#step * Math.cos(this.#alpha);
+    this.#y += stepCount * this.#step * Math.sin(this.#alpha);
+    this.#minX = Math.min(this.#minX, this.#x);
+    this.#maxX = Math.max(this.#maxX, this.#x);
+    this.#minY = Math.min(this.#minY, this.#y);
+    this.#maxY = Math.max(this.#maxY, this.#y);
+  }
 
-    pushStack(repeatCount = 1) {
-        for (; repeatCount > 0; repeatCount--) {
-            this.stack.push({x: this.x, y: this.y, alpha: this.alpha});
-        }
-    }
+  rotate(factor) {
+    this.#alpha += factor * this.#theta;
+  }
 
-    popStack(repeatCount) {
-        for (; repeatCount > 0; repeatCount--) {
-            ({x: this.x, y: this.y, alpha: this.alpha} = this.stack.pop());
-        }
-    }
+  reverse(repeatCount = 1) {
+    this.#alpha += (repeatCount % 2) * Math.PI;
+  }
 
-    getDrawingRect() {
-        let minX = Math.floor(this.minX);
-        let minY = Math.floor(this.minY);
-        let maxX = Math.ceil(this.maxX);
-        let maxY = Math.ceil(this.maxY);
-        return {minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY};
+  swapSigns(repeatCount = 1) {
+    this.#theta *= (-1) ** repeatCount;
+  }
+
+  pushStack(repeatCount = 1) {
+    for (; repeatCount > 0; repeatCount--) {
+      this.#stack.push({x: this.#x, y: this.#y, alpha: this.#alpha});
     }
+  }
+
+  popStack(repeatCount) {
+    for (; repeatCount > 0; repeatCount--) {
+      ({x: this.#x, y: this.#y, alpha: this.#alpha} = this.#stack.pop());
+    }
+  }
+
+  getDrawingRect() {
+    let minX = Math.floor(this.#minX);
+    let minY = Math.floor(this.#minY);
+    let maxX = Math.ceil(this.#maxX);
+    let maxY = Math.ceil(this.#maxY);
+    return {minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY};
+  }
 }

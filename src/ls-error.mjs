@@ -1,31 +1,31 @@
-class LSError extends Error {
-    /**
-     * LSError constructor
-     * @param {Object} errors - Error map “parameter->message(s)”
-     * @constructor
-     */
-    constructor(errors) {
-        let message = JSON.stringify(errors, null, 2);
-        super(message);
-        // Using JSON.parse for deep cloning
-        Object.defineProperty(this, "lsErrors", {value: JSON.parse(message)});
-    }
+export class LSError extends Error {
+  /** @type {{[param: string]: string}} */
+  #lsErrors;
 
-    /**
-     * Get raw object representation of the errors
-     * @return {Object}
-     */
-    toJSON() {
-        return JSON.parse(JSON.stringify(this.lsErrors));
-    }
+  /**
+   * LSError constructor
+   * @param {{[param: string]: string}} errors - Error map “parameter->message(s)”
+   * @constructor
+   */
+  constructor(errors) {
+    let message = JSON.stringify(errors, null, 2);
+    super(message);
+    this.#lsErrors = structuredClone(errors);
+  }
+
+  /**
+   * Get raw object representation of the errors
+   * @returns {object}
+   */
+  toJSON() {
+    return structuredClone(this.#lsErrors);
+  }
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/toString
 Object.defineProperty(LSError.prototype, "name", {
-    configurable: true,
-    enumerable: false,
-    writable: true,
-    value: "LSError",
+  configurable: true,
+  enumerable: false,
+  writable: true,
+  value: "LSError",
 });
-
-export {LSError};

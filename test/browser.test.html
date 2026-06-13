@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>lindsvg</title>
+  <style>
+    html {
+      color-scheme: dark;
+    }
+    .demos {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      inset: 0 0 auto;
+
+      svg {
+        height: auto;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demos"></div>
+  <script type="module">
+    import {getSVGCode} from "../dist/lindsvg.mjs";
+    import * as testData from "./test-data.mjs";
+    import {dump} from "https://unpkg.com/js-yaml@4.1.1/dist/js-yaml.mjs";
+
+    let verifyChecksum = async (content, checksum) => {
+      let contentUint8 = new TextEncoder().encode(content);
+      let hashBuffer = await window.crypto.subtle.digest("SHA-256", contentUint8);
+      let hashHex = new Uint8Array(hashBuffer).toHex();
+      console.assert(hashHex === checksum);
+    };
+
+    let demos = document.body.querySelector(".demos");
+
+    ["singlePathData", "multiPathData", "comboData", "customTplData", "tplReuseData"].forEach((key) => {
+      let svgCode = getSVGCode(testData[key].lsParamsMap, testData[key].svgParams);
+      verifyChecksum(svgCode, testData[key].checksum);
+      demos.insertAdjacentHTML("beforeend", svgCode);
+    });
+
+    try {
+      console.log("Below, an exception is expected");
+      console.log(getSVGCode(testData.invalidData.lsParamsMap, testData.multiPathData.svgParams));
+    } catch (error) {
+      // Log the original message
+      console.error(error);
+      if (error.name === "LSError") {
+        // Get a JSON representation of the error list and format it as YAML
+        let errorJSON = error.toJSON();
+        console.log(dump(errorJSON, {indent: 4}));
+      }
+    }
+  </script>
+</body>
+</html>
