@@ -1,9 +1,8 @@
 import {version} from "./package.json";
-import {defineConfig} from "vite";
 import vue from "@vitejs/plugin-vue";
 
-// https://vitejs.dev/config/
-export default defineConfig({
+/** @type {import("vite").UserConfig} */
+export default {
   base: "/lindsvg/",
   build: {
     assetsDir: ".",
@@ -30,4 +29,4 @@ export default defineConfig({
       },
     },
   },
-});
+};
