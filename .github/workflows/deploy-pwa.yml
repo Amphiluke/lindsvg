@@ -36,7 +36,6 @@ jobs:
       - name: Install and build project
         run: |
           npm ci
-          npm install -g vite@8.0.16 @vitejs/plugin-vue@6.0.7
           npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
