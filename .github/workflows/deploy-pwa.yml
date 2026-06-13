@@ -35,7 +35,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install and build project
         run: |
-          npm ci
+          npm ci --include=dev
           npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
