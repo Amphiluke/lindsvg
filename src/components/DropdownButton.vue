@@ -53,6 +53,7 @@ async function requestDropdown() {
   background: var(--color-surface);
   border: 1px solid var(--color-on-surface-mid);
   box-shadow: 1px 1px 3px 0 var(--color-surface-shadow);
+  color: var(--color-on-surface-high);
   inset: calc(v-bind("dropdownPos.top") * 1px) calc(v-bind("dropdownPos.right") * 1px) auto auto;
   padding: 0;
 
