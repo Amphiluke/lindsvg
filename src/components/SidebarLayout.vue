@@ -12,7 +12,7 @@ let interfaceStore = useInterfaceStore();
 </script>
 
 <template>
-  <div :class="$style.sidebar">
+  <div :class="[$style.sidebar, {[$style.minimized]: !interfaceStore.openedPanel}]">
     <DropdownButton
       :hidden="!interfaceStore.openedPanel"
       :class="$style.menuBtn"
@@ -48,6 +48,10 @@ let interfaceStore = useInterfaceStore();
   min-width: var(--size-sidebar-button);
   position: fixed;
   top: 0;
+}
+
+.minimized::after {
+  content: ""; /* forces sidebar re-render when minimized (fixes rendering issue in iOS) */
 }
 
 .menuBtn {

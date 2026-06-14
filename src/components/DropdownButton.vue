@@ -12,13 +12,6 @@ async function requestDropdown() {
   isDropdownRequested.value = true;
   await nextTick();
   dropdownRef.value?.showModal();
-}
-
-function toggleHandler({newState}) {
-  if (newState === "closed") {
-    isDropdownRequested.value = false;
-    return;
-  }
   let btnRect = openBtnRef.value.getBoundingClientRect();
   let right = document.documentElement.clientWidth - btnRect.right;
   let top = btnRect.top + btnRect.height + 5;
@@ -44,7 +37,7 @@ function toggleHandler({newState}) {
     ref="dropdown"
     closedby="any"
     :class="$style.dropdown"
-    @toggle="toggleHandler"
+    @close="isDropdownRequested = false"
     @click="dropdownRef?.close()"
   >
     <slot />
