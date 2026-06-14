@@ -28,7 +28,7 @@ You may get the module sources from such CDNs as unpkg or jsDelivr:
 
 ```html
 <script type="module">
-  import * as lindsvg from "https://unpkg.com/lindsvg@2/";
+  import * as lindsvg from "https://unpkg.com/lindsvg@2";
   // ...
 </script>
 ```
