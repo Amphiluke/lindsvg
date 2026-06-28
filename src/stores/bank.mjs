@@ -12,6 +12,7 @@
  *  - [PP] — from P. Prusinkiewicz & J. Hanan, 1989
  *  - [SE] — SirEdvin
  *  - [SF] — Spanky Fractal Database (https://web.archive.org/web/20160903112517/http://www.nahee.com/spanky/pub/fractals/lsystems/)
+ *  - [VB] — Vexlio blog post (https://vexlio.com/blog/drawing-simple-organics-with-l-systems/)
  *  - [WM] — William McWorter
  * 
  * An asterisk (*) near the reference means that the original L-system parameters
@@ -45,10 +46,7 @@ export default [
     items: [
       { // [PP]
         lid: "anklets of Krishna",
-        params: ((lsParams) => [
-          structuredClone(lsParams),
-          structuredClone(lsParams),
-        ])({
+        params: Array.from({length: 2}, () => ({
           axiom: "-X--X",
           rules: {
             F: "F",
@@ -57,21 +55,13 @@ export default [
           theta: 45,
           step: 10,
           iterations: 5,
-        }),
-        attributes: [
-          {
-            stroke: "indianred",
-            "stroke-linecap": "round",
-            "stroke-linejoin": "round",
-            "stroke-width": "7",
-          },
-          {
-            stroke: "antiquewhite",
-            "stroke-linecap": "round",
-            "stroke-linejoin": "round",
-            "stroke-width": "1",
-          },
-        ],
+        })),
+        attributes: Array.from({length: 2}, (_el, index) => ({
+          stroke: index ? "antiquewhite" : "indianred",
+          "stroke-linecap": "round",
+          "stroke-linejoin": "round",
+          "stroke-width": index ? "1" : "7",
+        })),
       },
       { // [WM]
         lid: "border",
@@ -422,10 +412,7 @@ export default [
       },
       {
         lid: "pentive rectangle",
-        params: ((lsParams) => [
-          structuredClone(lsParams),
-          structuredClone(lsParams),
-        ])({
+        params: Array.from({length: 2}, () => ({
           axiom: "Q",
           rules: {
             P: "--FR++++FS--FU",
@@ -439,7 +426,7 @@ export default [
           theta: 36,
           step: 25,
           iterations: 7,
-        }),
+        })),
         attributes: [
           {
             "stroke": "forestgreen",
@@ -594,6 +581,22 @@ export default [
         }],
       },
       {
+        lid: "terdragon snowflake",
+        params: Array.from({length: 6}, (_el, index) => ({
+          axiom: "F",
+          rules: {
+            F: "F+F-F",
+          },
+          alpha: index * 60,
+          theta: 120,
+          step: 6,
+          iterations: 8,
+        })),
+        attributes: Array.from({length: 6}, (_el, index) => ({
+          stroke: index % 2 ? "firebrick" : "darkorange",
+        })),
+      },
+      {
         lid: "terdragon tiling",
         params: [{
           axiom: "X",
@@ -620,56 +623,35 @@ export default [
       },
       {
         lid: "triple terdragon",
-        params: ((lsParams) => [
-          Object.assign(structuredClone(lsParams), {y: 405, alpha: 30}),
-          structuredClone(lsParams),
-          Object.assign(structuredClone(lsParams), {alpha: 30}),
-        ])({
+        params: Array.from({length: 3}, (_el, index) => ({
           axiom: "F",
           rules: {
             F: "F+F-F",
           },
-          alpha: 90,
+          y: index ? 0 : 405,
+          alpha: index === 1 ? 90 : 30,
           theta: 120,
           step: 5,
           iterations: 8,
-        }),
-        attributes: [
-          {
-            stroke: "darkred",
-          },
-          {
-            stroke: "red",
-          },
-          {
-            stroke: "tomato",
-          },
-        ],
+        })),
+        attributes: ["darkred", "red", "tomato"].map((stroke) => ({stroke})),
       },
       {
         lid: "twindragon",
-        params: ((lsParams) => [
-          structuredClone(lsParams),
-          Object.assign(structuredClone(lsParams), {y: -448, alpha: 180}),
-        ])({
+        params: Array.from({length: 2}, (_el, index) => ({
           axiom: "FX",
           rules: {
             F: "F",
             X: "X+YF+",
             Y: "-FX-Y",
           },
+          y: index ? -448 : 0,
+          alpha: index ? 180 : 0,
           theta: 90,
           step: 3.5,
           iterations: 14,
-        }),
-        attributes: [
-          {
-            stroke: "yellowgreen",
-          },
-          {
-            stroke: "forestgreen",
-          },
-        ],
+        })),
+        attributes: ["yellowgreen", "forestgreen"].map((stroke) => ({stroke})),
       },
       { // [WM]
         lid: "twindragon boundary",
@@ -1203,6 +1185,25 @@ export default [
           transform: ["skewY(-35)", "n/a"],
         }],
       },
+      { // [VB]
+        lid: "tree 3",
+        params: [{
+          axiom: "X",
+          rules: {
+            F: "FF",
+            X: "F+[-F-XF-X][+FF][--XF[+X]][++F-X]",
+          },
+          alpha: 90,
+          theta: 20,
+          step: 4,
+          iterations: 6,
+        }],
+        attributes: [{
+          stroke: ["saddlebrown", "saddlebrown", "saddlebrown", "forestgreen"],
+          "stroke-width": ["6", "4", "2", "1"],
+          "stroke-linecap": ["round", "round", "n/a"],
+        }],
+      },
       {
         lid: "weed",
         params: [{
@@ -1296,7 +1297,7 @@ export default [
       },
       {
         lid: "crystal",
-        params: ((lsParams) => Array.from({length: 6}, () => structuredClone(lsParams)))({
+        params: Array.from({length: 6}, () => ({
           axiom: "F+F+F+F",
           rules: {
             F: "FF+F++F+F",
@@ -1304,33 +1305,19 @@ export default [
           theta: 90,
           step: 8,
           iterations: 4,
-        }),
-        attributes: ((pathAttributes) => [
-          Object.assign(structuredClone(pathAttributes), {
-            transform: "scale(-0.2 0.5) translate(-1025 265) skewY(20)",
-            "stroke-opacity": "0.25",
-          }),
-          Object.assign(structuredClone(pathAttributes), {
-            transform: "scale(0.5) translate(410 265)",
-            "stroke-opacity": "0.25",
-          }),
-          Object.assign(structuredClone(pathAttributes), {
-            transform: "scale(0.5 -0.18) translate(152 -3190) skewX(21.5)",
-            "stroke-opacity": "0.25",
-          }),
-          Object.assign(structuredClone(pathAttributes), {
-            transform: "scale(0.5) translate(150 500)",
-          }),
-          Object.assign(structuredClone(pathAttributes), {
-            transform: "scale(-0.2 0.5) translate(-2645 264) skewY(20)",
-          }),
-          Object.assign(structuredClone(pathAttributes), {
-            transform: "scale(0.5 -0.18) translate(153 -1385) skewX(21.5)",
-          }),
-        ])({
-          stroke: "mediumaquamarine",
+        })),
+        attributes: Array.from({length: 6}, (_el, index) => ({
+          stroke: index < 3 ? "#66cdaa40" : "#66cdaa",
           "stroke-width": "2",
-        }),
+          transform: [
+            "scale(-0.2 0.5) translate(-1025 265) skewY(20)",
+            "scale(0.5) translate(410 265)",
+            "scale(0.5 -0.18) translate(152 -3190) skewX(21.5)",
+            "scale(0.5) translate(150 500)",
+            "scale(-0.2 0.5) translate(-2645 264) skewY(20)",
+            "scale(0.5 -0.18) translate(153 -1385) skewX(21.5)",
+          ][index],
+        })),
       },
       { // [SF]
         lid: "Dekking’s church",
