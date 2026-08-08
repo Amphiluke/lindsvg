@@ -1,4 +1,4 @@
-import {version} from "./package.json";
+import {version} from "./package.json" with {type: "json"};
 import vue from "@vitejs/plugin-vue";
 
 /** @type {import("vite").UserConfig} */

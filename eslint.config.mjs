@@ -9,7 +9,7 @@ export default [
   },
   {
     languageOptions: {
-      ecmaVersion: 2022,
+      ecmaVersion: 2025,
       sourceType: "module",
       globals: {
         __PACKAGE_VERSION__: "readonly",
