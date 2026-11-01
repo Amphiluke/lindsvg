@@ -1,3 +1,4 @@
+import {resolve} from "node:path";
 import packageJSON from "./package.json" with {type: "json"};
 import vue from "@vitejs/plugin-vue";
 
@@ -7,7 +8,11 @@ export default {
   build: {
     assetsDir: ".",
     assetsInlineLimit: 0,
-    rollupOptions: {
+    rolldownOptions: {
+      input: {
+        index: resolve(import.meta.dirname, "index.html"),
+        sw: resolve(import.meta.dirname, "src/sw.js"),
+      },
       output: {
         entryFileNames: "[name].js",
         chunkFileNames: "[name].js",
@@ -21,12 +26,4 @@ export default {
   plugins: [
     vue(),
   ],
-  worker: {
-    format: "es",
-    rollupOptions: {
-      output: {
-        entryFileNames: "[name].js",
-      },
-    },
-  },
 };

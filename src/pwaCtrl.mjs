@@ -1,4 +1,3 @@
-import "./sw.js?worker";
 import {useInterfaceStore, POPOVER_ACCEPT} from "./stores/interface.mjs";
 
 export const USING_PWA = import.meta.env.PROD && ("serviceWorker" in navigator);
