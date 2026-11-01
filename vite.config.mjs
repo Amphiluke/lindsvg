@@ -1,4 +1,4 @@
-import {version} from "./package.json" with {type: "json"};
+import packageJSON from "./package.json" with {type: "json"};
 import vue from "@vitejs/plugin-vue";
 
 /** @type {import("vite").UserConfig} */
@@ -16,7 +16,7 @@ export default {
     },
   },
   define: {
-    __PACKAGE_VERSION__: JSON.stringify(version),
+    __PACKAGE_VERSION__: JSON.stringify(packageJSON.version),
   },
   plugins: [
     vue(),
